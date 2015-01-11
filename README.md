@@ -1,15 +1,23 @@
 readGenalex
 ===========
 
-A collection of R functions to read genotype data file in GenAlEx format, as
-exported from Excel as a delimited text file, into an annotated `data.frame`,
-and manipulate it in that form.  Several functions are provided for accessing
-and printing this data.  GenAlEx and its documentation are available at
+An R package for reading data files in GenAlEx format, as exported from Excel
+as a delimited text file, into an annotated `data.frame`, and manipulate it in
+that form.  Several functions are provided for accessing and printing this
+data.  GenAlEx and its documentation are available at
 <http://biology-assets.anu.edu.au/GenAlEx>.
+
+This package is submitted to CRAN to be an R package.  The development version
+here can be installed via:
 
 ```R
 > library(devtools)
 > devtools::install_github("douglasgscofield/readGenalex")
+```
+
+To use:
+
+```R
 > library(readGenalex)
 > refgt <- readGenalex("reference_genotypes.txt")
 > refgt
