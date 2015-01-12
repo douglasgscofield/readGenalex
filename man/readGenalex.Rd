@@ -25,12 +25,12 @@ The ploidy of genotypes encoded in \code{file} (defaults to 2)
 \details{
 \code{readGenalex()} expects a genotype data file in GenAlEx format, which specifies three header lines describing the structure and content of the file, followed by lines containing the genotype data, along with optionally extra columns specifying additional information about the sampled information for other analyses.  GenAlEx format for a collection of diploid samples is the following, with columns separated by \code{sep}:
 \tabular{llllll}{
-  N loci        \tab Total N samples \tab N populations  \tab N pop 1        \tab N pop 2        \tab ... \cr
-  Dataset title \tab \emph{empty}    \tab \emph{empty}   \tab Name pop 1     \tab Name pop 2     \tab ... \cr
-  Sample title  \tab Pop title       \tab Name locus 1   \tab \emph{empty}   \tab Name locus 2   \tab ... \cr
-  ID sample 1   \tab ID sample 1 pop \tab Loc 1 allele 1 \tab Loc 1 allele 2 \tab Loc 2 allele 1 \tab ... \cr
-  ID sample 2   \tab ID sample 2 pop \tab Loc 1 allele 1 \tab Loc 1 allele 2 \tab Loc 2 allele 1 \tab ... \cr
-  ...           \tab ...             \tab ...            \tab ...            \tab ...            \tab ... \cr
+N loci        \tab Total N samples \tab N populations  \tab N pop 1        \tab N pop 2        \tab ... \cr
+Dataset title \tab \emph{empty}    \tab \emph{empty}   \tab Name pop 1     \tab Name pop 2     \tab ... \cr
+Sample title  \tab Pop title       \tab Name locus 1   \tab \emph{empty}   \tab Name locus 2   \tab ... \cr
+ID sample 1   \tab ID sample 1 pop \tab Loc 1 allele 1 \tab Loc 1 allele 2 \tab Loc 2 allele 1 \tab ... \cr
+ID sample 2   \tab ID sample 2 pop \tab Loc 1 allele 1 \tab Loc 1 allele 2 \tab Loc 2 allele 1 \tab ... \cr
+...           \tab ...             \tab ...            \tab ...            \tab ...            \tab ... \cr
 }
 Calling \code{readGenalex()} for a file first reads the top 3 header lines, then reads the remainder of the file checking for consistency with the data description from the header lines.  It attempts to cleanly ignore extra delimiters that Excel might add when exporting a delimited file.  Extra columns beyond the genotype columns are allowed.
 
@@ -50,7 +50,6 @@ An annotated \code{data.frame} containing sample data, with column names determi
   \item{sample.title        }{Sample title}
   \item{pop.title           }{Population title}
   \item{locus.columns       }{Numeric column positions of allele 1 of each locus in the \code{data.frame}}
-  \item{data.column.names   }{Names of \code{data.frame} columns containing genotype data}
   \item{extra.columns       }{\code{data.frame} containing any extra columns given in \code{file} to the right of the genotype columns.  Row order is the same as the genotype \code{data.frame}.  If no extra columns were found, this attribute does not exist.}
 }
 \references{
@@ -61,16 +60,13 @@ Peakall, R. and Smouse P.E. (2006) GENALEX 6: genetic analysis in Excel. Populat
 \author{
 Douglas G. Scofield
 }
-\note{
-%%  ~~further notes~~
-}
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
-\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-}
 \examples{
+data(example_genotypes)
+example_genotypes
+attributes(example_genotypes)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

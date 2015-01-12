@@ -22,28 +22,14 @@ The names of one or more loci found in \code{dat}
 New genotype data for loci specified in \code{locus}.  Must have the same number of rows as \code{dat}
 }
 }
-\details{
-%%  ~~ If necessary, more details than the description above ~~
-}
 \value{
 A \code{data.frame} containing genotype data from \code{dat} with data for loci specified in \code{locus} replaced with data from \code{newdata}.
-}
-\references{
-%% ~put references to the literature/web site here ~
 }
 \author{
 Douglas G. Scofield
 }
-\note{
-%%  ~~further notes~~
-}
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
-\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-}
-\examples{
-}
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

@@ -36,28 +36,18 @@ Character which surrounds loci specified by \code{callout.locus}
 Label to be included between the sample and population ID columns and the genotype columns in output
 }
 }
-\details{
-%%  ~~ If necessary, more details than the description above ~~
-}
 \value{
 No specific return value, used for its side effect of printing genotypes.
-}
-\references{
-%% ~put references to the literature/web site here ~
 }
 \author{
 Douglas G. Scofield
 }
-\note{
-%%  ~~further notes~~
-}
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
-\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-}
 \examples{
+data(example_genotypes)
+printGenalexGenotype(example_genotypes, rows=6:8, callout.locus="loc5")
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

@@ -26,22 +26,15 @@ This function reduced the ploidy of a \code{readGenalex}-format \code{data.frame
 \value{
 A \code{data.frame} containing genotype data from \code{dat} reduced to the specified \code{new.ploidy}, with attributes updated as required.
 }
-\references{
-%% ~put references to the literature/web site here ~
-}
 \author{
 Douglas G. Scofield
-}
-\note{
-%%  ~~further notes~~
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
-\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-}
 \examples{
+data(example_genotypes)
+p1 = reduceGenalexPloidy(example_genotypes, 1)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

@@ -13,10 +13,9 @@ function(dat, new.ploidy=1)
     new.col = c(1:(att$locus.columns[1]-1), att$locus.columns)
     dat = dat[, new.col]
     for (a in names(att))
-        if (! a %in% c("names","locus.columns","data.column.names","ploidy"))
+        if (! a %in% c("names","locus.columns","ploidy"))
             attr(dat,a) <- att[[a]]
     attr(dat, "locus.columns") = att$locus.columns - (0:(att$n.loci - 1) * (att$ploidy - new.ploidy))
-    attr(dat, "data.column.names") = att$data.column.names[new.col]
     attr(dat, "ploidy") = new.ploidy
     dat
 }

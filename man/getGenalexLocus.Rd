@@ -22,28 +22,19 @@ The names of one or more loci found in \code{dat}
 If supplied, return only data for samples from the specified populations
 }
 }
-\details{
-%%  ~~ If necessary, more details than the description above ~~
-}
 \value{
 A \code{data.frame} containing genotype data from \code{dat} for loci specified in \code{code}, optionally restricted to samples from populations specified in \code{pop}.
 }
-\references{
-%% ~put references to the literature/web site here ~
-}
 \author{
-%%  ~~who you are~~
-}
-\note{
-%%  ~~further notes~~
+Douglas G. Scofield
 }
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
-\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-}
 \examples{
+data(example_genotypes)
+loc1 = getGenalexLocus(example_genotypes, "loc1")
+loc2.pop2 = getGenalexLocus(example_genotypes, "loc2", "pop2")
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

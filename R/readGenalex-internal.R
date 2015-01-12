@@ -71,6 +71,7 @@ function(header, raw.data)
         names(extra.columns)[1] = names(dat)[1]
     }
     names(dat) <- header$data.column.names
+    header$data.column.names = NULL  # don't add as an attribute, it duplicates 'names'
     dat[[header$pop.title]] <- factor(dat[[header$pop.title]])
     # TODO: handle label in header with size 0 and missing from data?
     pop.labels.header = sort(header$pop.labels)

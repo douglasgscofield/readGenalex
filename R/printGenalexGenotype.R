@@ -6,7 +6,7 @@ function(dat, rows, callout.locus=NULL,
     cols <- names(dat)
     ploidy <- attr(dat, "ploidy")
     for (row in rows) {
-        cat(paste(sep=sep, collapse=sep, dat[row,cols[1:2]]))
+        cat(paste(sep=sep, as.character(dat[row,1]), as.character(dat[row,2])))
         if (! is.null(label))
             cat("", label)
         full.gt <- ""

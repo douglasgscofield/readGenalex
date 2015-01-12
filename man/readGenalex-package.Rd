@@ -14,7 +14,7 @@ A collection of R functions to read and manipulate genotype data in GenAlEx form
 Package: \tab readGenalex\cr
 Type: \tab Package\cr
 Version: \tab 0.4.1\cr
-Date: \tab 2015-01-11\cr
+Date: \tab 2015-01-12\cr
 License: \tab LGPL-3\cr
 }
 Read and manipulate GenAlEx-format data files.  \href{http://biology-assets.anu.edu.au/GenAlEx}{GenAlEx} is a widely-used plugin for Excel that manipulates and analyses genotype data.  This package is designed to read GenAlEx-format genotype files that have been exported from Excel as delimited text.  A description of the file format is available via \code{help(readGenalex)}.
@@ -33,7 +33,3 @@ Peakall, R. and Smouse P.E. (2006) GENALEX 6: genetic analysis in Excel. Populat
 \keyword{ file }
 \keyword{ manip }
 \keyword{ attribute }
-\seealso{
-}
-\examples{
-}

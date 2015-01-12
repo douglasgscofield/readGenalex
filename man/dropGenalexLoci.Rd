@@ -22,28 +22,18 @@ The names of one or more loci found in \code{dat}
 If set to \code{TRUE}, quietly returns \code{dat} if none of \code{drop.loci} are found in \code{dat}
 }
 }
-\details{
-%%  ~~ If necessary, more details than the description above ~~
-}
 \value{
 A \code{data.frame} containing the data in \code{dat} after removing loci specified by \code{drop.loci}, with attributes updated as required.
-}
-\references{
-%% ~put references to the literature/web site here ~
 }
 \author{
 Douglas G. Scofield
 }
-\note{
-%%  ~~further notes~~
-}
 
 %% ~Make other sections like Warning with \section{Warning }{....} ~
 
-\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-}
 \examples{
+data(example_genotypes)
+newdat = dropGenalexLoci(example_genotypes, "loc3")
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
