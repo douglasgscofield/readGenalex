@@ -1,5 +1,5 @@
-.readGenalexVersion <-
-"0.4.1"
+.readGenalexVersion <- "0.4.1.9000"
+
 .readGenalexData <-
 function(con, sep, col.names, n.samples, n.loci, ploidy, extra.columns=character(0))
 {
