@@ -7,11 +7,16 @@ that form.  Several functions are provided for accessing and printing this
 data.  GenAlEx and its documentation are available at
 <http://biology-assets.anu.edu.au/GenAlEx>.
 
-This package is submitted to CRAN to be an R package.  The development version
-here can be installed via:
+`readGenalex` is available on CRAN:
 
 ```R
-> library(devtools)
+> install.packages("readGenalex")
+```
+
+The development version is hosted here and can always be installed via:
+
+```R
+> install.packages("devtools")
 > devtools::install_github("douglasgscofield/readGenalex")
 ```
 
