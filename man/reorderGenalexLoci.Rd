@@ -16,7 +16,7 @@ reorderGenalexLoci(dat, loci)
 An annotated \code{data.frame} created by \code{readGenalex()}
 }
   \item{loci}{
-The names of loci found in \code{dat}, in the desired new order.  All loci in \code{dat} must be named.
+The names of loci found in \code{dat}, in the desired new order.  All loci in \code{dat} must be named.  The order of the alleles within each locus is preserved.
 }
 }
 \value{
@@ -30,7 +30,8 @@ Douglas G. Scofield
 
 \examples{
 data(example_genotypes)
-reord = reorderGenalexLoci(example_genotypes, c("loc5","loc4","loc3","loc2","loc1"))
+# reverse loci
+reord = reorderGenalexLoci(example_genotypes, rev(attr(example_genotypes, "locus.names")))
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
