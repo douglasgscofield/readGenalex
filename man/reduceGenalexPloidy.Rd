@@ -16,7 +16,7 @@ reduceGenalexPloidy(dat, new.ploidy = 1)
 An annotated \code{data.frame} created by \code{readGenalex()}
 }
   \item{new.ploidy}{
-The desired new ploidy.  Currently, the only usefully accepted value is \code{1}; a ploidy matching the current plody of \code{dat} silently returns \code{dat}.
+The desired new ploidy.  Currently, the only usefully accepted value is 1, with ploidy of \code{dat} being 2; a ploidy matching the current ploidy of \code{dat} silently returns \code{dat}.
 %%     ~~Describe \code{new.ploidy} here~~
 }
 }
@@ -34,6 +34,7 @@ Douglas G. Scofield
 
 \examples{
 data(example_genotypes)
+attr(example_genotypes, "ploidy")
 p1 = reduceGenalexPloidy(example_genotypes, 1)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
