@@ -49,6 +49,7 @@ An annotated \code{data.frame} containing sample data, with column names determi
   \item{dataset.title       }{Dataset title}
   \item{sample.title        }{Sample title}
   \item{pop.title           }{Population title}
+  \item{locus.names         }{Names of loci}
   \item{locus.columns       }{Numeric column positions of allele 1 of each locus in the \code{data.frame}}
   \item{extra.columns       }{\code{data.frame} containing any extra columns given in \code{file} to the right of the genotype columns.  Row order is the same as the genotype \code{data.frame}.  If no extra columns were found, this attribute does not exist.}
 }

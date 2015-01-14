@@ -33,8 +33,10 @@ Douglas G. Scofield
 
 \examples{
 data(example_genotypes)
-loc1 = getGenalexLocus(example_genotypes, "loc1")
-loc2.pop2 = getGenalexLocus(example_genotypes, "loc2", "pop2")
+nm = attr(example_genotypes, "locus.names")
+loc1 = getGenalexLocus(example_genotypes, nm[1])
+po = attr(example_genotypes, "pop.labels")
+loc2.pop2 = getGenalexLocus(example_genotypes, nm[2], po[2])
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

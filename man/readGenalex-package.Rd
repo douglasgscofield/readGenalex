@@ -17,8 +17,9 @@ Version: \tab 0.4.1\cr
 Date: \tab 2015-01-12\cr
 License: \tab LGPL-3\cr
 }
-Read and manipulate GenAlEx-format data files.  \href{http://biology-assets.anu.edu.au/GenAlEx}{GenAlEx} is a widely-used plugin for Excel that manipulates and analyses genotype data.  This package is designed to read GenAlEx-format genotype files that have been exported from Excel as delimited text.  A description of the file format is available via \code{help(readGenalex)}.
+Read and manipulate GenAlEx-format data files.  \href{http://biology-assets.anu.edu.au/GenAlEx}{GenAlEx} is a widely-used plugin for Excel that manipulates and analyses genotype data.  This package is designed to read GenAlEx-format genotype files that have been exported from Excel as delimited text.  Descriptions of the file format and of the annotations added to the \code{data.frame} as attributes are available via \code{help(readGenalex)}.
 }
+\seealso{\link{readGenalex}}
 \author{
 Douglas G. Scofield
 
