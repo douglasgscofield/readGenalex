@@ -1,0 +1,257 @@
+
+R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
+Copyright (C) 2014 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin13.4.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "readGenalex"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> library('readGenalex')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("computeGenalexColumns")
+> ### * computeGenalexColumns
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: computeGenalexColumns
+> ### Title: Determine numeric column positions occupied by named loci
+> ### Aliases: computeGenalexColumns
+> 
+> ### ** Examples
+> 
+> data(example_genotypes)
+> computeGenalexColumns(example_genotypes, c("loc2","loc4"))
+[1]  5  6  9 10
+> 
+> 
+> 
+> cleanEx()
+> nameEx("dropGenalexLoci")
+> ### * dropGenalexLoci
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: dropGenalexLoci
+> ### Title: Remove specified loci from the 'readGenalex'-format 'data.frame'
+> ### Aliases: dropGenalexLoci
+> 
+> ### ** Examples
+> 
+> data(example_genotypes)
+> newdat = dropGenalexLoci(example_genotypes, "loc3")
+> 
+> 
+> 
+> cleanEx()
+> nameEx("getGenalexLocus")
+> ### * getGenalexLocus
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: getGenalexLocus
+> ### Title: Return genotype data for specified loci in the
+> ###   'readGenalex'-format 'data.frame'
+> ### Aliases: getGenalexLocus
+> 
+> ### ** Examples
+> 
+> data(example_genotypes)
+> nm = attr(example_genotypes, "locus.names")
+> loc1 = getGenalexLocus(example_genotypes, nm[1])
+> po = attr(example_genotypes, "pop.labels")
+> loc2.pop2 = getGenalexLocus(example_genotypes, nm[2], po[2])
+> 
+> 
+> 
+> cleanEx()
+> nameEx("is.genalex")
+> ### * is.genalex
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: is.genalex
+> ### Title: Check to see if 'data.frame' was created by the 'readGenalex'
+> ###   package
+> ### Aliases: is.genalex
+> 
+> ### ** Examples
+> 
+> data(example_genotypes)
+> is.genalex(example_genotypes)
+[1] TRUE
+> 
+> 
+> 
+> cleanEx()
+> nameEx("printGenalexGenotype")
+> ### * printGenalexGenotype
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: printGenalexGenotype
+> ### Title: Print selected genotypes
+> ### Aliases: printGenalexGenotype
+> 
+> ### ** Examples
+> 
+> data(example_genotypes)
+> printGenalexGenotype(example_genotypes, rows=6:8, callout.locus="loc5")
+comp6 pop1 2/3 1/1 2/2 2/3 *4/2* 
+comp7 pop1 3/3 2/3 3/1 3/3 *4/3* 
+comp8 pop2 1/1 2/1 2/5 3/3 *3/1* 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("readGenalex")
+> ### * readGenalex
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: readGenalex
+> ### Title: Read GenAlEx-format genotypes file
+> ### Aliases: readGenalex
+> ### Keywords: file manip attribute
+> 
+> ### ** Examples
+> 
+> data(example_genotypes)
+> example_genotypes
+       id Site loc1 loc1.2 loc2 loc2.2 loc3 loc3.2 loc4 loc4.2 loc5 loc5.2
+1   comp1 pop1    2      3    1      1    2      2    2      3    4      2
+2   comp2 pop1    2      3    1      3    2      2    2      1    4      3
+3   comp3 pop1    2      3    1      1    2      2    2      3    4      2
+4   comp4 pop1    2      3    1      3    2      2    2      3    4      3
+5   comp5 pop1    2      3    1      1    2      2    2      3    4      2
+6   comp6 pop1    2      3    1      1    2      2    2      3    4      2
+7   comp7 pop1    3      3    2      3    3      1    3      3    4      3
+8   comp8 pop2    1      1    2      1    2      5    3      3    3      1
+9   comp9 pop2    2      2    2      1    2      5    2      2    4      3
+10 comp10 pop2    2      3    1      1    4      4    3      3    6      1
+11 comp11 pop2    2      1    1      1    3      2    2      3    2      3
+12 comp12 pop2    3      3    2      1    2      2    3      1    3      3
+13 comp13 pop2    3      3    4      4    2      5    2      3    2      3
+14 comp14 pop2    2      1    1      1    2      2    3      1    4      5
+15 comp15 pop2    2      1    1      1    2      4    3      1    6      7
+16 comp16 pop2    2      1    1      1    2      2    3      1    4      4
+> attributes(example_genotypes)
+$names
+ [1] "id"     "Site"   "loc1"   "loc1.2" "loc2"   "loc2.2" "loc3"   "loc3.2"
+ [9] "loc4"   "loc4.2" "loc5"   "loc5.2"
+
+$row.names
+ [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16
+
+$class
+[1] "data.frame"
+
+$n.loci
+[1] 5
+
+$ploidy
+[1] 2
+
+$n.samples
+[1] 16
+
+$n.pops
+[1] 2
+
+$dataset.title
+[1] "Example genotypes"
+
+$sample.title
+[1] "id"
+
+$pop.title
+[1] "Site"
+
+$pop.labels
+[1] "pop1" "pop2"
+
+$pop.sizes
+pop1 pop2 
+   7    9 
+
+$locus.columns
+[1]  3  5  7  9 11
+
+$locus.names
+[1] "loc1" "loc2" "loc3" "loc4" "loc5"
+
+$data.file.name
+[1] "example_genotypes.txt"
+
+$genetic.data.format
+[1] "genalex"
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("reduceGenalexPloidy")
+> ### * reduceGenalexPloidy
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: reduceGenalexPloidy
+> ### Title: Reduce the ploidy of a 'readGenalex'-format 'data.frame'
+> ### Aliases: reduceGenalexPloidy
+> 
+> ### ** Examples
+> 
+> data(example_genotypes)
+> attr(example_genotypes, "ploidy")
+[1] 2
+> p1 = reduceGenalexPloidy(example_genotypes, 1)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("reorderGenalexLoci")
+> ### * reorderGenalexLoci
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: reorderGenalexLoci
+> ### Title: Reorder a 'readGenalex'-format 'data.frame'
+> ### Aliases: reorderGenalexLoci
+> 
+> ### ** Examples
+> 
+> data(example_genotypes)
+> # reverse loci
+> reord = reorderGenalexLoci(example_genotypes, rev(attr(example_genotypes, "locus.names")))
+> 
+> 
+> 
+> ### * <FOOTER>
+> ###
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  0.098 0.007 0.111 0 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')
