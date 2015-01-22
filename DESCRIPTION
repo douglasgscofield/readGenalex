@@ -2,7 +2,6 @@ Package: readGenalex
 Type: Package
 Title: Read and Manipulate GenAlEx-format Genotype Files
 Version: 0.4.1.9000
-Date: 2015-01-12
 Author: Douglas G. Scofield
 Maintainer: "Douglas G. Scofield" <douglasgscofield@gmail.com>
 Description: A collection of R functions to read genotype data file in GenAlEx format, as exported from Excel as a delimited text file, into an annotated data.frame, and manipulate it in that form. Several functions are provided for accessing and printing this data. GenAlEx and its documentation are available at http://biology-assets.anu.edu.au/GenAlEx.
