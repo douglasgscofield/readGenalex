@@ -1,6 +1,10 @@
 # readGenalex 0.4.1.9000 (current development version)
 
 * Slight expansion of documentation for `reorderGenalexLoci()`
+* Removed Date from DESCRIPTION, generated automatically during package creation
+* TODO: check that removing Date was OK :-)
+* TODO: read from Excel files
+* TODO: implement writeGenalex, as tab-separated text and if possible to an Excel file
 
 # readGenalex 0.4.1
 
