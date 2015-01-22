@@ -13,14 +13,16 @@ is.genalex(checkdata, quiet = TRUE)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{checkdata}{
-An annotated \code{data.frame} that might be created by \code{readGenalex()}
-}
+    An annotated \code{data.frame} that might be created by \code{\link{readGenalex}}
+  }
   \item{quiet}{
-If \code{TRUE}, then the function quietly returns \code{TRUE} or \code{FALSE}.  If \code{FALSE}, then \code{stop()} will be called for a non-\code{readGenalex} \code{data.frame}.
-}
+    If \code{TRUE}, then the function quietly returns \code{TRUE} or \code{FALSE}.
+    If \code{FALSE}, then \code{stop()} will be called for a non-\code{readGenalex}
+    \code{data.frame}.
+  }
 }
 \value{
-\code{TRUE} or \code{FALSE} if \code{quiet=TRUE}, or \code{TRUE} or \code{stop()} if \code{quiet=FALSE}
+  \code{TRUE} or \code{FALSE} if \code{quiet=TRUE}, or \code{TRUE} or \code{stop()} if \code{quiet=FALSE}
 }
 \author{
 Douglas G. Scofield
