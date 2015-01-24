@@ -1,6 +1,6 @@
 # readGenalex 0.4.1.9000 (current development version)
 
-* Implemented `writeGenalex()`, to write a data.frame created by this package to a file
+* Implemented `writeGenalex()`, to write a data.frame created by this package to a GenAlEx-compatible test file
 * Fixed bug in `is.genalex()` when `genetic.data.format` attribute doesn't exist
 * Slight expansion of documentation for `reorderGenalexLoci()`
 * Removed Date from DESCRIPTION, generated automatically during package creation
@@ -8,6 +8,8 @@
 * TODO: check that removing Date: from DESCRIPTION was OK :-)
 * TODO: add `inst/CITATION`
 * TODO: add more tests
+* TODO: move existing .Rd files to Roxygen2 comments using package Rd2roxygen
+* Future TODO: create an S3 class "genalex" based on data.frame and modify is.genalex to check for that (or could we then use the generic?)
 * Future TODO: `createGenalex()`, for creating a de-novo `is.genalex()`-able data.frame
 
 # readGenalex 0.4.1
