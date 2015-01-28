@@ -1,5 +1,5 @@
 writeGenalex <-
-function(x, file, sep = "\t", na = "")
+function(x, file, sep = "\t", na = "", eol = "\n")
 {
     DNAME <- deparse(substitute(x))
     if (! is.genalex(x))
@@ -16,7 +16,6 @@ function(x, file, sep = "\t", na = "")
     }
     if (! inherits(file, "connection"))
         stop("'file' must be a character string or connection")
-    eol <- ":\n"
     a <- attributes(x)
     # TODO: handle something like quote= ?
     x <- as.data.frame(lapply(x, as.character))  # recast everything as character

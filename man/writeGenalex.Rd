@@ -8,7 +8,7 @@ Write GenAlEx-format genotypes to a text file
 Writes genotype data encoded in an annotated \code{data.frame} via the \code{readGenalex} package to a GenAlEx-format text file.  Extra data columns are included immediately to the right of genotype columns.  GenAlEx and its documentation are available at \url{http://biology-assets.anu.edu.au/GenAlEx}.
 }
 \usage{
-writeGenalex(x, file, sep = "\t", na = "")
+writeGenalex(x, file, sep = "\t", na = "", eol = "\n")
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -23,6 +23,9 @@ writeGenalex(x, file, sep = "\t", na = "")
   }
   \item{na}{
     The string to use when writing missing values in the data (defaults to \code{""}).
+  }
+  \item{eol}{
+    End-of-line character used for output (defaults to \code{"\n"}).
   }
 }
 \value{
