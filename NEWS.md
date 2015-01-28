@@ -1,11 +1,11 @@
 # readGenalex 0.4.1.9000 (current development version)
 
-* Implemented `writeGenalex()`, to write a data.frame created by this package to a GenAlEx-compatible test file
+* Implemented `writeGenalex()`, to write a data.frame created by this package to a GenAlEx-compatible text file, and documented differences between output of `writeGenalex()` and input to `readGenalex()`
 * Fixed bug in `is.genalex()` when `genetic.data.format` attribute doesn't exist
 * Slight expansion of documentation for `reorderGenalexLoci()`
 * Removed Date from DESCRIPTION, generated automatically during package creation
+* TODO: drawing on writeGenalex documentation about differences when writing, be more explicit about what happens with extra columns and with extra column names on input
 * TODO: read from and write to Excel files
-* TODO: check that removing Date: from DESCRIPTION was OK :-)
 * TODO: add `inst/CITATION`
 * TODO: add more tests
 * TODO: move existing .Rd files to Roxygen2 comments using package Rd2roxygen

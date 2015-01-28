@@ -36,6 +36,21 @@ This function writes genotypes and associated information within an annotated
 \code{data.frame} to a text file in GenAlEx format. More information is
 available in the description for \code{\link{readGenalex}}, and at the GenAlEx
 website at \url{http://biology-assets.anu.edu.au/GenAlEx}.
+
+Doing \code{writeGenalex(readGenalex("file.txt"), "file-write.txt")} won't
+necessarily produce an output file identical to the input file.  Two areas for
+which this will likely be true are:
+\enumerate{
+  \item Names on columns for alleles other than the first in a locus, which are
+ignored by \code{readGenalex}, converted to a simple concatenation of locus
+name and allele number in the resulting \code{data.frame}, and are left out of
+the output of \code{writeGenalex}.
+  \item Locations of additional data columns beyond the genotype columns, which
+\code{readGenalex} will collect wherever there are named columns to the right
+of the genotype columns, and which \code{writeGenalex} will write immediately
+to the right of the genotype columns.  The same column names are used when
+writing as were present when reading.
+}
 }
 \references{
 Peakall, R. and Smouse P.E. (2012) GenAlEx 6.5: genetic analysis in Excel. Population genetic software for teaching and research-an update. \emph{Bioinformatics} 28, 2537-2539.

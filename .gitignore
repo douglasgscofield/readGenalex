@@ -2,3 +2,11 @@
 .RData
 *.Rproj
 .Rproj.user
+# Example code in package build process
+*-Ex.R
+# directory used by the Makefile for R CMD check
+check_tmp
+# we build our documentation uding Roxygen2, but we need to push
+# these as they are required for install_github (right???)
+# *.Rd
+# inst/doc

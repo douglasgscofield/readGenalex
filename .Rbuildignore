@@ -1,6 +1,8 @@
 ^example_genotypes\.txt$
 ^\.git$
 ^\.gitignore$
-^README\.md$
 ^\.RData$
 ^\.Rhistory$
+^README\.md$
+^NEWS\.md$
+^Makefile$
