@@ -6,11 +6,12 @@
 * Removed Date from DESCRIPTION, generated automatically during package creation
 * TODO: drawing on writeGenalex documentation about differences when writing, be more explicit about what happens with extra columns and with extra column names on input
 * TODO: read from and write to Excel files
-* TODO: add `inst/CITATION`
 * TODO: add more tests
 * TODO: move existing .Rd files to Roxygen2 comments using package Rd2roxygen
-* Future TODO: create an S3 class "genalex" based on data.frame and modify is.genalex to check for that (or could we then use the generic?)
-* Future TODO: `createGenalex()`, for creating a de-novo `is.genalex()`-able data.frame
+* TODO: create an S3 class "genalex" based on data.frame and modify is.genalex to check for that (or could we then use the generic?)
+* TODO: `createGenalex()`, for creating a de-novo `is.genalex()`-able data.frame.  This requires a createGenalexLocus or some generalisation of the current locus-handling functions, to add a new locus to the "end".
+* TODO: functions for converting from/to some other genetic formats
+* What will be enough for 0.5?  1.0?  If I implement class "genalex", that would seem to be 1.0.  When I do the dispersalDiversity package, since that will require readGenalex, should that be based on a 1.0-type readGenalex?  It seems to make the most sense if it is.
 
 # readGenalex 0.4.1
 
