@@ -16,8 +16,8 @@ vars:
 	echo CHECKDIR = "$(CHECKDIR)"
 
 doc:
-	echo "Roxygen2 not yet in use here"
-	#R --quiet -e 'devtools::document()'
+	#echo "Roxygen2 not yet in use here"
+	R --quiet -e 'devtools::document()'
 
 build: $(TARBALL_LOC)
 

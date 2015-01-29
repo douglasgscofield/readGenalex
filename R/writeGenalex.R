@@ -1,3 +1,57 @@
+#' Write GenAlEx-format genotypes to a text file
+#' 
+#' Writes genotype data encoded in an annotated \code{data.frame} via the
+#' \code{readGenalex} package to a GenAlEx-format text file.  Extra data
+#' columns are included immediately to the right of genotype columns.  GenAlEx
+#' and its documentation are available at
+#' \url{http://biology-assets.anu.edu.au/GenAlEx}.
+#' 
+#' This function writes genotypes and associated information within an
+#' annotated \code{data.frame} to a text file in GenAlEx format. More
+#' information is available in the description for \code{\link{readGenalex}},
+#' and at the GenAlEx website at
+#' \url{http://biology-assets.anu.edu.au/GenAlEx}.
+#' 
+#' Doing \code{writeGenalex(readGenalex("file.txt"), "file-write.txt")} won't
+#' necessarily produce an output file identical to the input file.  Two areas
+#' for which this will likely be true are: \enumerate{ \item Names on columns
+#' for alleles other than the first in a locus, which are ignored by
+#' \code{readGenalex}, converted to a simple concatenation of locus name and
+#' allele number in the resulting \code{data.frame}, and are left out of the
+#' output of \code{writeGenalex}.  \item Locations of additional data columns
+#' beyond the genotype columns, which \code{readGenalex} will collect wherever
+#' there are named columns to the right of the genotype columns, and which
+#' \code{writeGenalex} will write immediately to the right of the genotype
+#' columns.  The same column names are used when writing as were present when
+#' reading. }
+#' 
+#' @param x Annotated \code{data.frame} created via the \code{readGenalex}
+#' package.
+#' @param file File name or connection for writing.  If given as \code{""},
+#' \code{stdout()} is used.
+#' @param sep Column separator for output (defaults to \code{"\t"}).
+#' @param na The string to use when writing missing values in the data
+#' (defaults to \code{""}).
+#' @param eol End-of-line character used for output (defaults to \code{"\n"}).
+#' @return No value is returned.
+#' @author Douglas G. Scofield
+#' @seealso \code{\link{readGenalex}}
+#' @references Peakall, R. and Smouse P.E. (2012) GenAlEx 6.5: genetic analysis
+#' in Excel. Population genetic software for teaching and research-an update.
+#' \emph{Bioinformatics} 28, 2537-2539.
+#' 
+#' Peakall, R. and Smouse P.E. (2006) GENALEX 6: genetic analysis in Excel.
+#' Population genetic software for teaching and research. \emph{Molecular
+#' Ecology Notes} 6, 288-295.
+#' @keywords file manip attribute
+#' @examples
+#' 
+#' \dontrun{
+#' data(example_genotypes)
+#' writeGenalex(example_genotypes, file = "")
+#' }
+#' 
+#' @export writeGenalex
 writeGenalex <-
 function(x, file, sep = "\t", na = "", eol = "\n")
 {

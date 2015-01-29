@@ -1,3 +1,22 @@
+#' Remove specified loci from the \code{readGenalex}-format \code{data.frame}
+#' 
+#' Remove specified loci from the \code{readGenalex}-format \code{data.frame}
+#' and updates attributes
+#' 
+#' 
+#' @param dat An annotated \code{data.frame} created by \code{readGenalex()}
+#' @param drop.loci The names of one or more loci found in \code{dat}
+#' @param quiet If set to \code{TRUE}, quietly returns \code{dat} if none of
+#' \code{drop.loci} are found in \code{dat}
+#' @return A \code{data.frame} containing the data in \code{dat} after removing
+#' loci specified by \code{drop.loci}, with attributes updated as required.
+#' @author Douglas G. Scofield
+#' @examples
+#' 
+#' data(example_genotypes)
+#' newdat = dropGenalexLoci(example_genotypes, "loc3")
+#' 
+#' @export dropGenalexLoci
 dropGenalexLoci <-
 function(dat, drop.loci, quiet=FALSE)
 {

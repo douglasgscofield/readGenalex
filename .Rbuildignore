@@ -6,3 +6,5 @@
 ^README\.md$
 ^NEWS\.md$
 ^Makefile$
+^.*\.Rproj$
+^\.Rproj\.user$

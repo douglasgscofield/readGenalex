@@ -1,3 +1,31 @@
+#' Print selected genotypes
+#' 
+#' Print selected genotypes, optionally calling out a locus
+#' 
+#' 
+#' @param  dat    An annotated \code{data.frame} created by \code{readGenalex()}
+#' @param  rows   The specific rows of \code{dat} to print
+#' @param  callout.locus One or more loci on \code{dat} to be surrounded by
+#'                \code{callout.char} when printed
+#' @param  sep    Separator character to be used between loci
+#' @param  allele.sep Separator character to be used between alleles
+#' @param  callout.char Character which surrounds loci specified by
+#'         \code{callout.locus}
+#' @param  label  Label to be included between the sample and population ID
+#'         columns and the genotype columns in output
+#'
+#' @return No specific return value, used for its side effect of printing
+#'         genotypes.
+#'
+#' @author Douglas G. Scofield
+#'
+#' @examples
+#' 
+#' data(example_genotypes)
+#' printGenalexGenotype(example_genotypes, rows=6:8, callout.locus="loc5")
+#' 
+#' @export printGenalexGenotype
+#'
 printGenalexGenotype <-
 function(dat, rows, callout.locus=NULL, 
                                    sep=" ", allele.sep="/", 
