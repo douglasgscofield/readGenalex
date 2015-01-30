@@ -51,10 +51,8 @@ columns.  The same column names are used when writing as were present when
 reading. }
 }
 \examples{
-\dontrun{
 data(example_genotypes)
 writeGenalex(example_genotypes, file = "")
-}
 }
 \author{
 Douglas G. Scofield

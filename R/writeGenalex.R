@@ -46,12 +46,14 @@
 #' @keywords file manip attribute
 #' @examples
 #' 
-#' \dontrun{
 #' data(example_genotypes)
 #' writeGenalex(example_genotypes, file = "")
-#' }
 #' 
 #' @export writeGenalex
+#' 
+#
+# TODO maybe: handle something like quote= ?
+#
 writeGenalex <-
 function(x, file, sep = "\t", na = "", eol = "\n")
 {
@@ -71,11 +73,12 @@ function(x, file, sep = "\t", na = "", eol = "\n")
     if (! inherits(file, "connection"))
         stop("'file' must be a character string or connection")
     a <- attributes(x)
-    # TODO: handle something like quote= ?
-    x <- as.data.frame(lapply(x, as.character))  # recast everything as character
+    # recast everything as character, and apply NA string
+    x <- as.data.frame(lapply(x, as.character), stringsAsFactors = FALSE)
     x[is.na(x)] <- na
     if (! is.null(extra <- a$extra.columns)) {
-        extra <- as.data.frame(lapply(extra, as.character))  # recast everything as character
+        extra <- as.data.frame(lapply(extra, as.character), 
+                               stringsAsFactors = FALSE)
         extra[is.na(extra)] <- na
     }
     # header line 1
@@ -87,8 +90,9 @@ function(x, file, sep = "\t", na = "", eol = "\n")
     # header line 3, allele columns other than the first for each locus have a
     # blank header
     cat(file = file, sep = sep, a$sample.title, a$pop.title, 
-        paste(collapse = paste(collapse = "", rep(sep, a$ploidy)), a$locus.names),
-        rep("", a$ploidy - 1))  # final genotype columns also have blank name(s)
+        paste(collapse = paste(collapse = "", rep(sep, a$ploidy)), 
+              a$locus.names),
+        rep("", a$ploidy - 1))  # all but first locus column have blank names
     # if extra columns, add headers for those
     if (! is.null(extra))
         cat(file = file, sep = sep, names(extra))
@@ -98,7 +102,7 @@ function(x, file, sep = "\t", na = "", eol = "\n")
         fields <- unlist(x[i, ])
         if (! is.null(extra))
             fields <- c(fields, extra[i, ])
-        cat(file = file, sep = sep, fields)  # sample, population, and allele columns
+        cat(file = file, sep = sep, fields)  
         cat(file = file, eol)
     }
 }

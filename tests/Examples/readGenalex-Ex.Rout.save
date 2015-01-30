@@ -127,7 +127,7 @@ comp8 pop2 1/1 2/1 2/5 3/3 *3/1*
 > ### Name: readGenalex
 > ### Title: Read GenAlEx-format genotypes file
 > ### Aliases: readGenalex
-> ### Keywords: file manip attribute
+> ### Keywords: attribute file manip
 > 
 > ### ** Examples
 > 
@@ -241,11 +241,48 @@ $genetic.data.format
 > 
 > 
 > 
+> cleanEx()
+> nameEx("writeGenalex")
+> ### * writeGenalex
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: writeGenalex
+> ### Title: Write GenAlEx-format genotypes to a text file
+> ### Aliases: writeGenalex
+> ### Keywords: attribute file manip
+> 
+> ### ** Examples
+> 
+> data(example_genotypes)
+> writeGenalex(example_genotypes, file = "")
+5	16	2	7	9
+Example genotypes			pop1	pop2
+id	Site	loc1		loc2		loc3		loc4		loc5	
+comp1	pop1	2	3	1	1	2	2	2	3	4	2
+comp2	pop1	2	3	1	3	2	2	2	1	4	3
+comp3	pop1	2	3	1	1	2	2	2	3	4	2
+comp4	pop1	2	3	1	3	2	2	2	3	4	3
+comp5	pop1	2	3	1	1	2	2	2	3	4	2
+comp6	pop1	2	3	1	1	2	2	2	3	4	2
+comp7	pop1	3	3	2	3	3	1	3	3	4	3
+comp8	pop2	1	1	2	1	2	5	3	3	3	1
+comp9	pop2	2	2	2	1	2	5	2	2	4	3
+comp10	pop2	2	3	1	1	4	4	3	3	6	1
+comp11	pop2	2	1	1	1	3	2	2	3	2	3
+comp12	pop2	3	3	2	1	2	2	3	1	3	3
+comp13	pop2	3	3	4	4	2	5	2	3	2	3
+comp14	pop2	2	1	1	1	2	2	3	1	4	5
+comp15	pop2	2	1	1	1	2	4	3	1	6	7
+comp16	pop2	2	1	1	1	2	2	3	1	4	4
+> 
+> 
+> 
 > ### * <FOOTER>
 > ###
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  0.098 0.007 0.111 0 0 
+Time elapsed:  0.107 0.006 0.113 0 0 
 > grDevices::dev.off()
 null device 
           1 

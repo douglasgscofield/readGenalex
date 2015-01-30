@@ -28,7 +28,7 @@
 #'
 #' @seealso \link{readGenalex}
 #'
-#' @keywords package file manip attribute
+#' @keywords package attribute manip file
 #'
 #' @docType package
 #'
