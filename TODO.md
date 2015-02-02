@@ -9,6 +9,8 @@
 
 # For 0.5
 
+* check on any implicit version dependencies (e.g., do need to use paste0() which was introduced in R 2.15.0)
+* document version dependencies
 * drawing on writeGenalex documentation about differences when writing, be more explicit about what happens with extra columns and with extra column names on input
 * implement `quote=` for `writeGenalex`
 * read from and write to Excel files
