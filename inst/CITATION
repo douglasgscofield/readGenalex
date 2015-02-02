@@ -1,0 +1,18 @@
+if (! exists("meta") || is.null(meta)) meta <- packageDescription("readGenalex")
+
+year <- sub(".*(2[[:digit:]]{3})-.*", "\\1", meta$Date)
+vers <- paste("R package version", meta$Version)
+pkgname <- meta$Package
+pkgtitle <- meta$Title
+
+citHeader(paste0("To cite the '", pkgname, "' package in publications use:"))
+
+citEntry(entry  = "Manual",
+         title  = pkgtitle,
+         author = personList(as.person("Douglas G. Scofield")),
+         year   = year,
+         note   = vers,
+         textVersion = paste0("Douglas G. Scofield (", year, "). ", pkgname, 
+                              ": ", pkgtitle, ". ", vers, "."),
+         url    = paste0("http://CRAN.R-project.org/package=", pkgname))
+
