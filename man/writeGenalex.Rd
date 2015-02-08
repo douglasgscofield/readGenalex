@@ -39,16 +39,21 @@ and at the GenAlEx website at
 
 Doing \code{writeGenalex(readGenalex("file.txt"), "file-write.txt")} won't
 necessarily produce an output file identical to the input file.  Two areas
-for which this will likely be true are: \enumerate{ \item Names on columns
-for alleles other than the first in a locus, which are ignored by
-\code{readGenalex}, converted to a simple concatenation of locus name and
-allele number in the resulting \code{data.frame}, and are left out of the
-output of \code{writeGenalex}.  \item Locations of additional data columns
-beyond the genotype columns, which \code{readGenalex} will collect wherever
-there are named columns to the right of the genotype columns, and which
-\code{writeGenalex} will write immediately to the right of the genotype
-columns.  The same column names are used when writing as were present when
-reading. }
+for which this will likely be true are:
+
+\enumerate{
+   \item Names on columns for alleles other than the first in a locus,
+         which are ignored by \code{readGenalex}, converted to a simple
+         concatenation of locus name and allele number in the resulting
+         \code{data.frame}, and are left out of the output of
+         \code{writeGenalex}.
+   \item Locations of additional data columns beyond the genotype columns,
+         which \code{readGenalex} will collect wherever there are named
+         columns to the right of the genotype columns, and which
+         \code{writeGenalex} will write immediately to the right of the
+         genotype columns.  The same column names are used when writing
+         as were present when reading.
+}
 }
 \examples{
 data(example_genotypes)

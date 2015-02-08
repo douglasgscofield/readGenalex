@@ -73,6 +73,9 @@ columns.
 There are other functions supplied for manipulating population genetic data
 produced by `readGenalex()`:
 
+`writeGenalex()`
+: Write a GenAlEx-format text file from a `readGenalex`-format data frame.
+
 `is.genalex()`
 : Checks whether the `genetic.data.format` attribute is set to `genalex`.
 

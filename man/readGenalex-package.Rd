@@ -7,8 +7,8 @@
 \alias{readGenalex-package}
 \title{Read and manipulate GenAlEx-format genotype files}
 \description{
-A collection of R functions to read and manipulate genotype data in GenAlEx
-format.  GenAlEx is a widely-used Excel plugin for manipulating and
+A collection of R functions to read, manipulate and write genotype data in
+GenAlEx format.  GenAlEx is a widely-used Excel plugin for manipulating and
 analysing genotype data.  This package reads GenAlEx data that has been
 exported from Excel as a delimited text file and creates an annotated
 \code{data.frame}.  Several functions are provided for accessing and
