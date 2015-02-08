@@ -5,6 +5,7 @@
 * Fixed bug in `is.genalex` when `genetic.data.format` attribute doesn't exist
 * Slight expansion of documentation for `reorderGenalexLoci`
 * Removed Date from DESCRIPTION, generated automatically during package creation
+* DESCRIPTION uses Authors@R
 * Marginally more clever Makefile
 
 # readGenalex 0.4.1
