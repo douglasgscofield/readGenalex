@@ -9,11 +9,13 @@ data.  GenAlEx and its documentation are available at
 
 ## Development version
 
-This branch (**class_genalex**)is a development branch to implement the
+This branch (**class_genalex**) is a development branch to implement the
 functionality of this package by defining an S3 class `'genalex'` that is
-shared with `data.frame`.  The development will be present in the 1.0 release
-of this package and at any given time, the code is not likely to be functional.
+shared with `data.frame`.  The development is scheduled to be present in the
+1.0 release of this package.  At any given time, the code in this branch is not
+likely to be functional until then.
 
+## Using the package
 
 `readGenalex` is available on CRAN:
 
