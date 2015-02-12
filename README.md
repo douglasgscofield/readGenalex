@@ -7,6 +7,14 @@ that form.  Several functions are provided for accessing and printing this
 data.  GenAlEx and its documentation are available at
 <http://biology-assets.anu.edu.au/GenAlEx>.
 
+## Development version
+
+This branch (**class_genalex**)is a development branch to implement the
+functionality of this package by defining an S3 class `'genalex'` that is
+shared with `data.frame`.  The development will be present in the 1.0 release
+of this package and at any given time, the code is not likely to be functional.
+
+
 `readGenalex` is available on CRAN:
 
 ```R
