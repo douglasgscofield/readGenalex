@@ -15,7 +15,8 @@
 * implement makefile rule for building RData in data/
 * exchange fake data for real data from DataDryad
 * conversion to/from other genetic formats
-* add null check to this package?
+* add null allele check to this package?
+* how to add citation instructions to data?  see data/datasource for that info
 
 ## internal work
 
