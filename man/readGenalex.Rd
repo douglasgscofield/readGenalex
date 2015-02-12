@@ -18,19 +18,26 @@ tab)}
 \value{
 An annotated \code{data.frame} containing sample data, with column
 names determined by line 3 of the input file.  Special \code{attributes()}
-of the \code{data.frame} include \item{data.file.name }{The value of
-\code{file}} \item{genetic.data.format }{\code{"genalex"}} \item{ploidy
-}{Ploidy of input data} \item{n.loci }{Number of loci} \item{n.samples
-}{Total number of samples} \item{n.pops }{Number of populations}
-\item{pop.labels }{Names of populations} \item{pop.sizes }{Sizes of
-populations} \item{dataset.title }{Dataset title} \item{sample.title
-}{Sample title} \item{pop.title }{Population title} \item{locus.names
-}{Names of loci} \item{locus.columns }{Numeric column positions of allele 1
-of each locus in the \code{data.frame}} \item{extra.columns
-}{\code{data.frame} containing any extra columns given in \code{file} to the
-right of the genotype columns.  Row order is the same as the genotype
-\code{data.frame}.  If no extra columns were found, this attribute does not
-exist.}
+of the \code{data.frame} include
+
+\item{data.file.name }{The value of \code{file}}
+\item{genetic.data.format }{\code{"genalex"}}
+\item{ploidy }{Ploidy of input data}
+\item{n.loci }{Number of loci}
+\item{n.samples }{Total number of samples}
+\item{n.pops }{Number of populations}
+\item{pop.labels }{Names of populations}
+\item{pop.sizes }{Sizes of populations}
+\item{dataset.title }{Dataset title}
+\item{sample.title }{Sample title}
+\item{pop.title }{Population title}
+\item{locus.names }{Names of loci}
+\item{locus.columns }{Numeric column positions of allele 1 of each locus in
+  the \code{data.frame}}
+\item{extra.columns }{\code{data.frame} containing any extra columns given
+  in \code{file} to the right of the genotype columns.  Row order is the
+  same as the genotype \code{data.frame}.  If no extra columns were found,
+  this attribute does not exist.}
 }
 \description{
 Reads genotype data file in GenAlEx format into an annotated
@@ -40,27 +47,29 @@ documentation are available at
 \url{http://biology-assets.anu.edu.au/GenAlEx}.
 }
 \details{
-\code{readGenalex()} expects a genotype data file in GenAlEx format, which
+\code{readGenalex} expects a genotype data file in GenAlEx format, which
 specifies three header lines describing the structure and content of the
 file, followed by lines containing the genotype data, along with optionally
 extra columns specifying additional information about the sampled
 information for other analyses.  GenAlEx format for a collection of diploid
 samples is the following, with columns separated by \code{sep}:
-\tabular{llllll}{ N loci \tab Total N samples \tab N populations \tab N pop
-1 \tab N pop 2 \tab ... \cr Dataset title \tab \emph{empty} \tab
-\emph{empty} \tab Name pop 1 \tab Name pop 2 \tab ... \cr Sample title \tab
-Pop title \tab Name locus 1 \tab \emph{empty} \tab Name locus 2 \tab ... \cr
-ID sample 1 \tab ID sample 1 pop \tab Loc 1 allele 1 \tab Loc 1 allele 2
-\tab Loc 2 allele 1 \tab ... \cr ID sample 2 \tab ID sample 2 pop \tab Loc 1
-allele 1 \tab Loc 1 allele 2 \tab Loc 2 allele 1 \tab ... \cr ...  \tab ...
-\tab ...  \tab ...  \tab ...  \tab ... \cr } Calling \code{readGenalex()}
-for a file first reads the top 3 header lines, then reads the remainder of
-the file checking for consistency with the data description from the header
-lines.  It attempts to cleanly ignore extra delimiters that Excel might add
-when exporting a delimited file.  Extra columns beyond the genotype columns
-are allowed.
 
-More information on GenAlEx is available
+\tabular{llllll}{
+  N loci \tab Total N samples \tab N populations \tab N pop 1 \tab N pop 2 \tab ... \cr
+  Dataset title \tab \emph{empty} \tab \emph{empty} \tab Name pop 1 \tab Name pop 2 \tab ... \cr
+  Sample title \tab Pop title \tab Name locus 1 \tab \emph{empty} \tab Name locus 2 \tab ... \cr
+  ID sample 1 \tab ID sample 1 pop \tab Loc 1 allele 1 \tab Loc 1 allele 2 \tab Loc 2 allele 1 \tab ... \cr
+  ID sample 2 \tab ID sample 2 pop \tab Loc 1 allele 1 \tab Loc 1 allele 2 \tab Loc 2 allele 1 \tab ... \cr
+  ...  \tab ... \tab ...  \tab ...  \tab ...  \tab ... \cr
+}
+
+Calling \code{readGenalex} for a file first reads the top 3 header lines,
+then reads the remainder of the file checking for consistency with the data
+description from the header lines.  It attempts to cleanly ignore extra
+delimiters that Excel might add when exporting a delimited file.  Extra
+columns beyond the genotype columns are allowed.
+
+More information on GenAlEx is available at
 \url{http://biology-assets.anu.edu.au/GenAlEx}.  In particular, there are
 other GenAlEx specifications regarding e.g., encoding of genotypes that are
 expected here but not described.
