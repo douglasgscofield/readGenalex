@@ -67,6 +67,35 @@ is.genalex <- function(x) {
 
 
 
+#' Convert pre-1.0 readGenalex data.frames to class 'genalex'
+#' 
+#' @param x  An annotated \code{data.frame} that is a pre-1.0
+#'           readGenalex data frame
+#'
+#' @return \code{x} as an S3 class \code{'genalex'} object, or
+#'         a fatal error
+#'
+#' @author Douglas G. Scofield
+#'
+#' @examples
+#' 
+#' data(example_genotypes)
+#' as.genalex(example_genotypes)
+#' 
+#' @export as.genalex
+#' 
+as.genalex <- function(x) {
+    if (inherits(x, 'genalex')) { # already class genalex
+        x
+    } else if (! is.null(attr(checkdata,"genetic.data.format")) &&
+             attr(checkdata,"genetic.data.format") == "genalex") {
+        class(x) <- c('genalex', 'data.frame')
+        x
+    } else stop("data not in compatible format")
+}
+
+
+
 #' Read GenAlEx-format genotypes file
 #' 
 #' Reads genotype data file in GenAlEx format into an annotated
