@@ -4,7 +4,8 @@
 \alias{writeGenalex}
 \title{Write GenAlEx-format genotypes to a text file}
 \usage{
-writeGenalex(x, file, sep = "\\t", na = "", eol = "\\n")
+writeGenalex(x, file, quote = FALSE, sep = "\\t", eol = "\\n",
+  na = c("", "NA"))
 }
 \arguments{
 \item{x}{Annotated \code{data.frame} created via the \code{readGenalex}
@@ -13,12 +14,17 @@ writeGenalex(x, file, sep = "\\t", na = "", eol = "\\n")
 \item{file}{File name or connection for writing.  If given as \code{""},
              \code{stdout()} is used.}
 
+\item{quote}{Logical value (\code{TRUE} or \code{FALSE}).  If \code{TRUE},
+             all data are surrounded by double quotes, and all header fields
+             except for counts are quoted if they exist.  If \code{FALSE},
+             nothing is quoted.}
+
 \item{sep}{Column separator for output (defaults to \code{"\t"}).}
 
-\item{na}{The string to use when writing missing values in the data
-             (defaults to \code{""}).}
-
 \item{eol}{End-of-line character used for output (defaults to \code{"\n"}).}
+
+\item{na}{The string to use when writing missing values in the data.
+             Defaults to \code{c("", "NA")}.}
 }
 \value{
 No value is returned.
