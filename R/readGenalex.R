@@ -327,12 +327,17 @@ readGenalex <- function(file, sep="\t", ploidy=2) {
 #' @param file  File name or connection for writing.  If given as \code{""},
 #'              \code{stdout()} is used.
 #'
+#' @param quote Logical value (\code{TRUE} or \code{FALSE}).  If \code{TRUE},
+#'              all data are surrounded by double quotes, and all header fields
+#'              except for counts are quoted if they exist.  If \code{FALSE},
+#'              nothing is quoted.
+#'
 #' @param sep   Column separator for output (defaults to \code{"\t"}).
 #'
-#' @param na    The string to use when writing missing values in the data
-#'              (defaults to \code{""}).
-#'
 #' @param eol   End-of-line character used for output (defaults to \code{"\n"}).
+#'
+#' @param na    The string to use when writing missing values in the data.
+#'              Defaults to \code{c("", "NA")}.
 #'
 #' @return No value is returned.
 #'
@@ -360,7 +365,7 @@ readGenalex <- function(file, sep="\t", ploidy=2) {
 #
 # TODO maybe: handle something like quote= ?
 #
-writeGenalex <- function(x, file, sep = "\t", na = "", eol = "\n") {
+writeGenalex <- function(x, file, quote = FALSE, sep = "\t", eol = "\n", na = c("", "NA")) {
     DNAME <- deparse(substitute(x))
     if (! is.genalex(x))
         stop(DNAME, " must be a readGenalex-format data.frame")
@@ -385,28 +390,30 @@ writeGenalex <- function(x, file, sep = "\t", na = "", eol = "\n") {
                                stringsAsFactors = FALSE)
         extra[is.na(extra)] <- na
     }
+    # quote function
+    qu <- function(x) if (quote) paste0("\"", x, "\"") else x
     # header line 1
     cat(file = file, sep = sep, a$n.loci, a$n.samples, a$n.pops, a$pop.sizes)
     cat(file = file, eol)
     # header line 2
-    cat(file = file, sep = sep, a$dataset.title, "", "", a$pop.labels)
+    cat(file = file, sep = sep, qu(a$dataset.title), "", "", qu(a$pop.labels))
     cat(file = file, eol)
     # header line 3, allele columns other than the first for each locus have a
     # blank header
-    cat(file = file, sep = sep, a$sample.title, a$pop.title,
+    cat(file = file, sep = sep, qu(a$sample.title), qu(a$pop.title),
         paste(collapse = paste(collapse = "", rep(sep, a$ploidy)),
-              a$locus.names),
+              qu(a$locus.names)),
         rep("", a$ploidy - 1))  # all but first locus column have blank names
     # if extra columns, add headers for those
     if (! is.null(extra))
-        cat(file = file, sep = sep, names(extra))
+        cat(file = file, sep = sep, qu(names(extra)))
     cat(file = file, eol)
     # data plus extra columns
     for (i in 1:nrow(x)) {
         fields <- unlist(x[i, ])
         if (! is.null(extra))
             fields <- c(fields, extra[i, ])
-        cat(file = file, sep = sep, fields)
+        cat(file = file, sep = sep, qu(fields))
         cat(file = file, eol)
     }
 }
