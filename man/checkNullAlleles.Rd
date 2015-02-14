@@ -47,7 +47,7 @@ allele, that is, heterozygous in the reference and homozygous matching
 one of the alleles in the heterozygous reference.
 }
 \details{
-The reference and compare genotypes are in GenAlEx format, and are either
+The reference and check genotypes are in GenAlEx format, and are either
 names of files to be read as GenAlEx files, or are class \code{'genalex'}
 data frames.
 }
