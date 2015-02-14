@@ -5,7 +5,7 @@
 #' allele, that is, heterozygous in the reference and homozygous matching
 #' one of the alleles in the heterozygous reference.
 #'
-#' The reference and compare genotypes are in GenAlEx format, and are either
+#' The reference and check genotypes are in GenAlEx format, and are either
 #' names of files to be read as GenAlEx files, or are class \code{'genalex'}
 #' data frames.
 #'
@@ -97,12 +97,12 @@ checkNullAlleles <- function(ref, check, mode = c("column", "locus"),
             potential.null.loci <- c()
             match.pmatch <- 0
             for (locus in 1:n.loci) {
-                l1 = locus.columns[locus]
-                l2 = l1 + 1
-                m1 = ref[k, l1]
-                m2 = ref[k, l2]
-                p1 = check[j, l1]
-                p2 = check[j, l2]
+                l1 <- locus.columns[locus]
+                l2 <- l1 + 1
+                m1 <- ref[k, l1]
+                m2 <- ref[k, l2]
+                p1 <- check[j, l1]
+                p2 <- check[j, l2]
                 # See if we match at this locus.  If we do, continue.  If we
                 # don't, then check for potential null in the check, which I
                 # assume can occur when the check is a homozygote, the ref
@@ -126,7 +126,7 @@ checkNullAlleles <- function(ref, check, mode = c("column", "locus"),
                 if (length(potential.null.loci) > 0) {
                     if (! check.printed) {
                         check.printed <- TRUE
-                        printGenalexGenotype(check, j, label="compare",
+                        printGenalexGenotype(check, j, label="check",
                                              callout.locus=potential.null.loci, 
                                              sep="\t")
                     }
