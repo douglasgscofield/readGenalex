@@ -7,8 +7,7 @@
 is.genalex(x)
 }
 \arguments{
-\item{x}{An annotated \code{data.frame} that might also be of class
-              'genalex'}
+\item{x}{An data frame that might also be of class \code{'genalex'}}
 }
 \value{
 \code{TRUE} or \code{FALSE}

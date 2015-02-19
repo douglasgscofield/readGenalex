@@ -2,37 +2,38 @@
 % Please edit documentation in R/readGenalex.R
 \name{reduceGenalexPloidy}
 \alias{reduceGenalexPloidy}
-\title{Reduce the ploidy of a \code{readGenalex}-format \code{data.frame}}
+\title{Reduce the ploidy of a data frame of class \code{'genalex'}}
 \usage{
 reduceGenalexPloidy(dat, new.ploidy = 1)
 }
 \arguments{
-\item{dat}{An annotated \code{data.frame} created by \code{readGenalex()}}
+\item{dat}{An annotated data frame of class \code{'genalex'}}
 
 \item{new.ploidy}{The desired new ploidy.  Currently, the only usefully
-accepted value is 1, with ploidy of \code{dat} being 2; a ploidy matching
-the current ploidy of \code{dat} silently returns \code{dat}. %% ~~Describe
-\code{new.ploidy} here~~}
+                  accepted value is 1, with ploidy of \code{dat} being 2;
+                  a ploidy matching the current ploidy of \code{dat}
+                  silently returns \code{dat}.}
 }
 \value{
-A \code{data.frame} containing genotype data from \code{dat} reduced
-to the specified \code{new.ploidy}, with attributes updated as required.
+A data frame of class \code{'genalex'} containing genotype data
+from \code{dat} reduced to the specified \code{new.ploidy}, with
+attributes updated as required.
 }
 \description{
-Reduce the ploidy of a \code{readGenalex}-format \code{data.frame}.
+Reduce the ploidy of a data frame of class \code{'genalex'}.
 Currently restricted to reducing the ploidy of diploid data to haploid by
 selecting only the first allele of each locus.
 }
 \details{
-This function reduced the ploidy of a \code{readGenalex}-format
-\code{data.frame} by selecting the first allele of each locus.  Occasionally
+This function reduced the ploidy of a data frame of class \code{'genalex'}
+data frame by selecting the first allele of each locus.  Occasionally
 haploid data is encoded in GenAlEx datasets by using homozygous diploid
 loci, and this is a useful function for making these truly haploid.
 }
 \examples{
 data(example_genotypes)
 attr(example_genotypes, "ploidy")
-p1 = reduceGenalexPloidy(example_genotypes, 1)
+p1 <- reduceGenalexPloidy(example_genotypes, 1)
 }
 \author{
 Douglas G. Scofield

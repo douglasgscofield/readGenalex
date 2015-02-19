@@ -4,12 +4,10 @@
 \alias{writeGenalex}
 \title{Write GenAlEx-format genotypes to a text file}
 \usage{
-writeGenalex(x, file, quote = FALSE, sep = "\\t", eol = "\\n",
-  na = c("", "NA"))
+writeGenalex(x, file, quote = FALSE, sep = "\\t", eol = "\\n", na = "0")
 }
 \arguments{
-\item{x}{Annotated \code{data.frame} created via the \code{readGenalex}
-             package.}
+\item{x}{Annotated data frame of class \code{'genalex'}}
 
 \item{file}{File name or connection for writing.  If given as \code{""},
              \code{stdout()} is used.}
@@ -24,21 +22,21 @@ writeGenalex(x, file, quote = FALSE, sep = "\\t", eol = "\\n",
 \item{eol}{End-of-line character used for output (defaults to \code{"\n"}).}
 
 \item{na}{The string to use when writing missing values in the data.
-             Defaults to \code{c("", "NA")}.}
+             Defaults to \code{"0"}.}
 }
 \value{
 No value is returned.
 }
 \description{
-Writes genotype data encoded in an annotated \code{data.frame} via the
-\code{readGenalex} package to a GenAlEx-format text file.  Extra data
+Writes genotype data encoded in an annotated data frame of class \code{'genalex'}
+to a GenAlEx-format text file.  Extra data
 columns are included immediately to the right of genotype columns.  GenAlEx
 and its documentation are available at
 \url{http://biology-assets.anu.edu.au/GenAlEx}.
 }
 \details{
 This function writes genotypes and associated information within an
-annotated \code{data.frame} to a text file in GenAlEx format. More
+annotated data frame of class \code{'genalex'} to a text file in GenAlEx format. More
 information is available in the description for \code{\link{readGenalex}},
 and at the GenAlEx website at
 \url{http://biology-assets.anu.edu.au/GenAlEx}.
@@ -51,7 +49,7 @@ for which this will likely be true are:
    \item Names on columns for alleles other than the first in a locus,
          which are ignored by \code{readGenalex}, converted to a simple
          concatenation of locus name and allele number in the resulting
-         \code{data.frame}, and are left out of the output of
+         class \code{'genalex'}, and are left out of the output of
          \code{writeGenalex}.
    \item Locations of additional data columns beyond the genotype columns,
          which \code{readGenalex} will collect wherever there are named

@@ -4,20 +4,29 @@
 \alias{readGenalex}
 \title{Read GenAlEx-format genotypes file}
 \usage{
-readGenalex(file, sep = "\\t", ploidy = 2)
+readGenalex(file, sep = "\\t", ploidy = 2, na.strings = c("0", "-1", ".",
+  "NA", ""), ...)
 }
 \arguments{
-\item{file}{Delimited text file in GenAlEx format, typically exported as
-tab- or comma-delimited text from Excel}
+\item{file}{Delimited text file in GenAlEx format, typically exported
+                  as tab- or comma-delimited text from Excel}
 
-\item{sep}{Column separator used when \code{file} was created (defaults to
-tab)}
+\item{sep}{Column separator used when \code{file} was created
+                  (defaults to tab)}
 
-\item{ploidy}{The ploidy of genotypes encoded in \code{file} (defaults to 2)}
+\item{ploidy}{The ploidy of genotypes encoded in \code{file} (defaults
+                  to 2)}
+
+\item{na.strings}{Strings encoding missing data.  Default is to include the
+                  GenAlEx missing values ("0" and "-1") as well as ".",
+                  "NA" and "" (empty).}
+
+\item{\dots}{Additional arguments passed to \code{\link{scan}} when
+                  reading data}
 }
 \value{
-An annotated \code{data.frame} containing sample data, with column
-names determined by line 3 of the input file.  Special \code{attributes()}
+An annotated data frame of class \code{'genalex'} containing sample data, with column
+names determined by line 3 of the input file.  Special \code{attributes}
 of the \code{data.frame} include
 
 \item{data.file.name }{The value of \code{file}}
@@ -41,7 +50,7 @@ of the \code{data.frame} include
 }
 \description{
 Reads genotype data file in GenAlEx format into an annotated
-\code{data.frame}.  Internal consistency checks that are allowed by the
+data frame of class \code{'genalex'}.  Internal consistency checks that are allowed by the
 GenAlEx format are also performed as data is read.  GenAlEx and its
 documentation are available at
 \url{http://biology-assets.anu.edu.au/GenAlEx}.

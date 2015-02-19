@@ -2,20 +2,24 @@
 % Please edit documentation in R/readGenalex.R
 \name{as.genalex}
 \alias{as.genalex}
-\title{Convert pre-1.0 readGenalex data.frames to class 'genalex'}
+\title{Convert pre-1.0 readGenalex data frames to class 'genalex'}
 \usage{
 as.genalex(x)
 }
 \arguments{
-\item{x}{An annotated \code{data.frame} that is a pre-1.0
-          readGenalex data frame}
+\item{x}{An annotated data frame that is of \code{readGenalex} format,
+          possibly of the earlier pre-1.0 format}
 }
 \value{
 \code{x} as an S3 class \code{'genalex'} object, or
         a fatal error
 }
 \description{
-Convert pre-1.0 readGenalex data.frames to class 'genalex'
+Converts an annotated data frame that is of \code{readGenalex} format
+to a class \code{'genalex'} object.  If the data frame is a pre-1.0
+data frame, it is converted to class \code{'genalex'}, if it is already
+of class \code{'genalex'} object it is returned, and if it is of any
+other format, an error is generated.
 }
 \examples{
 data(example_genotypes)

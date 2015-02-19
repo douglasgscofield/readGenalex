@@ -1,3 +1,20 @@
+readGenalex 0.9.9000 (class_genalex development branch)
+=======================================================
+
+-   Rolled checkNullAlleles from another of my repositories into this
+    package
+-   New as.genalex function to convert a pre-class 'genalex' data frame.
+    This is used wherever a class 'genalex' data frame is returned, so
+    conversion from old to new format happens automatically.
+-   Added na.strings argument to both writeGenalex and readGenalex, with
+    defaults that reflect GenAlEx's own expectations for missing data
+-   readGenalex now has ... in its argument list, for additional
+    arguments to be passed to scan() while reading data
+-   Extensive documentation updates reflecting use of class 'genalex'
+-   Created inst/extdata for data in non-traditional formats. More to be
+    done there.
+-   Added tests for writeGenalex
+
 readGenalex 0.4.1.9000 (current development version)
 ====================================================
 

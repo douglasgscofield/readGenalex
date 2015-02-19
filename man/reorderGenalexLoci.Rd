@@ -2,24 +2,24 @@
 % Please edit documentation in R/readGenalex.R
 \name{reorderGenalexLoci}
 \alias{reorderGenalexLoci}
-\title{Reorder a \code{readGenalex}-format \code{data.frame}}
+\title{Reorder a data frame of class \code{'genalex'}}
 \usage{
 reorderGenalexLoci(dat, loci)
 }
 \arguments{
-\item{dat}{An annotated \code{data.frame} created by \code{readGenalex()}}
+\item{dat}{An annotated data frame of class \code{'genalex'}}
 
-\item{loci}{The names of loci found in \code{dat}, in the desired new order.
-All loci in \code{dat} must be named.  The order of the alleles within each
-locus is preserved.}
+\item{loci}{The names of loci found in \code{dat}, in the desired new
+            order.  All loci in \code{dat} must be named.  The order of
+            the alleles within each locus is preserved.}
 }
 \value{
-A \code{data.frame} containing the same genotype data from
-\code{dat} reordered according to \code{loci}.
+A data frame of class \code{'genalex'} containing the same
+genotype data from \code{dat} reordered according to \code{loci}.
 }
 \description{
-Reorder the genotype columns of a \code{readGenalex}-format
-\code{data.frame} by locus.
+Reorder the genotype columns of a class \code{'genalex'} data frame by
+locus.
 }
 \examples{
 data(example_genotypes)

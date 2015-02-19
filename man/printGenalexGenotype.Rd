@@ -8,19 +8,19 @@ printGenalexGenotype(dat, rows, callout.locus = NULL, sep = " ",
   allele.sep = "/", callout.char = "*", label = NULL)
 }
 \arguments{
-\item{dat}{An annotated \code{data.frame} created by \code{readGenalex()}}
+\item{dat}{An annotated data frame of class \code{'genalex'}}
 
 \item{rows}{The specific rows of \code{dat} to print}
 
 \item{callout.locus}{One or more loci on \code{dat} to be surrounded by
-\code{callout.char} when printed}
+               \code{callout.char} when printed}
 
 \item{sep}{Separator character to be used between loci}
 
 \item{allele.sep}{Separator character to be used between alleles}
 
 \item{callout.char}{Character which surrounds loci specified by
-\code{callout.locus}}
+        \code{callout.locus}}
 
 \item{label}{Label to be included between the sample and population ID
         columns and the genotype columns in output}
@@ -34,7 +34,7 @@ Print selected genotypes, optionally calling out a locus
 }
 \examples{
 data(example_genotypes)
-printGenalexGenotype(example_genotypes, rows=6:8, callout.locus="loc5")
+printGenalexGenotype(example_genotypes, rows = 6:8, callout.locus = "loc5")
 }
 \author{
 Douglas G. Scofield

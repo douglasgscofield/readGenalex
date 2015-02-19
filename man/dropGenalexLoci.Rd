@@ -2,29 +2,29 @@
 % Please edit documentation in R/readGenalex.R
 \name{dropGenalexLoci}
 \alias{dropGenalexLoci}
-\title{Remove specified loci from the \code{readGenalex}-format \code{data.frame}}
+\title{Remove specified loci from data frame of class \code{'genalex'}}
 \usage{
 dropGenalexLoci(dat, drop.loci, quiet = FALSE)
 }
 \arguments{
-\item{dat}{An annotated \code{data.frame} created by \code{readGenalex()}}
+\item{dat}{An annotated data frame of class \code{'genalex'}}
 
 \item{drop.loci}{The names of one or more loci found in \code{dat}}
 
-\item{quiet}{If set to \code{TRUE}, quietly returns \code{dat} if none of
-\code{drop.loci} are found in \code{dat}}
+\item{quiet}{If set to \code{TRUE}, quietly returns \code{dat}
+                 if none of \code{drop.loci} are found in \code{dat}}
 }
 \value{
-A \code{data.frame} containing the data in \code{dat} after removing
+A data frame containing the data in \code{dat} after removing
 loci specified by \code{drop.loci}, with attributes updated as required.
 }
 \description{
-Remove specified loci from the \code{readGenalex}-format \code{data.frame}
+Remove specified loci from the data frame of class \code{'genalex'}
 and updates attributes
 }
 \examples{
 data(example_genotypes)
-newdat = dropGenalexLoci(example_genotypes, "loc3")
+newdat <- dropGenalexLoci(example_genotypes, "loc3")
 }
 \author{
 Douglas G. Scofield
