@@ -2,6 +2,8 @@
 .RData
 *.Rproj
 .Rproj.user
+# the GenAlEx user manual
+GenAlEx*.pdf
 # Example code in package build process
 *-Ex.R
 # directory used by the Makefile for R CMD check
@@ -10,3 +12,4 @@ check_tmp
 # these as they are required for install_github (right???)
 # *.Rd
 # inst/doc
+
