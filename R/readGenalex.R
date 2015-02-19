@@ -431,7 +431,7 @@ writeGenalex <- function(x, file, quote = FALSE, sep = "\t", eol = "\n",
         extra[is.na(extra)] <- na
     }
     # quote function
-    qu <- function(x) if (quote) paste0("\"", x, "\"") else x
+    qu <- function(x) if (quote) paste(sep="", "\"", x, "\"") else x
     # header line 1
     cat(file = file, sep = sep, a$n.loci, a$n.samples, a$n.pops, a$pop.sizes)
     cat(file = file, eol)
