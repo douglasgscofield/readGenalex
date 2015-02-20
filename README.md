@@ -33,7 +33,7 @@ Github and can always be installed via:
 
 To use:
 
-```R
+~~~~
 > library(readGenalex)
 > data(Qagr_adult_genotypes)
 > head(Qagr_adult_genotypes)
@@ -95,7 +95,7 @@ $n.pops
 [1] 1
 
 ...
-```
+~~~~
 
 `readGenalex` only reads the number of samples specified by the GenAlEX
 header, and only treats as genotypes the number of genotype columns implied
