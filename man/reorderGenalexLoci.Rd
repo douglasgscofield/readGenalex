@@ -22,7 +22,7 @@ Reorder the genotype columns of a class \code{'genalex'} data frame by
 locus.
 }
 \examples{
-data(Qagr_genotypes)
+data(Qagr_adult_genotypes)
 # reverse loci
 loci <- rev(attr(Qagr_adult_genotypes, "locus.names"))
 reord = reorderGenalexLoci(Qagr_adult_genotypes, rev(loci))

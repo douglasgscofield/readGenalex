@@ -1,3 +1,8 @@
+#' @include readGenalex.R
+NULL
+
+
+
 #' Check for potential null (non-amplifying) alleles
 #' 
 #' Check genotypes against a set of reference genotypes and look for
@@ -5,9 +10,9 @@
 #' allele, that is, heterozygous in the reference and homozygous matching
 #' one of the alleles in the heterozygous reference.
 #'
-#' The reference and check genotypes are in GenAlEx format, and are either
-#' names of files to be read as GenAlEx files, or are class \code{'genalex'}
-#' data frames.
+#' The reference and check genotypes are in GenAlEx format, and are
+#' names of files to be read with \code{readGenalex} or are class
+#' \code{'genalex'} data frames.
 #'
 #' @note  The reference genotypes are assumed to be genotyped correctly,
 #'        without null alleles of their own.  The check for null alleles is
@@ -50,13 +55,18 @@
 #' 
 #' @examples
 #' 
-#' # load reference genotypes
-#' # load comparison genotypes
-#' # run comparison
+#' reffile <- system.file("extdata", "ref_genotypes.txt", 
+#'                        package="readGenalex")
+#' checkfile <- system.file("extdata", "check_genotypes.txt", 
+#'                          package="readGenalex")
+#' res1 <- checkNullAlleles(reffile, checkfile)
+#' ref <- readGenalex(reffile)
+#' check <- readGenalex(checkfile)
+#' res2 <- checkNullAlleles(reffile, checkfile)
+#' stopifnot(identical(res1, res2))
 #' 
 #' @export checkNullAlleles
 #' 
-# TODO: deparse substitute ref and check where appropriate
 # TODO: implement mode locus
 #
 checkNullAlleles <- function(ref, check, mode = c("column", "locus"),

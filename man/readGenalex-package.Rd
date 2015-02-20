@@ -13,15 +13,8 @@ analysing genotype data.  This package reads GenAlEx data that has been
 exported from Excel as a delimited text file and creates an annotated
 data frame of class \code{'genalex'}.  Several functions are provided for
 accessing and printing this data.  GenAlEx and its documentation are
-available at \url{http://biology-assets.anu.edu.au/GenAlEx}.
-}
-\details{
-Read and manipulate GenAlEx-format data files.
-\href{http://biology-assets.anu.edu.au/GenAlExGenAlEx}{GenAlEx} is a
-widely-used plugin for Excel that manipulates and analyses genotype data.
-This package is designed to read GenAlEx-format genotype files that have
-been exported from Excel as delimited text.  Descriptions of the file
-format and of the annotations added to the class as attributes
+available at \url{http://biology-assets.anu.edu.au/GenAlEx}.  Descriptions
+of the file format and of the annotations added to the class as attributes
 are available via \code{help(readGenalex)}.
 }
 \references{

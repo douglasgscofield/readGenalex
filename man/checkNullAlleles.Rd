@@ -47,9 +47,9 @@ allele, that is, heterozygous in the reference and homozygous matching
 one of the alleles in the heterozygous reference.
 }
 \details{
-The reference and check genotypes are in GenAlEx format, and are either
-names of files to be read as GenAlEx files, or are class \code{'genalex'}
-data frames.
+The reference and check genotypes are in GenAlEx format, and are
+names of files to be read with \code{readGenalex} or are class
+\code{'genalex'} data frames.
 }
 \note{
 The reference genotypes are assumed to be genotyped correctly,
@@ -59,9 +59,15 @@ The reference genotypes are assumed to be genotyped correctly,
 Only genotypes with ploidy of 2 are currently checked.
 }
 \examples{
-# load reference genotypes
-# load comparison genotypes
-# run comparison
+reffile <- system.file("extdata", "ref_genotypes.txt",
+                       package="readGenalex")
+checkfile <- system.file("extdata", "check_genotypes.txt",
+                         package="readGenalex")
+res1 <- checkNullAlleles(reffile, checkfile)
+ref <- readGenalex(reffile)
+check <- readGenalex(checkfile)
+res2 <- checkNullAlleles(reffile, checkfile)
+stopifnot(identical(res1, res2))
 }
 \author{
 Douglas G. Scofield

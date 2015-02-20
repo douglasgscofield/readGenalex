@@ -23,7 +23,7 @@ Remove specified loci from the data frame of class \code{'genalex'}
 and updates attributes
 }
 \examples{
-data(Qagr_genotypes)
+data(Qagr_adult_genotypes)
 newdat <- dropGenalexLoci(Qagr_adult_genotypes, "Oe09")
 }
 \author{

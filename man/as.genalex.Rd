@@ -17,20 +17,16 @@ as.genalex(x)
 \description{
 Converts a data frame to a class \code{'genalex'} object.  The
 following cases are handled:
-}
-\details{
 \itemize{
   \item If the data frame is a pre-1.0 data frame, it is converted
   to class \code{'genalex'}
-
-\item If the data frame is already of class \code{'genalex'}, it
+  \item If the data frame is already of class \code{'genalex'}, it
   is returned
-
-\item If \code{x} is of any other format, it is an error
+  \item If \code{x} is of any other format, it is an error
 }
 }
 \examples{
-data(Qagr_genotypes)
+data(Qagr_adult_genotypes)
 gt <- as.genalex(Qagr_adult_genotypes)
 }
 \author{

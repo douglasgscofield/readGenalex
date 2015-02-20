@@ -60,7 +60,7 @@ for which this will likely be true are:
 }
 }
 \examples{
-data(Qagr_genotypes)
+data(Qagr_adult_genotypes)
 # lots of output to terminal
 writeGenalex(Qagr_adult_genotypes, file = "")
 }

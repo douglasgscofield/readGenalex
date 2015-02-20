@@ -6,14 +6,8 @@
 #' exported from Excel as a delimited text file and creates an annotated
 #' data frame of class \code{'genalex'}.  Several functions are provided for
 #' accessing and printing this data.  GenAlEx and its documentation are
-#' available at \url{http://biology-assets.anu.edu.au/GenAlEx}.
-#'
-#' Read and manipulate GenAlEx-format data files.
-#' \href{http://biology-assets.anu.edu.au/GenAlExGenAlEx}{GenAlEx} is a 
-#' widely-used plugin for Excel that manipulates and analyses genotype data.
-#' This package is designed to read GenAlEx-format genotype files that have 
-#' been exported from Excel as delimited text.  Descriptions of the file 
-#' format and of the annotations added to the class as attributes
+#' available at \url{http://biology-assets.anu.edu.au/GenAlEx}.  Descriptions
+#' of the file format and of the annotations added to the class as attributes
 #' are available via \code{help(readGenalex)}.
 #' 
 #' @references Peakall, R. and Smouse P.E. (2012) GenAlEx 6.5: genetic analysis
@@ -53,7 +47,7 @@ NULL
 #'
 #' @examples
 #' 
-#' data(Qagr_genotypes)
+#' data(Qagr_adult_genotypes)
 #' is.genalex(Qagr_adult_genotypes)
 #' 
 #' @export is.genalex
@@ -70,14 +64,11 @@ is.genalex <- function(x) {
 #' 
 #' Converts a data frame to a class \code{'genalex'} object.  The
 #' following cases are handled:
-#'
 #' \itemize{
 #'   \item If the data frame is a pre-1.0 data frame, it is converted
 #'   to class \code{'genalex'}
-#'
 #'   \item If the data frame is already of class \code{'genalex'}, it
 #'   is returned
-#'
 #'   \item If \code{x} is of any other format, it is an error
 #' }
 #' 
@@ -91,7 +82,7 @@ is.genalex <- function(x) {
 #'
 #' @examples
 #' 
-#' data(Qagr_genotypes)
+#' data(Qagr_adult_genotypes)
 #' gt <- as.genalex(Qagr_adult_genotypes)
 #' 
 #' @export as.genalex
@@ -198,7 +189,7 @@ as.genalex <- function(x) {
 #' 
 #' @examples
 #' 
-#' data(Qagr_genotypes)
+#' data(Qagr_adult_genotypes)
 #' head(Qagr_adult_genotypes)
 #' attributes(Qagr_adult_genotypes)
 #' 
@@ -404,7 +395,7 @@ readGenalex <- function(file, sep = "\t", ploidy = 2,
 #'
 #' @examples
 #'
-#' data(Qagr_genotypes)
+#' data(Qagr_adult_genotypes)
 #' # lots of output to terminal
 #' writeGenalex(Qagr_adult_genotypes, file = "")
 #'
@@ -497,7 +488,7 @@ writeGenalex <- function(x, file, quote = FALSE, sep = "\t", eol = "\n",
 #'
 #' @examples
 #' 
-#' data(Qagr_genotypes)
+#' data(Qagr_adult_genotypes)
 #' printGenalexGenotype(Qagr_adult_genotypes, rows = 6:8, callout.locus = "1c08")
 #' 
 #' @export printGenalexGenotype
@@ -546,7 +537,7 @@ printGenalexGenotype <- function(dat, rows, callout.locus = NULL, sep = " ",
 #' 
 #' @examples
 #' 
-#' data(Qagr_genotypes)
+#' data(Qagr_adult_genotypes)
 #' computeGenalexColumns(Qagr_adult_genotypes, c("0c19", "0m05"))
 #' 
 #' @export computeGenalexColumns
@@ -577,7 +568,7 @@ computeGenalexColumns <- function(dat, locus, ploidy = NULL) {
 #' 
 #' @examples
 #' 
-#' data(Qagr_genotypes)
+#' data(Qagr_adult_genotypes)
 #' # reverse loci
 #' loci <- rev(attr(Qagr_adult_genotypes, "locus.names"))
 #' reord = reorderGenalexLoci(Qagr_adult_genotypes, rev(loci))
@@ -624,13 +615,13 @@ reorderGenalexLoci <- function(dat, loci) {
 #' 
 #' @examples
 #' 
-#' data(Qagr_genotypes)
-#' nm <- attr(Qagr_peric_genotypes, "locus.names")
+#' data(Qagr_pericarp_genotypes)
+#' nm <- attr(Qagr_pericarp_genotypes, "locus.names")
 #' # get the first locus
-#' loc1 <- getGenalexLocus(Qagr_peric_genotypes, nm[1])
+#' loc1 <- getGenalexLocus(Qagr_pericarp_genotypes, nm[1])
 #' # get the second locus of the second population
-#' po <- attr(Qagr_peric_genotypes, "pop.labels")
-#' loc2.pop2 <- getGenalexLocus(Qagr_peric_genotypes, nm[2], po[2])
+#' po <- attr(Qagr_pericarp_genotypes, "pop.labels")
+#' loc2.pop2 <- getGenalexLocus(Qagr_pericarp_genotypes, nm[2], po[2])
 #' 
 #' @export getGenalexLocus
 #' 
@@ -693,7 +684,7 @@ putGenalexLocus <- function(dat, locus, newdata) {
 #' 
 #' @examples
 #' 
-#' data(Qagr_genotypes)
+#' data(Qagr_adult_genotypes)
 #' newdat <- dropGenalexLoci(Qagr_adult_genotypes, "Oe09")
 #' 
 #' @export dropGenalexLoci
@@ -750,7 +741,7 @@ dropGenalexLoci <- function(dat, drop.loci, quiet = FALSE) {
 #' 
 #' @examples
 #' 
-#' data(Qagr_genotypes)
+#' data(Qagr_adult_genotypes)
 #' attr(Qagr_adult_genotypes, "ploidy")
 #' p1 <- reduceGenalexPloidy(Qagr_adult_genotypes, 1)
 #' 
@@ -783,27 +774,28 @@ reduceGenalexPloidy <- function(dat, new.ploidy = 1) {
 
 
 
-#' Quercus agrifolia adult and pericarp microsatellite genotypes
+#' Coast live oak (Quercus agrifolia) adult microsatellite genotypes
 #'
-#' This data set contains two annotated data frames of class \code{'genalex'}.
-#'
-#' \itemize{
-#'   \item \code{Qagr_adult_genotypes} contains 10-locus diploid microsatellite
-#'   genotypes of 262 adult coast live oak (\emph{Quercus agrifolia}) trees from
-#'   Sedgwick Reserve, Santa Barbara County, California, USA.
-#'
-#'   \item \code{Qagr_peric_genotypes} contains 10-locus diploid microsatellite
-#'   genotypes of 568 pericarps (outer seed coats) from coast live oak acorns
-#'   collected from 17 acorn woodpecker (\emph{Melanerpes formicivorus})
-#'   granaries, also at Sedgwick Reserve.
-#' }
+#' This data set contains one annotated data frame of class \code{'genalex'},
+#' holding 10-locus diploid microsatellite genotypes of 262 adult coast live
+#' oak (\emph{Quercus agrifolia}) trees from Sedgwick Reserve, Santa Barbara
+#' County, California, USA.
 #'
 #' These data have been analysed in several published papers, and are also
 #' publicly available at the Dryad Digital Repository.  If using these data,
 #' please cite the original paper as well as the data, as shown below.
 #'
-#' @format Annotated data frames of class \code{'genalex'}
+#' @format Annotated data frames of class \code{'genalex'}.  Columns are:
+#' \tabular{ll}{
+#'   \code{AdultMomFamily} \tab Identifier for adult tree \cr
+#'   \code{Site}           \tab Population, always \code{Sedgwick} for this data set \cr
+#'   \code{0c11}           \tab First allele for microsatellite locus 0c11 \cr
+#'   \code{0c11.2}         \tab Second allele for microsatellite locus 0c11 \cr
+#'   \code{\dots}          \tab Remaining 9 microsatellite genotypes \cr
+#' }
 #' 
+#' @source \url{http://datadryad.org/resource/doi:10.5061/dryad.40kq7}
+#'
 #' @references Scofield DG, Smouse PE, Karubian J, Sork VL (2012) Use of alpha,
 #' beta, and gamma diversity measures to characterize seed dispersal by 
 #' animals. The American Naturalist 180(6): 719-732. 
@@ -815,16 +807,54 @@ reduceGenalexPloidy <- function(dat, new.ploidy = 1) {
 #'
 #' \url{https://github.com/douglasgscofield/readGenalex}
 #'
+#' @keywords datasets
+#' 
+#' @docType data
+#' 
+#' @name Qagr_adult_genotypes
+#' 
+NULL
+
+
+#' Coast live oak (Quercus agrifolia) pericarp microsatellite genotypes
+#'
+#' This data set contains one annotated data frame of class \code{'genalex'},
+#' holding 10-locus diploid microsatellite genotypes of 568 pericarps (outer
+#' seed coats) from coast live oak (\emph{Quercus agrifolia}) acorns collected
+#' from 17 acorn woodpecker (\emph{Melanerpes formicivorus}) granaries at
+#' Sedgwick Reserve, Santa Barbara County, California, USA.
+#'
+#' These data have been analysed in several published papers, and are also
+#' publicly available at the Dryad Digital Repository.  If using these data,
+#' please cite the original paper as well as the data, as shown below.
+#'
+#' @format Annotated data frames of class \code{'genalex'}.  Columns are:
+#' \tabular{ll}{
+#'   \code{PericarpID} \tab Identifier for sampled pericarp \cr
+#'   \code{Granary}    \tab Granary from which the pericarp was collected \cr
+#'   \code{0c11}       \tab First allele for microsatellite locus 0c11 \cr
+#'   \code{0c11.2}     \tab Second allele for microsatellite locus 0c11 \cr
+#'   \code{\dots}      \tab Remaining 9 microsatellite genotypes \cr
+#' }
+#' 
 #' @source \url{http://datadryad.org/resource/doi:10.5061/dryad.40kq7}
+#'
+#' @references Scofield DG, Smouse PE, Karubian J, Sork VL (2012) Use of alpha,
+#' beta, and gamma diversity measures to characterize seed dispersal by 
+#' animals. The American Naturalist 180(6): 719-732. 
+#' \url{http://dx.doi.org/10.1086/668202}
+#' 
+#' Scofield DG, Smouse PE, Karubian J, Sork VL (2012) Data from: Use of alpha,
+#' beta, and gamma diversity measures to characterize seed dispersal by animals.
+#' Dryad Digital Repository. \url{http://dx.doi.org/10.5061/dryad.40kq7}
+#'
+#' \url{https://github.com/douglasgscofield/readGenalex}
 #'
 #' @keywords datasets
 #' 
 #' @docType data
 #' 
-#' @name Qagr_genotypes
-#' @name Qagr_adult_genotypes
-#' @name Qagr_peric_genotypes
+#' @name Qagr_pericarp_genotypes
 #' 
 NULL
-
 

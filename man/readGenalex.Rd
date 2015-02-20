@@ -84,7 +84,7 @@ other GenAlEx specifications regarding e.g., encoding of genotypes that are
 expected here but not described.
 }
 \examples{
-data(Qagr_genotypes)
+data(Qagr_adult_genotypes)
 head(Qagr_adult_genotypes)
 attributes(Qagr_adult_genotypes)
 }

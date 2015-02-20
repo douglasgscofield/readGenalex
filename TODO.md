@@ -1,9 +1,8 @@
 # For 1.0
 
+o Update README for new data sets
 o Add used papers to the data description?
-o Fix WARNING during make check, probably because of the following:
-o Split data up into two separate RData
-o Is as a generic and as.genalex a method?
+o Is `as` a generic and `as.genalex` a method?
 o Add summary.genalex method
 o `createGenalex()`, for creating a de-novo class `'genalex'` data frame.  This requires a `createGenalexLocus` or some generalisation of the current locus-handling functions, to add a new locus to the "end".
 o Functions for converting from/to some other genetic formats, perhaps attaching them to as.genalex
@@ -18,6 +17,8 @@ o add more tests
 o complete checkNullAllele integration
 o add checkNullAllele return of matrices indicating possible null alleles
 o make null allele demo using createGenalex(), and also using adult and pericarp Q. agrifolia data?
+x Fix WARNING during make check, probably because of the following:
+x Split data up into two separate RData
 x implement makefile rule for building RData in data/
 x exchange fake data for real data from DataDryad
 x how to add citation instructions to data?  see data/datasource for that info
