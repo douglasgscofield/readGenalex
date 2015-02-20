@@ -1,6 +1,5 @@
 # For 1.0
 
-o Update README for new data sets
 o Add used papers to the data description?
 o Is `as` a generic and `as.genalex` a method?
 o Add summary.genalex method
@@ -17,6 +16,7 @@ o add more tests
 o complete checkNullAllele integration
 o add checkNullAllele return of matrices indicating possible null alleles
 o make null allele demo using createGenalex(), and also using adult and pericarp Q. agrifolia data?
+x Update README for new data sets
 x Fix WARNING during make check, probably because of the following:
 x Split data up into two separate RData
 x implement makefile rule for building RData in data/
