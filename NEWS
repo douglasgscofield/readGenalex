@@ -1,6 +1,8 @@
 readGenalex 0.9.9000 (class_genalex development branch)
 =======================================================
 
+-   Add Qagr_adult_genotypesand Qagr_peric_genotypes data sets and have
+    examples use these
 -   Added test for checkNullAlleles, more needed.
 -   Extended checkNullAlleles to return a matrix of potential null
     alleles, with a couple of indexing modes. More extensions needed.
