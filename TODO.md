@@ -7,12 +7,12 @@ o If I am converting from those other formats, do I need to have the specific pa
 o Initial dispersalDiversity package should that be based on class 'genalex'-enabled readGenalex
 o check on any implicit version dependencies
 o document version dependencies
-o drawing on writeGenalex documentation about differences when writing, be more explicit about what happens with extra columns and with extra column names on input
 o read from and write to Excel files
 o add more tests
 o complete checkNullAllele integration
 o add checkNullAllele return of matrices indicating possible null alleles
 o make null allele demo using createGenalex(), and also using adult and pericarp Q. agrifolia data?
+x drawing on writeGenalex documentation about differences when writing, be more explicit about what happens with extra columns and with extra column names on input
 x straighten out test for writeGenalex with and without quote=
 x GenAlEx says all genotype data is numeric, so code it as numeric after reading
 x Is `as` a generic and `as.genalex` a method?
