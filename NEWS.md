@@ -1,5 +1,7 @@
 # readGenalex 0.9.9000 (class_genalex development branch)
 
+* Added test for `checkNullAlleles`, more needed.
+* Extended `checkNullAlleles` to return a matrix of potential null alleles, with a couple of indexing modes.  More extensions needed.
 * Rolled `checkNullAlleles` from another of my repositories into this package
 * New `as.genalex` function to convert a pre-class `'genalex'` data frame.  This is used wherever a class `'genalex'` data frame is returned, so conversion from old to new format happens automatically.
 * Added `na.strings` argument to both `writeGenalex` and `readGenalex`, with defaults that reflect GenAlEx's own expectations for missing data

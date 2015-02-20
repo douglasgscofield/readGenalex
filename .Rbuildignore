@@ -8,4 +8,5 @@
 ^\.Rproj\.user$
 ^NEWS\.md$
 ^TODO\.md$
-^GenAlEx*.pdf$
+^GenAlEx.*\.pdf$
+^Scofield-et-al_AmNat_52938_Quercus-agrifolia_.*-genotypes\.txt$

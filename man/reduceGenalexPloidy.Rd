@@ -31,9 +31,9 @@ haploid data is encoded in GenAlEx datasets by using homozygous diploid
 loci, and this is a useful function for making these truly haploid.
 }
 \examples{
-data(example_genotypes)
-attr(example_genotypes, "ploidy")
-p1 <- reduceGenalexPloidy(example_genotypes, 1)
+data(Qagr_genotypes)
+attr(Qagr_adult_genotypes, "ploidy")
+p1 <- reduceGenalexPloidy(Qagr_adult_genotypes, 1)
 }
 \author{
 Douglas G. Scofield

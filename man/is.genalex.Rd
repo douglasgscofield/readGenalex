@@ -17,8 +17,8 @@ Check to see if a data frame is of class 'genalex' as recognised by
 the \code{readGenalex} package.
 }
 \examples{
-data(example_genotypes)
-is.genalex(example_genotypes)
+data(Qagr_genotypes)
+is.genalex(Qagr_adult_genotypes)
 }
 \author{
 Douglas G. Scofield

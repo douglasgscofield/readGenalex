@@ -7,23 +7,31 @@
 as.genalex(x)
 }
 \arguments{
-\item{x}{An annotated data frame that is of \code{readGenalex} format,
-          possibly of the earlier pre-1.0 format}
+\item{x}{An object to convert to class \code{'genalex'}, possibly
+          of an earlier package \code{readGenalex} format}
 }
 \value{
 \code{x} as an S3 class \code{'genalex'} object, or
         a fatal error
 }
 \description{
-Converts an annotated data frame that is of \code{readGenalex} format
-to a class \code{'genalex'} object.  If the data frame is a pre-1.0
-data frame, it is converted to class \code{'genalex'}, if it is already
-of class \code{'genalex'} object it is returned, and if it is of any
-other format, an error is generated.
+Converts a data frame to a class \code{'genalex'} object.  The
+following cases are handled:
+}
+\details{
+\itemize{
+  \item If the data frame is a pre-1.0 data frame, it is converted
+  to class \code{'genalex'}
+
+\item If the data frame is already of class \code{'genalex'}, it
+  is returned
+
+\item If \code{x} is of any other format, it is an error
+}
 }
 \examples{
-data(example_genotypes)
-as.genalex(example_genotypes)
+data(Qagr_genotypes)
+gt <- as.genalex(Qagr_adult_genotypes)
 }
 \author{
 Douglas G. Scofield

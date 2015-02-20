@@ -1,4 +1,4 @@
 library(readGenalex)
-data(exmaple_genotypes)
-writeGenalex(example_genotypes, "")
-writeGenalex(example_genotypes, "", quote = TRUE)
+data(Qagr_genotypes)
+writeGenalex(Qagr_adult_genotypes, "")
+writeGenalex(Qagr_adult_genotypes, "", quote = TRUE)

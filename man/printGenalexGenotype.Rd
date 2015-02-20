@@ -33,8 +33,8 @@ No specific return value, used for its side effect of printing
 Print selected genotypes, optionally calling out a locus
 }
 \examples{
-data(example_genotypes)
-printGenalexGenotype(example_genotypes, rows = 6:8, callout.locus = "loc5")
+data(Qagr_genotypes)
+printGenalexGenotype(Qagr_adult_genotypes, rows = 6:8, callout.locus = "1c08")
 }
 \author{
 Douglas G. Scofield

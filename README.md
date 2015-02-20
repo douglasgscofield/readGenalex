@@ -2,32 +2,33 @@ readGenalex
 ===========
 
 An R package for reading data files in GenAlEx format, as exported from Excel
-as a delimited text file, into an annotated `data.frame`, and manipulate it in
-that form.  Several functions are provided for accessing and printing this
-data.  GenAlEx and its documentation are available at
+as a delimited text file, into an annotated `data.frame` of class `'genalex'`,
+and manipulate it in that form.  Several functions are provided for accessing
+and printing this data.  GenAlEx and its documentation are available at
 <http://biology-assets.anu.edu.au/GenAlEx>.
 
 ## Development version
 
 This branch (**class_genalex**) is a development branch to implement the
 functionality of this package by defining an S3 class `'genalex'` that is
-shared with `data.frame`.  The development is scheduled to be present in the
-1.0 release of this package.  At any given time, the code in this branch is not
-likely to be functional until then.
+shared with `data.frame`.  This functionality will be present in the 1.0
+release of this package.  In the meantime, the code in this particular branch
+is not likely to be functional until further notice.
 
 ## Using the package
 
-`readGenalex` is available on CRAN:
+`readGenalex` 0.4.1 is available on CRAN:
 
 ```R
 > install.packages("readGenalex")
 ```
 
-The development version is hosted on Github and can always be installed via:
+The development version 0.9.9000 on this branch (`class_genalex`) is hosted on
+Github and can always be installed via:
 
 ```R
 > install.packages("devtools")
-> devtools::install_github("douglasgscofield/readGenalex")
+> devtools::install_github("douglasgscofield/readGenalex", ref = "class_genalex")
 ```
 
 To use:
@@ -109,4 +110,7 @@ produced by `readGenalex()`:
 
 `getGenalexLocus()`
 : Return genotypes of specified locus, optionally only for specific populations.
+
+`checkNullAlleles()`
+: Compare genotypes against a set of reference genotypes to check for potential null (nonamplifying) alleles.
 

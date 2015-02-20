@@ -51,7 +51,7 @@ TARBALL_LOC = $(PARENTDIR)/$(TARBALL)
 CHECKDIR = check_tmp
 PANDOC = pandoc
 
-all: vars NEWS doc vignettes
+all: vars NEWS data doc vignettes
 
 vars:
 	@echo PACKAGE = "$(PACKAGE)"
@@ -65,6 +65,11 @@ vars:
 
 NEWS: NEWS.md
 	$(PANDOC) -f markdown -t plain -o $@ $^
+
+data: data/Qagr_genotypes.RData
+
+data/Qagr_genotypes.RData: inst/extdata/Scofield-et-al_AmNat_52938_Quercus-agrifolia_*-genotypes.txt
+	cd data; R --quiet -e 'source("../R/readGenalex.R"); Qagr_adult_genotypes <- readGenalex("../inst/extdata/Scofield-et-al_AmNat_52938_Quercus-agrifolia_adult-genotypes.txt"); Qagr_peric_genotypes <- readGenalex("../inst/extdata/Scofield-et-al_AmNat_52938_Quercus-agrifolia_pericarp-genotypes.txt"); save(Qagr_adult_genotypes, Qagr_peric_genotypes, file="Qagr_genotypes.RData")' \
 
 doc:
 	R --quiet -e 'devtools::document()'

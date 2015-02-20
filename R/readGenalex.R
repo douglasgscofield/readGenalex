@@ -53,8 +53,8 @@ NULL
 #'
 #' @examples
 #' 
-#' data(example_genotypes)
-#' is.genalex(example_genotypes)
+#' data(Qagr_genotypes)
+#' is.genalex(Qagr_adult_genotypes)
 #' 
 #' @export is.genalex
 #' 
@@ -68,14 +68,21 @@ is.genalex <- function(x) {
 
 #' Convert pre-1.0 readGenalex data frames to class 'genalex'
 #' 
-#' Converts an annotated data frame that is of \code{readGenalex} format 
-#' to a class \code{'genalex'} object.  If the data frame is a pre-1.0
-#' data frame, it is converted to class \code{'genalex'}, if it is already
-#' of class \code{'genalex'} object it is returned, and if it is of any
-#' other format, an error is generated.
+#' Converts a data frame to a class \code{'genalex'} object.  The
+#' following cases are handled:
+#'
+#' \itemize{
+#'   \item If the data frame is a pre-1.0 data frame, it is converted
+#'   to class \code{'genalex'}
+#'
+#'   \item If the data frame is already of class \code{'genalex'}, it
+#'   is returned
+#'
+#'   \item If \code{x} is of any other format, it is an error
+#' }
 #' 
-#' @param x  An annotated data frame that is of \code{readGenalex} format,
-#'           possibly of the earlier pre-1.0 format
+#' @param x  An object to convert to class \code{'genalex'}, possibly
+#'           of an earlier package \code{readGenalex} format
 #'
 #' @return \code{x} as an S3 class \code{'genalex'} object, or
 #'         a fatal error
@@ -84,20 +91,21 @@ is.genalex <- function(x) {
 #'
 #' @examples
 #' 
-#' data(example_genotypes)
-#' as.genalex(example_genotypes)
+#' data(Qagr_genotypes)
+#' gt <- as.genalex(Qagr_adult_genotypes)
 #' 
 #' @export as.genalex
 #' 
 as.genalex <- function(x) {
     if (is.genalex(x)) { # already class genalex
-        x
+        return(x)
     } else if (! is.null(attr(x, "genetic.data.format")) &&
              attr(x, "genetic.data.format") == "genalex") {
+        # convert earlier readGenalex format to class genalex
         attr(x, "genetic.data.format") <- NULL
-        class(x) <- c('genalex', 'data.frame')
-        x
-    } else stop("data not in compatible format")
+        return(structure(x, class = c('genalex', 'data.frame')))
+    }
+    stop("'", deparse(substitute(x)), "' cannot be coerced to class 'genalex'")
 }
 
 
@@ -190,9 +198,9 @@ as.genalex <- function(x) {
 #' 
 #' @examples
 #' 
-#' data(example_genotypes)
-#' example_genotypes
-#' attributes(example_genotypes)
+#' data(Qagr_genotypes)
+#' head(Qagr_adult_genotypes)
+#' attributes(Qagr_adult_genotypes)
 #' 
 #' @export readGenalex
 #' 
@@ -396,8 +404,9 @@ readGenalex <- function(file, sep = "\t", ploidy = 2,
 #'
 #' @examples
 #'
-#' data(example_genotypes)
-#' writeGenalex(example_genotypes, file = "")
+#' data(Qagr_genotypes)
+#' # lots of output to terminal
+#' writeGenalex(Qagr_adult_genotypes, file = "")
 #'
 #' @export writeGenalex
 #'
@@ -488,8 +497,8 @@ writeGenalex <- function(x, file, quote = FALSE, sep = "\t", eol = "\n",
 #'
 #' @examples
 #' 
-#' data(example_genotypes)
-#' printGenalexGenotype(example_genotypes, rows = 6:8, callout.locus = "loc5")
+#' data(Qagr_genotypes)
+#' printGenalexGenotype(Qagr_adult_genotypes, rows = 6:8, callout.locus = "1c08")
 #' 
 #' @export printGenalexGenotype
 #'
@@ -537,8 +546,8 @@ printGenalexGenotype <- function(dat, rows, callout.locus = NULL, sep = " ",
 #' 
 #' @examples
 #' 
-#' data(example_genotypes)
-#' computeGenalexColumns(example_genotypes, c("loc2","loc4"))
+#' data(Qagr_genotypes)
+#' computeGenalexColumns(Qagr_adult_genotypes, c("0c19", "0m05"))
 #' 
 #' @export computeGenalexColumns
 #' 
@@ -568,9 +577,10 @@ computeGenalexColumns <- function(dat, locus, ploidy = NULL) {
 #' 
 #' @examples
 #' 
-#' data(example_genotypes)
+#' data(Qagr_genotypes)
 #' # reverse loci
-#' reord = reorderGenalexLoci(example_genotypes, rev(attr(example_genotypes, "locus.names")))
+#' loci <- rev(attr(Qagr_adult_genotypes, "locus.names"))
+#' reord = reorderGenalexLoci(Qagr_adult_genotypes, rev(loci))
 #' 
 #' @export reorderGenalexLoci
 #' 
@@ -614,11 +624,13 @@ reorderGenalexLoci <- function(dat, loci) {
 #' 
 #' @examples
 #' 
-#' data(example_genotypes)
-#' nm <- attr(example_genotypes, "locus.names")
-#' loc1 <- getGenalexLocus(example_genotypes, nm[1])
-#' po <- attr(example_genotypes, "pop.labels")
-#' loc2.pop2 <- getGenalexLocus(example_genotypes, nm[2], po[2])
+#' data(Qagr_genotypes)
+#' nm <- attr(Qagr_peric_genotypes, "locus.names")
+#' # get the first locus
+#' loc1 <- getGenalexLocus(Qagr_peric_genotypes, nm[1])
+#' # get the second locus of the second population
+#' po <- attr(Qagr_peric_genotypes, "pop.labels")
+#' loc2.pop2 <- getGenalexLocus(Qagr_peric_genotypes, nm[2], po[2])
 #' 
 #' @export getGenalexLocus
 #' 
@@ -681,8 +693,8 @@ putGenalexLocus <- function(dat, locus, newdata) {
 #' 
 #' @examples
 #' 
-#' data(example_genotypes)
-#' newdat <- dropGenalexLoci(example_genotypes, "loc3")
+#' data(Qagr_genotypes)
+#' newdat <- dropGenalexLoci(Qagr_adult_genotypes, "Oe09")
 #' 
 #' @export dropGenalexLoci
 #' 
@@ -738,9 +750,9 @@ dropGenalexLoci <- function(dat, drop.loci, quiet = FALSE) {
 #' 
 #' @examples
 #' 
-#' data(example_genotypes)
-#' attr(example_genotypes, "ploidy")
-#' p1 <- reduceGenalexPloidy(example_genotypes, 1)
+#' data(Qagr_genotypes)
+#' attr(Qagr_adult_genotypes, "ploidy")
+#' p1 <- reduceGenalexPloidy(Qagr_adult_genotypes, 1)
 #' 
 #' @export reduceGenalexPloidy
 #' 
@@ -771,24 +783,47 @@ reduceGenalexPloidy <- function(dat, new.ploidy = 1) {
 
 
 
-#' Example genotypes for demonstrating readGenalex package functions
+#' Quercus agrifolia adult and pericarp microsatellite genotypes
+#'
+#' This data set contains two annotated data frames of class \code{'genalex'}.
+#'
+#' \itemize{
+#'   \item \code{Qagr_adult_genotypes} contains 10-locus diploid microsatellite
+#'   genotypes of 262 adult coast live oak (\emph{Quercus agrifolia}) trees from
+#'   Sedgwick Reserve, Santa Barbara County, California, USA.
+#'
+#'   \item \code{Qagr_peric_genotypes} contains 10-locus diploid microsatellite
+#'   genotypes of 568 pericarps (outer seed coats) from coast live oak acorns
+#'   collected from 17 acorn woodpecker (\emph{Melanerpes formicivorus})
+#'   granaries, also at Sedgwick Reserve.
+#' }
+#'
+#' These data have been analysed in several published papers, and are also
+#' publicly available at the Dryad Digital Repository.  If using these data,
+#' please cite the original paper as well as the data, as shown below.
+#'
+#' @format Annotated data frames of class \code{'genalex'}
 #' 
-#' This data set contains 16 hypothetical genotypes used for demonstrating the
-#' operation of various functions in the \code{readGenalex} package.  It is a
-#' data frame of class \code{'genalex'} which contains additional
-#' attributes describing the structure of the data set.
+#' @references Scofield DG, Smouse PE, Karubian J, Sork VL (2012) Use of alpha,
+#' beta, and gamma diversity measures to characterize seed dispersal by 
+#' animals. The American Naturalist 180(6): 719-732. 
+#' \url{http://dx.doi.org/10.1086/668202}
 #' 
-#' @format Data frame of class \code{'genalex'} containing 16 samples 
-#'         from two populations, with each sample having a completely 
-#'         hypothetical 5-locus genotype.
-#' 
-#' @source  Simulation
+#' Scofield DG, Smouse PE, Karubian J, Sork VL (2012) Data from: Use of alpha,
+#' beta, and gamma diversity measures to characterize seed dispersal by animals.
+#' Dryad Digital Repository. \url{http://dx.doi.org/10.5061/dryad.40kq7}
+#'
+#' \url{https://github.com/douglasgscofield/readGenalex}
+#'
+#' @source \url{http://datadryad.org/resource/doi:10.5061/dryad.40kq7}
 #'
 #' @keywords datasets
 #' 
 #' @docType data
 #' 
-#' @name example_genotypes
+#' @name Qagr_genotypes
+#' @name Qagr_adult_genotypes
+#' @name Qagr_peric_genotypes
 #' 
 NULL
 

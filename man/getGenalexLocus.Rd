@@ -25,11 +25,13 @@ Return genotype data for specified loci in the data frame of class
 populations.
 }
 \examples{
-data(example_genotypes)
-nm <- attr(example_genotypes, "locus.names")
-loc1 <- getGenalexLocus(example_genotypes, nm[1])
-po <- attr(example_genotypes, "pop.labels")
-loc2.pop2 <- getGenalexLocus(example_genotypes, nm[2], po[2])
+data(Qagr_genotypes)
+nm <- attr(Qagr_peric_genotypes, "locus.names")
+# get the first locus
+loc1 <- getGenalexLocus(Qagr_peric_genotypes, nm[1])
+# get the second locus of the second population
+po <- attr(Qagr_peric_genotypes, "pop.labels")
+loc2.pop2 <- getGenalexLocus(Qagr_peric_genotypes, nm[2], po[2])
 }
 \author{
 Douglas G. Scofield

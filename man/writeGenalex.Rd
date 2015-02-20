@@ -60,8 +60,9 @@ for which this will likely be true are:
 }
 }
 \examples{
-data(example_genotypes)
-writeGenalex(example_genotypes, file = "")
+data(Qagr_genotypes)
+# lots of output to terminal
+writeGenalex(Qagr_adult_genotypes, file = "")
 }
 \author{
 Douglas G. Scofield

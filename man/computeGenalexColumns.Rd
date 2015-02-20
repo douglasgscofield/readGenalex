@@ -24,8 +24,8 @@ date frame produced by \code{readGenalex}.  This is mostly used as
 a utility routine by other functions in the \code{readGenalex} package.
 }
 \examples{
-data(example_genotypes)
-computeGenalexColumns(example_genotypes, c("loc2","loc4"))
+data(Qagr_genotypes)
+computeGenalexColumns(Qagr_adult_genotypes, c("0c19", "0m05"))
 }
 \author{
 Douglas G. Scofield
