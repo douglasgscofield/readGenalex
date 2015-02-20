@@ -50,7 +50,7 @@ NULL
 #' data(Qagr_adult_genotypes)
 #' is.genalex(Qagr_adult_genotypes)
 #' 
-#' @export is.genalex
+#' @export
 #' 
 is.genalex <- function(x) {
     if (inherits(x, 'genalex'))
@@ -60,23 +60,25 @@ is.genalex <- function(x) {
 
 
 
-#' Convert pre-1.0 readGenalex data frames to class 'genalex'
+#' Convert object to class 'genalex'
 #' 
-#' Converts a data frame to a class \code{'genalex'} object.  The
-#' following cases are handled:
+#' Converts object \code{x} to a data frame of class \code{'genalex'}.
+#' There are three cases:
 #' \itemize{
-#'   \item If the data frame is a pre-1.0 data frame, it is converted
-#'   to class \code{'genalex'}
-#'   \item If the data frame is already of class \code{'genalex'}, it
-#'   is returned
-#'   \item If \code{x} is of any other format, it is an error
+#'   \item If \code{x} is of class \code{'genalex'}, it is simply returned.
+#'   \item If \code{x} is of class \code{'data.frame'}, it is examined to
+#'         see if it might be a data frame created by an earlier version of
+#'         the \code{readGenalex} package.  If so, it is converted to
+#'         class \code{'genalex'} and returned.
+#'   \item Any other class is an error.  Further conversions between genetic
+#'         data formats may be added here as additional methods.
 #' }
 #' 
-#' @param x  An object to convert to class \code{'genalex'}, possibly
-#'           of an earlier package \code{readGenalex} format
+#' @param x      An object
 #'
-#' @return \code{x} as an S3 class \code{'genalex'} object, or
-#'         a fatal error
+#' @param \dots  Additional arguments, currently ignored
+#'
+#' @return \code{x} as a class \code{'genalex'} object
 #'
 #' @author Douglas G. Scofield
 #'
@@ -85,12 +87,37 @@ is.genalex <- function(x) {
 #' data(Qagr_adult_genotypes)
 #' gt <- as.genalex(Qagr_adult_genotypes)
 #' 
-#' @export as.genalex
-#' 
-as.genalex <- function(x) {
-    if (is.genalex(x)) { # already class genalex
+#' @export
+#'
+#' @name as.genalex
+#'
+NULL
+
+
+
+# Don't document this, just the methods
+as.genalex <- function(x, ...) UseMethod("as.genalex")
+
+
+
+#' @rdname as.genalex
+#'
+#' @export
+#'
+as.genalex.genalex <- function(x, ...) {
+    if (is.genalex(x))  # already class genalex
         return(x)
-    } else if (! is.null(attr(x, "genetic.data.format")) &&
+    stop("'", deparse(substitute(x)), "' cannot be coerced to class 'genalex'")
+}
+
+
+
+#' @rdname as.genalex
+#'
+#' @export
+#' 
+as.genalex.data.frame <- function(x, ...) {
+    if (! is.null(attr(x, "genetic.data.format")) &&
              attr(x, "genetic.data.format") == "genalex") {
         # convert earlier readGenalex format to class genalex
         attr(x, "genetic.data.format") <- NULL
@@ -101,11 +128,34 @@ as.genalex <- function(x) {
 
 
 
+#' Convert class 'genalex' to data frame
+#' 
+#' @param x      An object to convert to class \code{'data.frame'}
+#'
+#' @param \dots  Additional arguments passed to \code{as.data.frame}
+#'
+#' @return \code{x} as class \code{'data.frame'}.  No attributes
+#'         are removed, the class is simply changed to \code{data.frame}
+#'         and \code{as.data.frame} is called, with all that may entail.
+#'
+#' @author Douglas G. Scofield
+#'
+#' @export
+#' 
+as.data.frame.genalex <- function(x, ...) {
+    if (is.genalex(x))
+        return(as.data.frame(structure(x, class = c('data.frame')), ...,
+                             stringsAsFactors = default.stringsAsFactors()))
+    stop("'", deparse(substitute(x)), "' is not class 'genalex'")
+}
+
+
+
 #' Read GenAlEx-format genotypes file
 #' 
-#' Reads genotype data file in GenAlEx format into an annotated
-#' data frame of class \code{'genalex'}.  Internal consistency checks that are allowed by the
-#' GenAlEx format are also performed as data is read.  GenAlEx and its
+#' Reads genotype data file in GenAlEx format into an annotated data frame of
+#' class \code{'genalex'}.  Internal consistency checks that are allowed by
+#' the GenAlEx format are also performed as data is read.  GenAlEx and its
 #' documentation are available at
 #' \url{http://biology-assets.anu.edu.au/GenAlEx}.
 #' 
@@ -128,13 +178,27 @@ as.genalex <- function(x) {
 #' Calling \code{readGenalex} for a file first reads the top 3 header lines,
 #' then reads the remainder of the file checking for consistency with the data
 #' description from the header lines.  It attempts to cleanly ignore extra
-#' delimiters that Excel might add when exporting a delimited file.  Extra
-#' columns beyond the genotype columns are allowed.
+#' delimiters that Excel might add when exporting a delimited file.
+#'
+#' After reading, the first two columns of the data frame containing the
+#' sample and population names are stored as \code{character}, while the
+#' genotype columns are stored as \code{numeric}, as that is the specified
+#' type for genotype information in GenAlEx.  As such, it is an error for
+#' these columns to contain non-numeric values that do not match
+#' \code{na.strings}.
+#'
+#' Extra columns beyond the genotype columns are allowed. If these columns are
+#' named, they are read along with the genotype columns and are stored as a
+#' data frame in the \code{extra.columns} attribute and
+#' \code{\link{writeGenalex}} will write their values in the columns 
+#' immediately to the right of the genotype values.  These data are given 
+#' their natural type as if read with 
+#' \code{\link{read.table(..., stringsAsFactors = FALSE)}}, so that 
+#' character values are not converted to factors.
 #'
 #' More information on GenAlEx is available at
-#' \url{http://biology-assets.anu.edu.au/GenAlEx}.  In particular, there are
-#' other GenAlEx specifications regarding e.g., encoding of genotypes that are
-#' expected here but not described.
+#' \url{http://biology-assets.anu.edu.au/GenAlEx}.  In particular, genotype
+#' information must be encoded numerically.
 #' 
 #' @param file       Delimited text file in GenAlEx format, typically exported
 #'                   as tab- or comma-delimited text from Excel
@@ -152,12 +216,12 @@ as.genalex <- function(x) {
 #' @param \dots      Additional arguments passed to \code{\link{scan}} when
 #'                   reading data
 #' 
-#' @return An annotated data frame of class \code{'genalex'} containing sample data, with column
-#' names determined by line 3 of the input file.  Special \code{attributes}
-#' of the \code{data.frame} include
+#' @return An annotated data frame of class \code{'genalex'} containing sample
+#' data, with column names determined by line 3 of the input file.  Special
+#' \code{attributes} of the data frame include:
 #' 
 #' \item{data.file.name }{The value of \code{file}}
-#' \item{genetic.data.format }{\code{"genalex"}}
+#' \item{genetic.data.format }{\code{"genalex"}, not present >= 1.0}
 #' \item{ploidy }{Ploidy of input data}
 #' \item{n.loci }{Number of loci}
 #' \item{n.samples }{Total number of samples}
@@ -168,12 +232,14 @@ as.genalex <- function(x) {
 #' \item{sample.title }{Sample title}
 #' \item{pop.title }{Population title}
 #' \item{locus.names }{Names of loci}
-#' \item{locus.columns }{Numeric column positions of allele 1 of each locus in
-#'   the \code{data.frame}}
+#' \item{locus.columns }{Numeric column position of allele 1 of each locus in
+#'   the data frame}
 #' \item{extra.columns }{\code{data.frame} containing any extra columns given
 #'   in \code{file} to the right of the genotype columns.  Row order is the 
-#'   same as the genotype \code{data.frame}.  If no extra columns were found,
-#'   this attribute does not exist.}
+#'   same as for the genotype data.  Data are given their natural types using
+#'   \code{\link{type.convert(..., as.is = TRUE)}}, so that characters are 
+#'   not converted to factors.  If no extra columns were found, this 
+#'   attribute does not exist.}
 #' 
 #' @author Douglas G. Scofield
 #' 
@@ -193,7 +259,7 @@ as.genalex <- function(x) {
 #' head(Qagr_adult_genotypes)
 #' attributes(Qagr_adult_genotypes)
 #' 
-#' @export readGenalex
+#' @export
 #' 
 readGenalex <- function(file, sep = "\t", ploidy = 2,
                         na.strings = c("0", "-1", ".", "NA", ""),
@@ -216,13 +282,13 @@ readGenalex <- function(file, sep = "\t", ploidy = 2,
 
 
 ####################################
-## Internal functions and variables
+## Internal functions that do the heavy lifting
 
 
 .readGenalexData <- function(con, sep, col.names, n.samples, n.loci,
                              ploidy, na.strings, extra.columns = character(0),
                              ...) {
-    classes <- c("character", "character", rep("character", n.loci*ploidy))
+    classes <- c("character", "character", rep("numeric", n.loci*ploidy))
     scan.col.names = col.names
     extra.columns <- extra.columns[extra.columns != ""]
     if (length(extra.columns)) {
@@ -240,6 +306,8 @@ readGenalex <- function(file, sep = "\t", ploidy = 2,
     if (length(extra.columns)) {
       extra.dat = dat[names(what) %in% extra.columns]
       dat = dat[! names(what) %in% extra.columns]
+      # convert types, but keep characters as characters
+      extra.dat <- lapply(extra.dat, type.convert, as.is = TRUE)
       extra.dat <- as.data.frame(extra.dat, stringsAsFactors = FALSE)
     }
     dat <- as.data.frame(dat, stringsAsFactors = FALSE)
@@ -262,8 +330,8 @@ readGenalex <- function(file, sep = "\t", ploidy = 2,
     header$pop.labels <- dlines[[2]][4:(4+header$n.pops-1)]
     if (length(dlines[[3]]) >= 3 + header$n.loci*ploidy) {
         # extra columns beyond the genotype columns, do we want to load them?
-        # if we do load them, we load them as character into a separate
-        # data.frame attached to the "extra.columns" attribute
+        # if we do load them, we load them initially as character into a 
+        # separate data.frame attached to the "extra.columns" attribute
         extra.columns <- 
             dlines[[3]][(3+header$n.loci*ploidy):length(dlines[[3]])]
         if (any(length(extra.columns) > 0))  # any of them are named
@@ -329,23 +397,23 @@ readGenalex <- function(file, sep = "\t", ploidy = 2,
 
 
 #' Write GenAlEx-format genotypes to a text file
-#'
-#' Writes genotype data encoded in an annotated data frame of class \code{'genalex'}
-#' to a GenAlEx-format text file.  Extra data
-#' columns are included immediately to the right of genotype columns.  GenAlEx
-#' and its documentation are available at
+#' 
+#' Writes genotype data encoded in an annotated data frame of class
+#' \code{'genalex'} to a GenAlEx-format text file.  Extra data columns are
+#' included immediately to the right of genotype columns.  GenAlEx and its
+#' documentation are available at
 #' \url{http://biology-assets.anu.edu.au/GenAlEx}.
-#'
+#' 
 #' This function writes genotypes and associated information within an
-#' annotated data frame of class \code{'genalex'} to a text file in GenAlEx format. More
-#' information is available in the description for \code{\link{readGenalex}},
-#' and at the GenAlEx website at
+#' annotated data frame of class \code{'genalex'} to a text file in GenAlEx
+#' format. More information is available in the description for
+#' \code{\link{readGenalex}}, and at the GenAlEx website at
 #' \url{http://biology-assets.anu.edu.au/GenAlEx}.
-#'
+#' 
 #' Doing \code{writeGenalex(readGenalex("file.txt"), "file-write.txt")} won't
-#' necessarily produce an output file identical to the input file.  Two areas
-#' for which this will likely be true are:
-#'
+#' necessarily produce an output file identical to the input file.  Three
+#' areas for which this will likely be true are:
+#' 
 #' \enumerate{
 #'    \item Names on columns for alleles other than the first in a locus,
 #'          which are ignored by \code{readGenalex}, converted to a simple
@@ -358,6 +426,9 @@ readGenalex <- function(file, sep = "\t", ploidy = 2,
 #'          \code{writeGenalex} will write immediately to the right of the
 #'          genotype columns.  The same column names are used when writing
 #'          as were present when reading.
+#'    \item Missing data will be coded with the values in \code{na} and
+#'          \code{na.character}, regardless of the coding used when the data
+#'          were read.
 #' }
 #'
 #' @param x     Annotated data frame of class \code{'genalex'}
@@ -366,16 +437,22 @@ readGenalex <- function(file, sep = "\t", ploidy = 2,
 #'              \code{stdout()} is used.
 #'
 #' @param quote Logical value (\code{TRUE} or \code{FALSE}).  If \code{TRUE},
-#'              all data are surrounded by double quotes, and all header fields
-#'              except for counts are quoted if they exist.  If \code{FALSE},
-#'              nothing is quoted.
+#'              all character data are surrounded by double quotes, and all
+#'              header fields except for counts are quoted if they exist.
+#'              Note that genotype data will not be quoted, as they are
+#'              numeric values.  Data in the extra columns will be quoted,
+#'              unless some have been made numeric since being read.  If
+#'              \code{FALSE}, nothing is quoted.
 #'
 #' @param sep   Column separator for output (defaults to \code{"\t"}).
 #'
 #' @param eol   End-of-line character used for output (defaults to \code{"\n"}).
 #'
-#' @param na    The string to use when writing missing values in the data.
-#'              Defaults to \code{"0"}.
+#' @param na    The string to use when writing missing values in genotype
+#'              data.  Defaults to \code{"0"}.
+#'
+#' @param na.character The string to use when writing missing values in
+#'              character data.  Defaults to \code{""}.
 #'
 #' @return No value is returned.
 #'
@@ -399,13 +476,10 @@ readGenalex <- function(file, sep = "\t", ploidy = 2,
 #' # lots of output to terminal
 #' writeGenalex(Qagr_adult_genotypes, file = "")
 #'
-#' @export writeGenalex
+#' @export
 #'
-#
-# TODO maybe: handle something like quote= ?
-#
 writeGenalex <- function(x, file, quote = FALSE, sep = "\t", eol = "\n",
-                         na = "0") {
+                         na = "0", na.character = "") {
     DNAME <- deparse(substitute(x))
     if (! is.genalex(x))
         stop(DNAME, " must be class 'genalex'")
@@ -422,16 +496,28 @@ writeGenalex <- function(x, file, quote = FALSE, sep = "\t", eol = "\n",
     if (! inherits(file, "connection"))
         stop("'file' must be a character string or connection")
     a <- attributes(x)
-    # recast everything as character, and apply NA string
-    x <- as.data.frame(lapply(x, as.character), stringsAsFactors = FALSE)
-    x[is.na(x)] <- na
-    if (! is.null(extra <- a$extra.columns)) {
-        extra <- as.data.frame(lapply(extra, as.character),
-                               stringsAsFactors = FALSE)
-        extra[is.na(extra)] <- na
-    }
     # quote function
     qu <- function(x) if (quote) paste(sep="", "\"", x, "\"") else x
+    # coerce two left columns to character, and apply na.character
+    x[, 1] <- as.character(x[, 1])
+    x[, 2] <- as.character(x[, 2])
+    x[, 1:2][is.na(x[, 1:2])] <- na.character  # character columns
+    x[, 1] <- qu(x[, 1])
+    x[, 2] <- qu(x[, 2])
+    # now genotype columns
+    x[, 3:ncol(x)][is.na(x[, 3:ncol(x)])] <- na
+    # ... and extra columns, by type
+    if (! is.null(extra <- a$extra.columns)) {
+        for (i in 1:ncol(extra)) {
+            if (is.numeric(extra[, i])) {
+                extra[, i][is.na(extra[, i])] <- na
+            } else {
+                extra[, i] <- as.character(extra[, i])
+                extra[, i][is.na(extra[, i])] <- na.character
+                extra[, i] <- qu(extra[, i])
+            }
+        }
+    }
     # header line 1
     cat(file = file, sep = sep, a$n.loci, a$n.samples, a$n.pops, a$pop.sizes)
     cat(file = file, eol)
@@ -450,25 +536,71 @@ writeGenalex <- function(x, file, quote = FALSE, sep = "\t", eol = "\n",
     cat(file = file, eol)
     # data plus extra columns
     for (i in 1:nrow(x)) {
-        fields <- unlist(x[i, ])
+        cat(file = file, paste(collapse = sep, x[i, ]))
         if (! is.null(extra))
-            fields <- c(fields, extra[i, ])
-        cat(file = file, sep = sep, qu(fields))
+            cat(file = file, paste(collapse = sep, extra[i, ]))
         cat(file = file, eol)
     }
 }
 
 
 
+#' Summarise contents of class 'genalex' data frame
+#' 
+#' This prints a few lines summarising the data set title, sample size,
+#' population sizes, ploidy, number of loci, and locus names, followed
+#' by a summary of the data frame and a summary of the extra columns,
+#' if present.
+#' 
+#' @param  object An annotated data frame of class \code{'genalex'}
+#' 
+#' @param  ...    Additional arguments passed to \code{'summary'}
+#'                for the data frame
+#' 
+#' @return Result of \code{summary.data.frame(object)}
+#'
+#' @author Douglas G. Scofield
+#'
+#' @examples
+#' 
+#' data(Qagr_adult_genotypes)
+#' summary(Qagr_adult_genotypes)
+#' 
+#' @export
+#'
+summary.genalex <- function(object, ...) {
+    stopifnot(is.genalex(object))
+    a <- attributes(object)
+    cat("Dataset title:", a$dataset.title, "\n")
+    cat("Number of samples:", nrow(object), "\n")
+    cat("Number of populations:", a$n.pops, "\n")
+    cat("Population sizes:\n")
+    print(a$pop.sizes)
+    cat("\nPloidy:", a$ploidy, "\n")
+    cat("Number of loci:", a$n.loci, "\n")
+    cat("Locus names:\n")
+    print(a$locus.names)
+    cat("\nSummary of genotype data frame:\n")
+    print(oo <- NextMethod(object, ...))  # this may not be interesting here
+    cat("\n")
+    if (! is.null(a$extra.columns)) {
+        cat("\nSummary of extra.columns data frame:\n")
+        summary(a$extra.columns)
+    }
+    invisible(oo)
+}
+
+
+ 
 #' Print selected genotypes
 #' 
 #' Print selected genotypes, optionally calling out a locus
 #' 
-#' @param  dat    An annotated data frame of class \code{'genalex'}
+#' @param  x    An annotated data frame of class \code{'genalex'}
 #' 
-#' @param  rows   The specific rows of \code{dat} to print
+#' @param  rows   The specific rows of \code{x} to print
 #' 
-#' @param  callout.locus One or more loci on \code{dat} to be surrounded by
+#' @param  callout.locus One or more loci on \code{x} to be surrounded by
 #'                \code{callout.char} when printed
 #' 
 #' @param  sep    Separator character to be used between loci
@@ -491,27 +623,27 @@ writeGenalex <- function(x, file, quote = FALSE, sep = "\t", eol = "\n",
 #' data(Qagr_adult_genotypes)
 #' printGenalexGenotype(Qagr_adult_genotypes, rows = 6:8, callout.locus = "1c08")
 #' 
-#' @export printGenalexGenotype
+#' @export
 #'
-printGenalexGenotype <- function(dat, rows, callout.locus = NULL, sep = " ",
+printGenalexGenotype <- function(x, rows, callout.locus = NULL, sep = " ",
                                  allele.sep = "/", callout.char = "*", 
                                  label = NULL) {
-    stopifnot(is.genalex(dat))
-    cols <- names(dat)
-    ploidy <- attr(dat, "ploidy")
+    stopifnot(is.genalex(x))
+    cols <- names(x)
+    ploidy <- attr(x, "ploidy")
     for (row in rows) {
-        cat(paste(sep = sep, as.character(dat[row,1]), 
-                  as.character(dat[row,2])))
+        cat(paste(sep = sep, as.character(x[row, 1]), 
+                  as.character(x[row, 2])))
         if (! is.null(label))
             cat("", label)
         full.gt <- ""
         for (col in seq(from = 3, to = length(cols), by = ploidy)) {
-            gt <- paste(collapse = allele.sep, dat[row,col:(col+ploidy-1)])
+            gt <- paste(collapse = allele.sep, x[row, col:(col+ploidy-1)])
             if (cols[col] %in% callout.locus) 
                 gt <- paste(sep = "", callout.char, gt, callout.char)
             full.gt <- paste(sep = sep, collapse = sep, full.gt, gt)
         }
-        cat(full.gt,"\n")
+        cat(full.gt, "\n")
     }
 }
 
@@ -540,7 +672,7 @@ printGenalexGenotype <- function(dat, rows, callout.locus = NULL, sep = " ",
 #' data(Qagr_adult_genotypes)
 #' computeGenalexColumns(Qagr_adult_genotypes, c("0c19", "0m05"))
 #' 
-#' @export computeGenalexColumns
+#' @export
 #' 
 computeGenalexColumns <- function(dat, locus, ploidy = NULL) {
     if (is.null(ploidy)) ploidy <- attr(dat,"ploidy")
@@ -573,7 +705,7 @@ computeGenalexColumns <- function(dat, locus, ploidy = NULL) {
 #' loci <- rev(attr(Qagr_adult_genotypes, "locus.names"))
 #' reord = reorderGenalexLoci(Qagr_adult_genotypes, rev(loci))
 #' 
-#' @export reorderGenalexLoci
+#' @export
 #' 
 reorderGenalexLoci <- function(dat, loci) {
     dat <- as.genalex(dat)
@@ -623,7 +755,7 @@ reorderGenalexLoci <- function(dat, loci) {
 #' po <- attr(Qagr_pericarp_genotypes, "pop.labels")
 #' loc2.pop2 <- getGenalexLocus(Qagr_pericarp_genotypes, nm[2], po[2])
 #' 
-#' @export getGenalexLocus
+#' @export
 #' 
 getGenalexLocus <- function(dat, locus, pop = NULL) {
     is.genalex(dat)
@@ -655,7 +787,7 @@ getGenalexLocus <- function(dat, locus, pop = NULL) {
 #' 
 #' @author Douglas G. Scofield
 #' 
-#' @export putGenalexLocus
+#' @export
 #' 
 putGenalexLocus <- function(dat, locus, newdata) {
     dat <- as.genalex(dat)
@@ -687,7 +819,7 @@ putGenalexLocus <- function(dat, locus, newdata) {
 #' data(Qagr_adult_genotypes)
 #' newdat <- dropGenalexLoci(Qagr_adult_genotypes, "Oe09")
 #' 
-#' @export dropGenalexLoci
+#' @export
 #' 
 dropGenalexLoci <- function(dat, drop.loci, quiet = FALSE) {
     dat <- as.genalex(dat)
@@ -745,7 +877,7 @@ dropGenalexLoci <- function(dat, drop.loci, quiet = FALSE) {
 #' attr(Qagr_adult_genotypes, "ploidy")
 #' p1 <- reduceGenalexPloidy(Qagr_adult_genotypes, 1)
 #' 
-#' @export reduceGenalexPloidy
+#' @export
 #' 
 reduceGenalexPloidy <- function(dat, new.ploidy = 1) {
     dat <- as.genalex(dat)

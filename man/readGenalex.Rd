@@ -25,12 +25,12 @@ readGenalex(file, sep = "\\t", ploidy = 2, na.strings = c("0", "-1", ".",
                   reading data}
 }
 \value{
-An annotated data frame of class \code{'genalex'} containing sample data, with column
-names determined by line 3 of the input file.  Special \code{attributes}
-of the \code{data.frame} include
+An annotated data frame of class \code{'genalex'} containing sample
+data, with column names determined by line 3 of the input file.  Special
+\code{attributes} of the data frame include:
 
 \item{data.file.name }{The value of \code{file}}
-\item{genetic.data.format }{\code{"genalex"}}
+\item{genetic.data.format }{\code{"genalex"}, not present >= 1.0}
 \item{ploidy }{Ploidy of input data}
 \item{n.loci }{Number of loci}
 \item{n.samples }{Total number of samples}
@@ -41,17 +41,19 @@ of the \code{data.frame} include
 \item{sample.title }{Sample title}
 \item{pop.title }{Population title}
 \item{locus.names }{Names of loci}
-\item{locus.columns }{Numeric column positions of allele 1 of each locus in
-  the \code{data.frame}}
+\item{locus.columns }{Numeric column position of allele 1 of each locus in
+  the data frame}
 \item{extra.columns }{\code{data.frame} containing any extra columns given
   in \code{file} to the right of the genotype columns.  Row order is the
-  same as the genotype \code{data.frame}.  If no extra columns were found,
-  this attribute does not exist.}
+  same as for the genotype data.  Data are given their natural types using
+  \code{\link{type.convert(..., as.is = TRUE)}}, so that characters are
+  not converted to factors.  If no extra columns were found, this
+  attribute does not exist.}
 }
 \description{
-Reads genotype data file in GenAlEx format into an annotated
-data frame of class \code{'genalex'}.  Internal consistency checks that are allowed by the
-GenAlEx format are also performed as data is read.  GenAlEx and its
+Reads genotype data file in GenAlEx format into an annotated data frame of
+class \code{'genalex'}.  Internal consistency checks that are allowed by
+the GenAlEx format are also performed as data is read.  GenAlEx and its
 documentation are available at
 \url{http://biology-assets.anu.edu.au/GenAlEx}.
 }
@@ -75,13 +77,27 @@ samples is the following, with columns separated by \code{sep}:
 Calling \code{readGenalex} for a file first reads the top 3 header lines,
 then reads the remainder of the file checking for consistency with the data
 description from the header lines.  It attempts to cleanly ignore extra
-delimiters that Excel might add when exporting a delimited file.  Extra
-columns beyond the genotype columns are allowed.
+delimiters that Excel might add when exporting a delimited file.
+
+After reading, the first two columns of the data frame containing the
+sample and population names are stored as \code{character}, while the
+genotype columns are stored as \code{numeric}, as that is the specified
+type for genotype information in GenAlEx.  As such, it is an error for
+these columns to contain non-numeric values that do not match
+\code{na.strings}.
+
+Extra columns beyond the genotype columns are allowed. If these columns are
+named, they are read along with the genotype columns and are stored as a
+data frame in the \code{extra.columns} attribute and
+\code{\link{writeGenalex}} will write their values in the columns
+immediately to the right of the genotype values.  These data are given
+their natural type as if read with
+\code{\link{read.table(..., stringsAsFactors = FALSE)}}, so that
+character values are not converted to factors.
 
 More information on GenAlEx is available at
-\url{http://biology-assets.anu.edu.au/GenAlEx}.  In particular, there are
-other GenAlEx specifications regarding e.g., encoding of genotypes that are
-expected here but not described.
+\url{http://biology-assets.anu.edu.au/GenAlEx}.  In particular, genotype
+information must be encoded numerically.
 }
 \examples{
 data(Qagr_adult_genotypes)

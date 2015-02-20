@@ -4,11 +4,12 @@ Title: Read and Manipulate GenAlEx-format Genotype Files
 Version: 0.9.9000
 Authors@R: person(c("Douglas", "G."), "Scofield", email = "douglasgscofield@gmail.com", role = c("aut", "cre"))
 Maintainer: Douglas G. Scofield <douglasgscofield@gmail.com>
-Description: A collection of R functions to read genotype data file in GenAlEx
-    format, as exported from Excel as a delimited text file, into an annotated
-    data frame of class 'genalex', and manipulate it in that form. Several
-    functions are provided for accessing and printing this data. GenAlEx and
-    its documentation are available at
+Description: A collection of R functions to read, manipulate and write genotype
+    data in GenAlEx format.  GenAlEx is a widely-used Excel plugin for
+    manipulating and analysing genotype data.  This package reads GenAlEx data
+    and creates an annotated data frame of class 'genalex'. Several functions
+    are provided for accessing, manipulating and printing this data. GenAlEx
+    and its documentation are available at
     http://biology-assets.anu.edu.au/GenAlEx.
 URL: https://github.com/douglasgscofield/readGenalex
 License: LGPL-3 | file LICENSE

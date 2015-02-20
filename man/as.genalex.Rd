@@ -2,27 +2,33 @@
 % Please edit documentation in R/readGenalex.R
 \name{as.genalex}
 \alias{as.genalex}
-\title{Convert pre-1.0 readGenalex data frames to class 'genalex'}
+\alias{as.genalex.data.frame}
+\alias{as.genalex.genalex}
+\title{Convert object to class 'genalex'}
 \usage{
-as.genalex(x)
+\method{as.genalex}{genalex}(x, ...)
+
+\method{as.genalex}{data.frame}(x, ...)
 }
 \arguments{
-\item{x}{An object to convert to class \code{'genalex'}, possibly
-          of an earlier package \code{readGenalex} format}
+\item{x}{An object}
+
+\item{\dots}{Additional arguments, currently ignored}
 }
 \value{
-\code{x} as an S3 class \code{'genalex'} object, or
-        a fatal error
+\code{x} as a class \code{'genalex'} object
 }
 \description{
-Converts a data frame to a class \code{'genalex'} object.  The
-following cases are handled:
+Converts object \code{x} to a data frame of class \code{'genalex'}.
+There are three cases:
 \itemize{
-  \item If the data frame is a pre-1.0 data frame, it is converted
-  to class \code{'genalex'}
-  \item If the data frame is already of class \code{'genalex'}, it
-  is returned
-  \item If \code{x} is of any other format, it is an error
+  \item If \code{x} is of class \code{'genalex'}, it is simply returned.
+  \item If \code{x} is of class \code{'data.frame'}, it is examined to
+        see if it might be a data frame created by an earlier version of
+        the \code{readGenalex} package.  If so, it is converted to
+        class \code{'genalex'} and returned.
+  \item Any other class is an error.  Further conversions between genetic
+        data formats may be added here as additional methods.
 }
 }
 \examples{

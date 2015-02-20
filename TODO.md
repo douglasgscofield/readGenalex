@@ -1,21 +1,22 @@
 # For 1.0
 
 o Add used papers to the data description?
-o Is `as` a generic and `as.genalex` a method?
-o Add summary.genalex method
 o `createGenalex()`, for creating a de-novo class `'genalex'` data frame.  This requires a `createGenalexLocus` or some generalisation of the current locus-handling functions, to add a new locus to the "end".
-o Functions for converting from/to some other genetic formats, perhaps attaching them to as.genalex
+o Functions for converting from/to some other genetic formats, attaching them to as.genalex
 o If I am converting from those other formats, do I need to have the specific packages loaded?
 o Initial dispersalDiversity package should that be based on class 'genalex'-enabled readGenalex
 o check on any implicit version dependencies
 o document version dependencies
 o drawing on writeGenalex documentation about differences when writing, be more explicit about what happens with extra columns and with extra column names on input
-o straighten out test for writeGenalex with and without quote=
 o read from and write to Excel files
 o add more tests
 o complete checkNullAllele integration
 o add checkNullAllele return of matrices indicating possible null alleles
 o make null allele demo using createGenalex(), and also using adult and pericarp Q. agrifolia data?
+x straighten out test for writeGenalex with and without quote=
+x GenAlEx says all genotype data is numeric, so code it as numeric after reading
+x Is `as` a generic and `as.genalex` a method?
+x Add summary.genalex method
 x Update README for new data sets
 x Fix WARNING during make check, probably because of the following:
 x Split data up into two separate RData

@@ -4,7 +4,8 @@
 \alias{writeGenalex}
 \title{Write GenAlEx-format genotypes to a text file}
 \usage{
-writeGenalex(x, file, quote = FALSE, sep = "\\t", eol = "\\n", na = "0")
+writeGenalex(x, file, quote = FALSE, sep = "\\t", eol = "\\n", na = "0",
+  na.character = "")
 }
 \arguments{
 \item{x}{Annotated data frame of class \code{'genalex'}}
@@ -13,37 +14,43 @@ writeGenalex(x, file, quote = FALSE, sep = "\\t", eol = "\\n", na = "0")
              \code{stdout()} is used.}
 
 \item{quote}{Logical value (\code{TRUE} or \code{FALSE}).  If \code{TRUE},
-             all data are surrounded by double quotes, and all header fields
-             except for counts are quoted if they exist.  If \code{FALSE},
-             nothing is quoted.}
+             all character data are surrounded by double quotes, and all
+             header fields except for counts are quoted if they exist.
+             Note that genotype data will not be quoted, as they are
+             numeric values.  Data in the extra columns will be quoted,
+             unless some have been made numeric since being read.  If
+             \code{FALSE}, nothing is quoted.}
 
 \item{sep}{Column separator for output (defaults to \code{"\t"}).}
 
 \item{eol}{End-of-line character used for output (defaults to \code{"\n"}).}
 
-\item{na}{The string to use when writing missing values in the data.
-             Defaults to \code{"0"}.}
+\item{na}{The string to use when writing missing values in genotype
+             data.  Defaults to \code{"0"}.}
+
+\item{na.character}{The string to use when writing missing values in
+             character data.  Defaults to \code{""}.}
 }
 \value{
 No value is returned.
 }
 \description{
-Writes genotype data encoded in an annotated data frame of class \code{'genalex'}
-to a GenAlEx-format text file.  Extra data
-columns are included immediately to the right of genotype columns.  GenAlEx
-and its documentation are available at
+Writes genotype data encoded in an annotated data frame of class
+\code{'genalex'} to a GenAlEx-format text file.  Extra data columns are
+included immediately to the right of genotype columns.  GenAlEx and its
+documentation are available at
 \url{http://biology-assets.anu.edu.au/GenAlEx}.
 }
 \details{
 This function writes genotypes and associated information within an
-annotated data frame of class \code{'genalex'} to a text file in GenAlEx format. More
-information is available in the description for \code{\link{readGenalex}},
-and at the GenAlEx website at
+annotated data frame of class \code{'genalex'} to a text file in GenAlEx
+format. More information is available in the description for
+\code{\link{readGenalex}}, and at the GenAlEx website at
 \url{http://biology-assets.anu.edu.au/GenAlEx}.
 
 Doing \code{writeGenalex(readGenalex("file.txt"), "file-write.txt")} won't
-necessarily produce an output file identical to the input file.  Two areas
-for which this will likely be true are:
+necessarily produce an output file identical to the input file.  Three
+areas for which this will likely be true are:
 
 \enumerate{
    \item Names on columns for alleles other than the first in a locus,
@@ -57,6 +64,9 @@ for which this will likely be true are:
          \code{writeGenalex} will write immediately to the right of the
          genotype columns.  The same column names are used when writing
          as were present when reading.
+   \item Missing data will be coded with the values in \code{na} and
+         \code{na.character}, regardless of the coding used when the data
+         were read.
 }
 }
 \examples{

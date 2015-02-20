@@ -30,8 +30,8 @@ Type 'q()' to quit R.
 > flush(stderr()); flush(stdout())
 > 
 > ### Name: as.genalex
-> ### Title: Convert pre-1.0 readGenalex data frames to class 'genalex'
-> ### Aliases: as.genalex
+> ### Title: Convert object to class 'genalex'
+> ### Aliases: as.genalex as.genalex.data.frame as.genalex.genalex
 > 
 > ### ** Examples
 > 
@@ -274,7 +274,7 @@ $locus.names
  [1] "0c11" "0c19" "Oe09" "0i01" "0m05" "0m07" "1c06" "1c08" "1f02" "1g13"
 
 $data.file.name
-[1] "../inst/extdata/Scofield-et-al_AmNat_52938_Quercus-agrifolia_adult-genotypes.txt"
+[1] "../inst/extdata/Qagr_adult_genotypes.txt"
 
 > 
 > 
@@ -314,6 +314,77 @@ $data.file.name
 > # reverse loci
 > loci <- rev(attr(Qagr_adult_genotypes, "locus.names"))
 > reord = reorderGenalexLoci(Qagr_adult_genotypes, rev(loci))
+> 
+> 
+> 
+> cleanEx()
+> nameEx("summary.genalex")
+> ### * summary.genalex
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: summary.genalex
+> ### Title: Summarise contents of class 'genalex' data frame
+> ### Aliases: summary.genalex
+> 
+> ### ** Examples
+> 
+> data(Qagr_adult_genotypes)
+> summary(Qagr_adult_genotypes)
+Dataset title: Q.agrifolia adults at Sedgwick 
+Number of samples: 262 
+Number of populations: 1 
+Population sizes:
+Sedgwick 
+     262 
+
+Ploidy: 2 
+Number of loci: 10 
+Locus names:
+ [1] "0c11" "0c19" "Oe09" "0i01" "0m05" "0m07" "1c06" "1c08" "1f02" "1g13"
+
+Summary of genotype data frame:
+ AdultMomFamily           Site          0c11           0c11.2     
+ Length:262         Sedgwick:262   Min.   :203.0   Min.   :213.0  
+ Class :character                  1st Qu.:213.0   1st Qu.:213.0  
+ Mode  :character                  Median :213.0   Median :215.0  
+                                   Mean   :213.2   Mean   :216.8  
+                                   3rd Qu.:213.0   3rd Qu.:217.0  
+                                   Max.   :225.0   Max.   :255.0  
+                                   NA's   :6       NA's   :6      
+      0c19           0c19.2           Oe09           Oe09.2     
+ Min.   :222.0   Min.   :226.0   Min.   :184.0   Min.   :186.0  
+ 1st Qu.:226.0   1st Qu.:238.0   1st Qu.:190.0   1st Qu.:194.0  
+ Median :234.0   Median :240.0   Median :192.0   Median :194.0  
+ Mean   :232.6   Mean   :239.1   Mean   :191.7   Mean   :194.9  
+ 3rd Qu.:238.0   3rd Qu.:242.0   3rd Qu.:194.0   3rd Qu.:196.0  
+ Max.   :244.0   Max.   :250.0   Max.   :200.0   Max.   :208.0  
+ NA's   :6       NA's   :6       NA's   :6       NA's   :6      
+      0i01           0i01.2         0m05           0m05.2           0m07      
+ Min.   :192.0   Min.   :192   Min.   :202.0   Min.   :202.0   Min.   :199.0  
+ 1st Qu.:196.0   1st Qu.:200   1st Qu.:202.0   1st Qu.:210.0   1st Qu.:199.0  
+ Median :196.0   Median :204   Median :210.0   Median :214.0   Median :199.0  
+ Mean   :199.3   Mean   :210   Mean   :208.4   Mean   :215.4   Mean   :199.9  
+ 3rd Qu.:204.0   3rd Qu.:208   3rd Qu.:212.0   3rd Qu.:220.0   3rd Qu.:201.0  
+ Max.   :248.0   Max.   :264   Max.   :228.0   Max.   :238.0   Max.   :213.0  
+                               NA's   :7       NA's   :7       NA's   :6      
+     0m07.2           1c06           1c06.2           1c08      
+ Min.   :199.0   Min.   :234.0   Min.   :234.0   Min.   :269.0  
+ 1st Qu.:201.0   1st Qu.:236.0   1st Qu.:236.0   1st Qu.:269.0  
+ Median :201.0   Median :236.0   Median :240.0   Median :271.0  
+ Mean   :203.1   Mean   :236.6   Mean   :239.9   Mean   :271.6  
+ 3rd Qu.:205.0   3rd Qu.:238.0   3rd Qu.:242.0   3rd Qu.:273.0  
+ Max.   :223.0   Max.   :244.0   Max.   :246.0   Max.   :331.0  
+ NA's   :6                                       NA's   :6      
+     1c08.2           1f02           1f02.2           1g13         1g13.2     
+ Min.   :269.0   Min.   :170.0   Min.   :172.0   Min.   :181   Min.   :185.0  
+ 1st Qu.:273.0   1st Qu.:180.0   1st Qu.:190.0   1st Qu.:185   1st Qu.:189.0  
+ Median :273.0   Median :182.0   Median :190.0   Median :185   Median :189.0  
+ Mean   :279.1   Mean   :184.2   Mean   :189.6   Mean   :186   Mean   :189.5  
+ 3rd Qu.:273.0   3rd Qu.:190.0   3rd Qu.:190.0   3rd Qu.:187   3rd Qu.:191.0  
+ Max.   :339.0   Max.   :190.0   Max.   :202.0   Max.   :191   Max.   :198.0  
+ NA's   :6       NA's   :1       NA's   :1       NA's   :8     NA's   :8      
+
 > 
 > 
 > 
@@ -605,7 +676,7 @@ STD	Sedgwick	213	215	244	246	190	194	196	208	210	214	201	219	236	242	271	275	190
 > ###
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  0.283 0.026 0.311 0 0 
+Time elapsed:  0.315 0.01 0.325 0 0 
 > grDevices::dev.off()
 null device 
           1 

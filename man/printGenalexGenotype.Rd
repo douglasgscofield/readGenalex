@@ -4,15 +4,15 @@
 \alias{printGenalexGenotype}
 \title{Print selected genotypes}
 \usage{
-printGenalexGenotype(dat, rows, callout.locus = NULL, sep = " ",
+printGenalexGenotype(x, rows, callout.locus = NULL, sep = " ",
   allele.sep = "/", callout.char = "*", label = NULL)
 }
 \arguments{
-\item{dat}{An annotated data frame of class \code{'genalex'}}
+\item{x}{An annotated data frame of class \code{'genalex'}}
 
-\item{rows}{The specific rows of \code{dat} to print}
+\item{rows}{The specific rows of \code{x} to print}
 
-\item{callout.locus}{One or more loci on \code{dat} to be surrounded by
+\item{callout.locus}{One or more loci on \code{x} to be surrounded by
                \code{callout.char} when printed}
 
 \item{sep}{Separator character to be used between loci}

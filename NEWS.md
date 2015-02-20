@@ -1,15 +1,23 @@
 # readGenalex 0.9.9000 (class_genalex development branch)
 
-* NOT YET: Extended `checkNullAlleles` to return a matrix of potential null alleles, with a couple of indexing modes.  More extensions needed.
-* Added `Qagr_adult_genotypes`and `Qagr_peric_genotypes` data sets and modified examples to use them
-* Added test for `checkNullAlleles` and an example
-* Rolled `checkNullAlleles` from my popgen repository into this package
-* New `as.genalex` function to convert a pre-class `'genalex'` data frame.  This is used wherever a class `'genalex'` data frame is returned, so conversion from old to new format happens automatically.
-* Added `na.strings` argument to both `writeGenalex` and `readGenalex`, with defaults that reflect GenAlEx's own expectations for missing data
-* `readGenalex` now has `...` in its argument list, for additional arguments to be passed to `scan()` while reading data
+* Creates and manipulates data frames using the new class `'genalex'`.  The `"genetic.data.format"` attribute present in earlier versions of this package is removed.
 * Extensive documentation updates reflecting use of class `'genalex'`
-* Created `inst/extdata` for data in non-traditional formats.  More to be done there.
+* New `as.genalex` generic with `as.genalex.genalex` and `as.genalex.data.frame`.  The latter will convert a pre-class `'genalex'` data frame to class `'genalex'`, and is used wherever a data frame is returned so conversion from old to new format happens automatically.
+* There is a `summary` method for class `'genalex'` which prints a few lines describing the data set, followed by a summary of the data frame contents and a summary of the extra columns, if present.
+* New `as.data.frame` method to convert class `'genalex'` to class `'data.frame'`
+* `readGenalex` now has `...` in its argument list, for additional arguments to be passed to `scan()` while reading data
+* Added `na.strings` argument to `readGenalex`, with defaults that reflect GenAlEx's own expectations for missing data
+* Added `na` and `na.character` arguments to `writeGenalex`, with values to use for NA in genotype/numeric/logical columns and character columns, respectively
+* Clarified typing of sample, population, genotype, and extra columns.  Sample and population columns are stored as character, genotype columns are stored as numeric, and extra columns are stored as their natural type as determined by `type.convert(..., as.is=TRUE)`, so that character columns are not converted to factors.
+* As a result of the clarified typing, `writeGenalex(..., quote=TRUE)` will only quote names in the GenAlEx header, in the first two columns, and in any character-valued extra columns
 * Added tests for `writeGenalex`
+* Rolled `checkNullAlleles` from my popgen repository into this package
+* Added test for `checkNullAlleles` and an example
+* NOT YET: Extended `checkNullAlleles` to return a matrix of potential null alleles, with a couple of indexing modes.  More extensions needed.
+* Added `Qagr_adult_genotypes`and `Qagr_pericarp_genotypes` data sets and modified examples to use them
+* Created `inst/extdata` to hold data in non-R formats (simple tables), which of course includes GenAlEx-format data
+* Added collation order to DESCRIPTION so that readGenalex.R is loaded before checkNullAlleles.R
+* Added 'data' target to Makefile to build specified RData files
 
 # readGenalex 0.4.1.9000 (current development version)
 

@@ -119,11 +119,17 @@ of class `'genalex'`:
 `writeGenalex()`
 : Write a GenAlEx-format text file
 
+`summary()`
+: Prints a summary of the data set, a summary of the genotype data frame, and a summary of the extra columns, if any
+
 `is.genalex()`
-: Checks whether the object is class `'genalex'`.
+: Checks whether the object is class `'genalex'`
 
 `as.genalex()`
-: Converts a pre-1.0-style `readGenalex` data frame to class `'genalex'`
+: Generic function which converts a pre-1.0-style `readGenalex` data frame to class `'genalex'`, and is available for further expansion
+
+`as.data.frame()`
+: Method to convert class `'genalex'` to class `'data.frame'`, no attributes are removed
 
 `reduceGenalexPloidy()`
 : Reduce the ploidy to 1 by selecting the first allele of each locus
