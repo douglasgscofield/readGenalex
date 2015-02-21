@@ -1,5 +1,6 @@
 # For 1.0
 
+o Consider switching to a full-generic interface (reduceGenalexPloidy -> reducePloidy.genalex).  I lose the ability to "silently" convert pre-1.0 data frames to class genalex, but if I make the old names stubs with instructions to convert with as.genalex and then use the new interface, that might be fine.  I don't have that many users anyway.
 o Add used papers to the data description?
 o Functions for converting from/to some other genetic formats, attaching them to as.genalex
 o If I am converting from those other formats, do I need to have the specific packages loaded?
