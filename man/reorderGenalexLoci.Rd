@@ -4,18 +4,18 @@
 \alias{reorderGenalexLoci}
 \title{Reorder a data frame of class \code{'genalex'}}
 \usage{
-reorderGenalexLoci(dat, loci)
+reorderGenalexLoci(x, loci)
 }
 \arguments{
-\item{dat}{An annotated data frame of class \code{'genalex'}}
+\item{x}{An annotated data frame of class \code{'genalex'}}
 
-\item{loci}{The names of loci found in \code{dat}, in the desired new
-            order.  All loci in \code{dat} must be named.  The order of
+\item{loci}{The names of loci found in \code{x}, in the desired new
+            order.  All loci in \code{x} must be named.  The order of
             the alleles within each locus is preserved.}
 }
 \value{
 A data frame of class \code{'genalex'} containing the same
-genotype data from \code{dat} reordered according to \code{loci}.
+genotype data from \code{x} reordered according to \code{loci}.
 }
 \description{
 Reorder the genotype columns of a class \code{'genalex'} data frame by

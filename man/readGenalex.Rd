@@ -30,7 +30,6 @@ data, with column names determined by line 3 of the input file.  Special
 \code{attributes} of the data frame include:
 
 \item{data.file.name }{The value of \code{file}}
-\item{genetic.data.format }{\code{"genalex"}, not present >= 1.0}
 \item{ploidy }{Ploidy of input data}
 \item{n.loci }{Number of loci}
 \item{n.samples }{Total number of samples}
@@ -46,9 +45,10 @@ data, with column names determined by line 3 of the input file.  Special
 \item{extra.columns }{\code{data.frame} containing any extra columns given
   in \code{file} to the right of the genotype columns.  Row order is the
   same as for the genotype data.  Data are given their natural types using
-  \code{\link{type.convert(..., as.is = TRUE)}}, so that characters are
+  \code{type.convert(..., as.is = TRUE)}, so that characters are
   not converted to factors.  If no extra columns were found, this
   attribute does not exist.}
+\item{genetic.data.format }{\code{"genalex"}, not present >= 1.0}
 }
 \description{
 Reads genotype data file in GenAlEx format into an annotated data frame of
@@ -92,7 +92,7 @@ data frame in the \code{extra.columns} attribute and
 \code{\link{writeGenalex}} will write their values in the columns
 immediately to the right of the genotype values.  These data are given
 their natural type as if read with
-\code{\link{read.table(..., stringsAsFactors = FALSE)}}, so that
+\code{read.table(..., stringsAsFactors = FALSE)}, so that
 character values are not converted to factors.
 
 More information on GenAlEx is available at
@@ -115,6 +115,9 @@ in Excel. Population genetic software for teaching and research-an update.
 Peakall, R. and Smouse P.E. (2006) GENALEX 6: genetic analysis in Excel.
 Population genetic software for teaching and research. \emph{Molecular
 Ecology Notes} 6, 288-295.
+}
+\seealso{
+\code{\link{read.table}} \code{\link{type.convert}}
 }
 \keyword{attribute}
 \keyword{file}

@@ -4,19 +4,19 @@
 \alias{reduceGenalexPloidy}
 \title{Reduce the ploidy of a data frame of class \code{'genalex'}}
 \usage{
-reduceGenalexPloidy(dat, new.ploidy = 1)
+reduceGenalexPloidy(x, new.ploidy = 1)
 }
 \arguments{
-\item{dat}{An annotated data frame of class \code{'genalex'}}
+\item{x}{An annotated data frame of class \code{'genalex'}}
 
 \item{new.ploidy}{The desired new ploidy.  Currently, the only usefully
-                  accepted value is 1, with ploidy of \code{dat} being 2;
-                  a ploidy matching the current ploidy of \code{dat}
-                  silently returns \code{dat}.}
+                  accepted value is 1, with ploidy of \code{x} being 2;
+                  a ploidy matching the current ploidy of \code{x}
+                  silently returns \code{x}.}
 }
 \value{
 A data frame of class \code{'genalex'} containing genotype data
-from \code{dat} reduced to the specified \code{new.ploidy}, with
+from \code{x} reduced to the specified \code{new.ploidy}, with
 attributes updated as required.
 }
 \description{

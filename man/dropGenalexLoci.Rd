@@ -4,18 +4,18 @@
 \alias{dropGenalexLoci}
 \title{Remove specified loci from data frame of class \code{'genalex'}}
 \usage{
-dropGenalexLoci(dat, drop.loci, quiet = FALSE)
+dropGenalexLoci(x, drop.loci, quiet = FALSE)
 }
 \arguments{
-\item{dat}{An annotated data frame of class \code{'genalex'}}
+\item{x}{An annotated data frame of class \code{'genalex'}}
 
-\item{drop.loci}{The names of one or more loci found in \code{dat}}
+\item{drop.loci}{The names of one or more loci found in \code{x}}
 
-\item{quiet}{If set to \code{TRUE}, quietly returns \code{dat}
-                 if none of \code{drop.loci} are found in \code{dat}}
+\item{quiet}{If set to \code{TRUE}, quietly returns \code{x}
+                 if none of \code{drop.loci} are found in \code{x}}
 }
 \value{
-A data frame containing the data in \code{dat} after removing
+A data frame containing the data in \code{x} after removing
 loci specified by \code{drop.loci}, with attributes updated as required.
 }
 \description{

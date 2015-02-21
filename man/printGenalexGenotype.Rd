@@ -4,13 +4,14 @@
 \alias{printGenalexGenotype}
 \title{Print selected genotypes}
 \usage{
-printGenalexGenotype(x, rows, callout.locus = NULL, sep = " ",
+printGenalexGenotype(x, rows = 1:nrow(x), callout.locus = NULL, sep = " ",
   allele.sep = "/", callout.char = "*", label = NULL)
 }
 \arguments{
 \item{x}{An annotated data frame of class \code{'genalex'}}
 
-\item{rows}{The specific rows of \code{x} to print}
+\item{rows}{The specific rows of \code{x} to print, default is
+             all rows}
 
 \item{callout.locus}{One or more loci on \code{x} to be surrounded by
                \code{callout.char} when printed}

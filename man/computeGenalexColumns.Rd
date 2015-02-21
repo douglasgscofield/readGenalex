@@ -4,15 +4,15 @@
 \alias{computeGenalexColumns}
 \title{Determine numeric column positions occupied by named loci}
 \usage{
-computeGenalexColumns(dat, locus, ploidy = NULL)
+computeGenalexColumns(x, locus, ploidy = NULL)
 }
 \arguments{
-\item{dat}{An annotated data frame created by \code{readGenalex}}
+\item{x}{An annotated data frame created by \code{readGenalex}}
 
-\item{locus}{The names of one or more loci found in \code{dat}}
+\item{locus}{The names of one or more loci found in \code{x}}
 
-\item{ploidy}{Ploidy of data in \code{dat}, if not supplied is extracted
-              from the \code{ploidy} attribute of \code{dat}}
+\item{ploidy}{Ploidy of data in \code{x}, if not supplied is extracted
+              from the \code{ploidy} attribute of \code{x}}
 }
 \value{
 A vector of column positions occupied by genotype data for loci

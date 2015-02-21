@@ -193,7 +193,7 @@ as.data.frame.genalex <- function(x, ...) {
 #' \code{\link{writeGenalex}} will write their values in the columns 
 #' immediately to the right of the genotype values.  These data are given 
 #' their natural type as if read with 
-#' \code{\link{read.table(..., stringsAsFactors = FALSE)}}, so that 
+#' \code{read.table(..., stringsAsFactors = FALSE)}, so that 
 #' character values are not converted to factors.
 #'
 #' More information on GenAlEx is available at
@@ -221,7 +221,6 @@ as.data.frame.genalex <- function(x, ...) {
 #' \code{attributes} of the data frame include:
 #' 
 #' \item{data.file.name }{The value of \code{file}}
-#' \item{genetic.data.format }{\code{"genalex"}, not present >= 1.0}
 #' \item{ploidy }{Ploidy of input data}
 #' \item{n.loci }{Number of loci}
 #' \item{n.samples }{Total number of samples}
@@ -237,9 +236,10 @@ as.data.frame.genalex <- function(x, ...) {
 #' \item{extra.columns }{\code{data.frame} containing any extra columns given
 #'   in \code{file} to the right of the genotype columns.  Row order is the 
 #'   same as for the genotype data.  Data are given their natural types using
-#'   \code{\link{type.convert(..., as.is = TRUE)}}, so that characters are 
+#'   \code{type.convert(..., as.is = TRUE)}, so that characters are 
 #'   not converted to factors.  If no extra columns were found, this 
 #'   attribute does not exist.}
+#' \item{genetic.data.format }{\code{"genalex"}, not present >= 1.0}
 #' 
 #' @author Douglas G. Scofield
 #' 
@@ -252,6 +252,8 @@ as.data.frame.genalex <- function(x, ...) {
 #' Ecology Notes} 6, 288-295.
 #' 
 #' @keywords file manip attribute
+#' 
+#' @seealso \code{\link{read.table}} \code{\link{type.convert}}
 #' 
 #' @examples
 #' 
@@ -273,10 +275,10 @@ readGenalex <- function(file, sep = "\t", ploidy = 2,
                                  ploidy, na.strings, header$extra.columns,
                                  ...)
     close(fcon)
-    dat <- .readGenalexJoinData(header, raw.data)
-    attr(dat, "data.file.name") <- file
-    class(dat) <- c('genalex', 'data.frame')
-    dat
+    x <- .readGenalexJoinData(header, raw.data)
+    attr(x, "data.file.name") <- file
+    class(x) <- c('genalex', 'data.frame')
+    return(x)
 }
 
 
@@ -316,6 +318,12 @@ readGenalex <- function(file, sep = "\t", ploidy = 2,
 
 
 
+.calculateLocusColumns <- function(n.loci, ploidy) {
+    seq(from = 3, to = (3+(n.loci-1)*ploidy), by = ploidy)
+}
+
+
+
 .readGenalexHeader <- function(con, sep, ploidy) {
     dlines <- readLines(con = con, n = 3, ok = FALSE)
     dlines <- lapply(dlines, function(x) unlist(strsplit(x, sep, perl = TRUE)))
@@ -340,12 +348,8 @@ readGenalex <- function(file, sep = "\t", ploidy = 2,
     pop.sizes <- dlines[[1]][4:(4+header$n.pops-1)]
     names(pop.sizes) <- header$pop.labels
     header$pop.sizes <- pop.sizes
-    header$locus.columns <- seq(from = 3, to = (3+(header$n.loci-1)*ploidy),
-                                by = ploidy)
+    header$locus.columns <- .calculateLocusColumns(header$n.loci, ploidy)
     header$locus.names <- dlines[[3]][header$locus.columns]
-    f <- function(x) c(x, paste(sep = ".", x, seq(2, header$ploidy, 1)))
-    header$data.column.names <- c(header$sample.title, header$pop.title,
-                                  unlist(lapply(header$locus.names, f)))
     header
 }
 
@@ -358,13 +362,13 @@ readGenalex <- function(file, sep = "\t", ploidy = 2,
         extra.columns <- cbind(dat[,1], raw.data$extra.columns)
         names(extra.columns)[1] <- names(dat)[1]
     }
-    names(dat) <- header$data.column.names
-    # don't add as an attribute, it duplicates 'names'
-    header$data.column.names <- NULL
-    dat[[header$pop.title]] <- factor(dat[[header$pop.title]])
+    f <- function(x) c(x, paste(sep = ".", x, seq(2, header$ploidy, 1)))
+    data.column.names <- c(header$sample.title, header$pop.title,
+                           unlist(lapply(header$locus.names, f)))
+    names(dat) <- data.column.names
     # TODO: handle label in header with size 0 and missing from data?
     pop.labels.header <- sort(header$pop.labels)
-    pop.labels.data <- sort(levels(dat[[header$pop.title]]))
+    pop.labels.data <- sort(levels(factor(dat[[header$pop.title]])))
     if (suppressWarnings(any(pop.labels.header != pop.labels.data))) {
         err <- pop.labels.data[! pop.labels.data %in% pop.labels.header]
         if (length(err))
@@ -392,6 +396,94 @@ readGenalex <- function(file, sep = "\t", ploidy = 2,
     if (! is.null(raw.data$extra.columns))
         attr(dat, "extra.columns") <- extra.columns
     dat
+}
+
+
+
+#' Create new object of class \code{'genalex'} from constituent data
+#'
+#' Create a new object of class \code{'genalex'} given sample and
+#' population names and genotype data.  Titles for the dataset, sample
+#' and population columns, and loci may be provided via the \code{names}
+#' argument.
+#' 
+#' @param samples    Sample names, must be unique and length must
+#'                   match the number of rows in \code{genotypes}
+#'
+#' @param pops       Population names.  If \code{pops} is shorter than
+#'                   the number of samples, it will be expanded following
+#'                   the rules described in \code{\link{data.frame}}.
+#' 
+#'
+#' @param genotypes  Genotype values, must be numeric
+#'
+#' @param names      List of names: \code{title} for data set title,
+#'                   \code{sample} for sample column header,
+#'                   \code{pop} for population column header, and
+#'                   \code{loci} for names of loci.  If \code{loci}
+#'                   is missing, the corresponding \code{genotype}
+#'                   column names are used.
+#'
+#' @param ploidy     Ploidy of \code{genotypes}
+#'
+#' @param extra.columns Extra data columns, see \code{\link{readGenalex}}
+#'
+#' @return Annotated data frame of class \code{'genalex'}.  If \code{names}
+#' or any of its fields are not provided, default names are used.  The 
+#' \code{data.file.name} attribute is a character representation of the call
+#' to \code{createGenalex}.
+#'
+#' @author Douglas G. Scofield
+#'
+#' @seealso \code{\link{readGenalex}}, \code{\link{data.frame}}
+#'
+#' @examples
+#'
+#' gt <- data.frame(a = 11:13, a.2 = 14:16, b = 101:103, b.2 = 104:106)
+#' nms <- list(title = "Example")
+#' x <- createGenalex(1:3, "snurf", gt, nms)
+#' x
+#' attributes(x)
+#'
+#' @export
+#'
+createGenalex <- function(samples, pops, genotypes, names, ploidy = 2,
+                          extra.columns = NULL) {
+    this.call <- sys.call()
+    if (length(samples) != nrow(genotypes))
+        stop("'samples' and 'genotypes' must have the same length")
+    if (anyDuplicated(samples))
+        stop("sample names must be unique")
+    n.loci <- ncol(genotypes) / ploidy
+    if (as.integer(n.loci) != n.loci)
+        stop("'genotypes' must have a number of columns dividable by ploidy")
+    dat <- data.frame(samples = samples, pops = pops, stringsAsFactors = FALSE)
+    if (! all(sapply(genotypes, function(x) all(is.numeric(x) | is.na(x)))))
+        stop("genotype data must be numeric")
+    dat <- cbind(dat, genotypes)
+    if (! is.null(extra.columns))
+        extra.columns <- as.data.frame(extra.columns)
+    pop.sizes <- sapply(split(dat$pops, dat$pops), length)
+    header <- list(n.loci = n.loci,
+                   ploidy = ploidy,
+                   n.samples = nrow(dat),
+                   n.pops = length(pop.sizes),
+                   pop.labels = names(pop.sizes),
+                   pop.sizes = pop.sizes,
+                   locus.columns = .calculateLocusColumns(n.loci, ploidy))
+    header$dataset.title <- if (missing(names) || is.null(names$title))
+        "genalex" else names$title
+    header$sample.title <- if (missing(names) || is.null(names$sample))
+        "sample" else names$sample
+    header$pop.title <- if (missing(names) || is.null(names$pop))
+        "pop" else names$pop
+    header$locus.names <- if (missing(names) || is.null(names$loci))
+        names(dat)[header$locus.columns] else names$loci
+    x <- .readGenalexJoinData(header, list(dat = dat, 
+                                           extra.columns = extra.columns))
+    attr(x, "data.file.name") <- capture.output(print(this.call))
+    class(x) <- c('genalex', 'data.frame')
+    return(x)
 }
 
 
@@ -598,7 +690,8 @@ summary.genalex <- function(object, ...) {
 #' 
 #' @param  x    An annotated data frame of class \code{'genalex'}
 #' 
-#' @param  rows   The specific rows of \code{x} to print
+#' @param  rows The specific rows of \code{x} to print, default is
+#'              all rows
 #' 
 #' @param  callout.locus One or more loci on \code{x} to be surrounded by
 #'                \code{callout.char} when printed
@@ -625,8 +718,8 @@ summary.genalex <- function(object, ...) {
 #' 
 #' @export
 #'
-printGenalexGenotype <- function(x, rows, callout.locus = NULL, sep = " ",
-                                 allele.sep = "/", callout.char = "*", 
+printGenalexGenotype <- function(x, rows = 1:nrow(x), callout.locus = NULL,
+                                 sep = " ", allele.sep = "/", callout.char = "*", 
                                  label = NULL) {
     stopifnot(is.genalex(x))
     cols <- names(x)
@@ -655,12 +748,12 @@ printGenalexGenotype <- function(x, rows, callout.locus = NULL, sep = " ",
 #' date frame produced by \code{readGenalex}.  This is mostly used as
 #' a utility routine by other functions in the \code{readGenalex} package.
 #' 
-#' @param dat    An annotated data frame created by \code{readGenalex}
+#' @param x      An annotated data frame created by \code{readGenalex}
 #' 
-#' @param locus  The names of one or more loci found in \code{dat}
+#' @param locus  The names of one or more loci found in \code{x}
 #' 
-#' @param ploidy Ploidy of data in \code{dat}, if not supplied is extracted
-#'               from the \code{ploidy} attribute of \code{dat}
+#' @param ploidy Ploidy of data in \code{x}, if not supplied is extracted
+#'               from the \code{ploidy} attribute of \code{x}
 #' 
 #' @return A vector of column positions occupied by genotype data for loci
 #'         named in \code{locus}.
@@ -674,10 +767,10 @@ printGenalexGenotype <- function(x, rows, callout.locus = NULL, sep = " ",
 #' 
 #' @export
 #' 
-computeGenalexColumns <- function(dat, locus, ploidy = NULL) {
-    if (is.null(ploidy)) ploidy <- attr(dat,"ploidy")
-    as.vector(sapply(attr(dat, "locus.columns")[attr(dat, "locus.names") %in% locus],
-                     function(x) x:(x+ploidy-1)))
+computeGenalexColumns <- function(x, locus, ploidy = NULL) {
+    if (is.null(ploidy)) ploidy <- attr(x, "ploidy")
+    as.vector(sapply(attr(x, "locus.columns")[attr(x, "locus.names") %in% locus],
+                     function(x) x:(x + ploidy - 1)))
 }
 
 
@@ -687,14 +780,14 @@ computeGenalexColumns <- function(dat, locus, ploidy = NULL) {
 #' Reorder the genotype columns of a class \code{'genalex'} data frame by 
 #' locus.
 #' 
-#' @param dat  An annotated data frame of class \code{'genalex'}
+#' @param x    An annotated data frame of class \code{'genalex'}
 #' 
-#' @param loci The names of loci found in \code{dat}, in the desired new 
-#'             order.  All loci in \code{dat} must be named.  The order of
+#' @param loci The names of loci found in \code{x}, in the desired new 
+#'             order.  All loci in \code{x} must be named.  The order of
 #'             the alleles within each locus is preserved.
 #' 
 #' @return A data frame of class \code{'genalex'} containing the same 
-#' genotype data from \code{dat} reordered according to \code{loci}.
+#' genotype data from \code{x} reordered according to \code{loci}.
 #' 
 #' @author Douglas G. Scofield
 #' 
@@ -707,17 +800,17 @@ computeGenalexColumns <- function(dat, locus, ploidy = NULL) {
 #' 
 #' @export
 #' 
-reorderGenalexLoci <- function(dat, loci) {
-    dat <- as.genalex(dat)
-    existing.loci <- attr(dat, "locus.names")
+reorderGenalexLoci <- function(x, loci) {
+    x <- as.genalex(x)
+    existing.loci <- attr(x, "locus.names")
     if (! all(existing.loci %in% loci)) 
         stop("not all existing loci in reorder list")
-    newdata <- dat[,1:2]
+    newdata <- x[,1:2]
     for (locus in loci) {
-        newdata <- cbind(newdata, getGenalexLocus(dat, locus))
+        newdata <- cbind(newdata, getGenalexLocus(x, locus))
     }
     names.newdata <- names(newdata)
-    attributes(newdata) <- attributes(dat)
+    attributes(newdata) <- attributes(x)
     names(newdata) <- names.newdata
     attr(newdata,"locus.names") <- loci
     newdata
@@ -732,15 +825,15 @@ reorderGenalexLoci <- function(dat, loci) {
 #' populations.
 #' 
 #' 
-#' @param dat   An annotated data frame of class \code{'genalex'}
+#' @param x     An annotated data frame of class \code{'genalex'}
 #' 
-#' @param locus The names of one or more loci found in \code{dat}
+#' @param locus The names of one or more loci found in \code{x}
 #' 
 #' @param pop   If supplied, return only data for samples from the specified
 #'              populations
 #' 
 #' @return A data frame of class \code{'genalex'} containing genotype data 
-#' from \code{dat} for loci specified in \code{code}, optionally restricted
+#' from \code{x} for loci specified in \code{code}, optionally restricted
 #' to samples from populations specified in \code{pop}.
 #' 
 #' @author Douglas G. Scofield
@@ -757,14 +850,14 @@ reorderGenalexLoci <- function(dat, loci) {
 #' 
 #' @export
 #' 
-getGenalexLocus <- function(dat, locus, pop = NULL) {
-    is.genalex(dat)
-    cols <- computeGenalexColumns(dat,locus)
+getGenalexLocus <- function(x, locus, pop = NULL) {
+    x <- as.genalex(x)
+    cols <- computeGenalexColumns(x, locus)
     if (! is.null(pop)) {
-        pop.column <- attr(dat, "pop.title")
-        dat <- subset(dat, dat[[pop.column]] %in% pop)
+        pop.column <- attr(x, "pop.title")
+        x <- subset(x, x[[pop.column]] %in% pop)
     }
-    dat[, cols]
+    x[, cols]
 }
 
 
@@ -774,25 +867,25 @@ getGenalexLocus <- function(dat, locus, pop = NULL) {
 #' Replace genotype data for specified loci in a data frame of class
 #' \code{'genalex'}.
 #' 
-#' @param dat   A data frame of class \code{'genalex'}
+#' @param x       A data frame of class \code{'genalex'}
 #' 
-#' @param locus   The names of one or more loci found in \code{dat}
+#' @param locus   The names of one or more loci found in \code{x}
 #' 
 #' @param newdata New genotype data for loci specified in \code{locus}.  Must
-#'                have the same number of rows as \code{dat}
+#'                have the same number of rows as \code{x}
 #' 
 #' @return A data frame of class \code{'genalex'} containing genotype data
-#' from \code{dat} with data for loci specified in \code{locus} replaced
+#' from \code{x} with data for loci specified in \code{locus} replaced
 #' with data from \code{newdata}.
 #' 
 #' @author Douglas G. Scofield
 #' 
 #' @export
 #' 
-putGenalexLocus <- function(dat, locus, newdata) {
-    dat <- as.genalex(dat)
-    dat[, computeGenalexColumns(dat,locus)] <- newdata
-    dat
+putGenalexLocus <- function(x, locus, newdata) {
+    x <- as.genalex(x)
+    x[, computeGenalexColumns(x, locus)] <- newdata
+    x
 }
 
 
@@ -802,14 +895,14 @@ putGenalexLocus <- function(dat, locus, newdata) {
 #' Remove specified loci from the data frame of class \code{'genalex'}
 #' and updates attributes
 #' 
-#' @param dat       An annotated data frame of class \code{'genalex'}
+#' @param x         An annotated data frame of class \code{'genalex'}
 #' 
-#' @param drop.loci The names of one or more loci found in \code{dat}
+#' @param drop.loci The names of one or more loci found in \code{x}
 #' 
-#' @param quiet     If set to \code{TRUE}, quietly returns \code{dat} 
-#'                  if none of \code{drop.loci} are found in \code{dat}
+#' @param quiet     If set to \code{TRUE}, quietly returns \code{x} 
+#'                  if none of \code{drop.loci} are found in \code{x}
 #' 
-#' @return A data frame containing the data in \code{dat} after removing
+#' @return A data frame containing the data in \code{x} after removing
 #' loci specified by \code{drop.loci}, with attributes updated as required.
 #' 
 #' @author Douglas G. Scofield
@@ -821,28 +914,29 @@ putGenalexLocus <- function(dat, locus, newdata) {
 #' 
 #' @export
 #' 
-dropGenalexLoci <- function(dat, drop.loci, quiet = FALSE) {
-    dat <- as.genalex(dat)
-    if (missing(drop.loci) || is.null(drop.loci)) return(dat)
-    locus.names <- attr(dat, "locus.names")
+dropGenalexLoci <- function(x, drop.loci, quiet = FALSE) {
+    x <- as.genalex(x)
+    if (missing(drop.loci) || is.null(drop.loci))
+        return(x)
+    locus.names <- attr(x, "locus.names")
     if (! all(drop.loci %in% locus.names))  
         if (any(drop.loci %in% locus.names)) # at least one matches
           drop.loci <- drop.loci[drop.loci %in% locus.names]
         else
           if (quiet) 
-              return(dat) 
+              return(x) 
           else 
               stop("locus not present")
-    att <- attributes(dat)
-    dat <- dat[,-computeGenalexColumns(dat, drop.loci)]
+    att <- attributes(x)
+    x <- x[, -computeGenalexColumns(x, drop.loci)]
     for (a in names(att))
-        if (! a %in% c("names","n.loci","locus.names","locus.columns"))
-            attr(dat,a) <- att[[a]]
+        if (! a %in% c("names", "n.loci", "locus.names", "locus.columns"))
+            attr(x, a) <- att[[a]]
     locus.names <- locus.names[! locus.names %in% drop.loci]
-    attr(dat, "n.loci") <- length(locus.names)
-    attr(dat, "locus.names") <- locus.names
-    attr(dat, "locus.columns") <- which(names(dat) %in% locus.names)
-    dat
+    attr(x, "n.loci") <- length(locus.names)
+    attr(x, "locus.names") <- locus.names
+    attr(x, "locus.columns") <- which(names(x) %in% locus.names)
+    x
 }
 
 
@@ -858,15 +952,15 @@ dropGenalexLoci <- function(dat, drop.loci, quiet = FALSE) {
 #' haploid data is encoded in GenAlEx datasets by using homozygous diploid
 #' loci, and this is a useful function for making these truly haploid.
 #' 
-#' @param dat        An annotated data frame of class \code{'genalex'}
+#' @param x          An annotated data frame of class \code{'genalex'}
 #' 
 #' @param new.ploidy The desired new ploidy.  Currently, the only usefully
-#'                   accepted value is 1, with ploidy of \code{dat} being 2;
-#'                   a ploidy matching the current ploidy of \code{dat} 
-#'                   silently returns \code{dat}.
+#'                   accepted value is 1, with ploidy of \code{x} being 2;
+#'                   a ploidy matching the current ploidy of \code{x} 
+#'                   silently returns \code{x}.
 #' 
 #' @return A data frame of class \code{'genalex'} containing genotype data
-#' from \code{dat} reduced to the specified \code{new.ploidy}, with 
+#' from \code{x} reduced to the specified \code{new.ploidy}, with 
 #' attributes updated as required.
 #' 
 #' @author Douglas G. Scofield
@@ -879,13 +973,13 @@ dropGenalexLoci <- function(dat, drop.loci, quiet = FALSE) {
 #' 
 #' @export
 #' 
-reduceGenalexPloidy <- function(dat, new.ploidy = 1) {
-    dat <- as.genalex(dat)
+reduceGenalexPloidy <- function(x, new.ploidy = 1) {
+    x <- as.genalex(x)
     # Would be nice to be more general, e.g., pick other than the first
     # column, or a random allele
-    att <- attributes(dat)
+    att <- attributes(x)
     if (new.ploidy == att$ploidy) 
-        return(dat)
+        return(x)
     else if (new.ploidy > att$ploidy) 
         stop("new ploidy ", new.ploidy, " greater than existing ploidy ",
              att$ploidy)
@@ -893,15 +987,15 @@ reduceGenalexPloidy <- function(dat, new.ploidy = 1) {
         stop("can't currently handle new.ploidy other than 1,",
              " existing ploidy other than 2")
     new.col <- c(1:(att$locus.columns[1]-1), att$locus.columns)
-    dat <- dat[, new.col]
+    x <- x[, new.col]
     for (a in names(att))
         if (! a %in% c("names","locus.columns","ploidy"))
-            attr(dat,a) <- att[[a]]
-    attr(dat, "locus.columns") <- att$locus.columns -
-                                  (0:(att$n.loci - 1) * 
+            attr(x, a) <- att[[a]]
+    attr(x, "locus.columns") <- att$locus.columns -
+                                 (0:(att$n.loci - 1) * 
                                    (att$ploidy - new.ploidy))
-    attr(dat, "ploidy") <- new.ploidy
-    dat
+    attr(x, "ploidy") <- new.ploidy
+    x
 }
 
 

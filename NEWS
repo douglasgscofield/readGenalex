@@ -14,6 +14,8 @@ readGenalex 0.9.9000 (class_genalex development branch)
     frame contents and a summary of the extra columns, if present.
 -   New as.data.frame method to convert class 'genalex' to class
     'data.frame'
+-   new createGenalex function to create a class 'genalex' object from
+    constituent data
 -   readGenalex now has ... in its argument list, for additional
     arguments to be passed to scan() while reading data
 -   Added na.strings argument to readGenalex, with defaults that reflect
@@ -22,10 +24,11 @@ readGenalex 0.9.9000 (class_genalex development branch)
     use for NA in genotype/numeric/logical columns and character
     columns, respectively
 -   Clarified typing of sample, population, genotype, and extra columns.
-    Sample and population columns are stored as character, genotype
-    columns are stored as numeric, and extra columns are stored as their
-    natural type as determined by type.convert(..., as.is=TRUE), so that
-    character columns are not converted to factors.
+    Sample and population columns are stored as character (population
+    was previously a factor), genotype columns are stored as numeric,
+    and extra columns are stored as their natural type as determined by
+    type.convert(..., as.is=TRUE), so that character columns are not
+    converted to factors.
 -   As a result of the clarified typing, writeGenalex(..., quote=TRUE)
     will only quote names in the GenAlEx header, in the first two
     columns, and in any character-valued extra columns

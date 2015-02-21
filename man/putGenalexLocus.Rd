@@ -4,19 +4,19 @@
 \alias{putGenalexLocus}
 \title{Replace genotype data in data frame of class \code{'genalex'}}
 \usage{
-putGenalexLocus(dat, locus, newdata)
+putGenalexLocus(x, locus, newdata)
 }
 \arguments{
-\item{dat}{A data frame of class \code{'genalex'}}
+\item{x}{A data frame of class \code{'genalex'}}
 
-\item{locus}{The names of one or more loci found in \code{dat}}
+\item{locus}{The names of one or more loci found in \code{x}}
 
 \item{newdata}{New genotype data for loci specified in \code{locus}.  Must
-               have the same number of rows as \code{dat}}
+               have the same number of rows as \code{x}}
 }
 \value{
 A data frame of class \code{'genalex'} containing genotype data
-from \code{dat} with data for loci specified in \code{locus} replaced
+from \code{x} with data for loci specified in \code{locus} replaced
 with data from \code{newdata}.
 }
 \description{

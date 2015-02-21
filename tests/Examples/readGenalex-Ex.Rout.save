@@ -105,6 +105,76 @@ ref4	1 ref	3/3	2/1	2/2	3/1	*2/3*
 > 
 > 
 > cleanEx()
+> nameEx("createGenalex")
+> ### * createGenalex
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: createGenalex
+> ### Title: Create new object of class "genalex" from constituent data
+> ### Aliases: createGenalex
+> 
+> ### ** Examples
+> 
+> gt <- data.frame(a = 11:13, a.2 = 14:16, b = 101:103, b.2 = 104:106)
+> nms <- list(title = "Example")
+> x <- createGenalex(1:3, "snurf", gt, nms)
+> x
+  sample   pop  a a.2   b b.2
+1      1 snurf 11  14 101 104
+2      2 snurf 12  15 102 105
+3      3 snurf 13  16 103 106
+> attributes(x)
+$names
+[1] "sample" "pop"    "a"      "a.2"    "b"      "b.2"   
+
+$row.names
+[1] 1 2 3
+
+$class
+[1] "genalex"    "data.frame"
+
+$n.loci
+[1] 2
+
+$ploidy
+[1] 2
+
+$n.samples
+[1] 3
+
+$n.pops
+[1] 1
+
+$pop.labels
+[1] "snurf"
+
+$pop.sizes
+snurf 
+    3 
+
+$locus.columns
+[1] 3 5
+
+$dataset.title
+[1] "Example"
+
+$sample.title
+[1] "sample"
+
+$pop.title
+[1] "pop"
+
+$locus.names
+[1] "a" "b"
+
+$data.file.name
+[1] "createGenalex(1:3, \"snurf\", gt, nms)"
+
+> 
+> 
+> 
+> cleanEx()
 > nameEx("dropGenalexLoci")
 > ### * dropGenalexLoci
 > 
@@ -676,7 +746,7 @@ STD	Sedgwick	213	215	244	246	190	194	196	208	210	214	201	219	236	242	271	275	190
 > ###
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  0.315 0.01 0.325 0 0 
+Time elapsed:  0.328 0.011 0.34 0 0 
 > grDevices::dev.off()
 null device 
           1 

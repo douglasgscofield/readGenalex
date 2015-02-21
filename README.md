@@ -116,6 +116,9 @@ columns.
 There are other functions supplied for manipulating population genetic data
 of class `'genalex'`:
 
+`createGenalex()`
+: Create a class `'genalex'` object from constituent data
+
 `writeGenalex()`
 : Write a GenAlEx-format text file
 

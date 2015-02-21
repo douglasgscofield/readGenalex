@@ -4,19 +4,19 @@
 \alias{getGenalexLocus}
 \title{Return genotype data for specified loci from class \code{'genalex'}}
 \usage{
-getGenalexLocus(dat, locus, pop = NULL)
+getGenalexLocus(x, locus, pop = NULL)
 }
 \arguments{
-\item{dat}{An annotated data frame of class \code{'genalex'}}
+\item{x}{An annotated data frame of class \code{'genalex'}}
 
-\item{locus}{The names of one or more loci found in \code{dat}}
+\item{locus}{The names of one or more loci found in \code{x}}
 
 \item{pop}{If supplied, return only data for samples from the specified
              populations}
 }
 \value{
 A data frame of class \code{'genalex'} containing genotype data
-from \code{dat} for loci specified in \code{code}, optionally restricted
+from \code{x} for loci specified in \code{code}, optionally restricted
 to samples from populations specified in \code{pop}.
 }
 \description{
