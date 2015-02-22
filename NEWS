@@ -22,7 +22,8 @@ readGenalex 0.9.9000 (class_genalex development branch)
     lines describing the data set, followed by a summary of the data
     frame contents and a summary of the extra columns, if present
 -   New as.data.frame method to convert class 'genalex' to class
-    'data.frame'
+    'data.frame', optionally clearing all class 'genalex'-specific
+    attributes
 -   new genalex function to create a class 'genalex' object from
     constituent data
 -   readGenalex now has ... in its argument list, for additional
