@@ -93,12 +93,7 @@ is.genalex <- function(x) {
 #'
 NULL
 
-
-
-# Don't document this, just the methods
 as.genalex <- function(x, ...) UseMethod("as.genalex")
-
-
 
 #' @rdname as.genalex
 #'
@@ -688,23 +683,25 @@ summary.genalex <- function(object, ...) {
 #' 
 #' Print selected genotypes, optionally calling out a locus
 #' 
-#' @param  x    An annotated data frame of class \code{'genalex'}
+#' @param x    An annotated data frame of class \code{'genalex'}
 #' 
-#' @param  rows The specific rows of \code{x} to print, default is
-#'              all rows
+#' @param rows The specific rows of \code{x} to print, default is
+#'        all rows
 #' 
-#' @param  callout.locus One or more loci on \code{x} to be surrounded by
-#'                \code{callout.char} when printed
+#' @param callout.locus One or more loci on \code{x} to be surrounded by
+#'        \code{callout.char} when printed
 #' 
-#' @param  sep    Separator character to be used between loci
+#' @param sep    Separator character to be used between loci
 #' 
-#' @param  allele.sep Separator character to be used between alleles
+#' @param allele.sep Separator character to be used between alleles
 #' 
-#' @param  callout.char Character which surrounds loci specified by
-#'         \code{callout.locus}
+#' @param callout.char Character which surrounds loci specified by
+#'        \code{callout.locus}
 #' 
-#' @param  label  Label to be included between the sample and population ID
-#'         columns and the genotype columns in output
+#' @param label  Label to be included between the sample and population ID
+#'        columns and the genotype columns in output
+#'
+#' @param \dots  Additional arguments, currently none
 #'
 #' @return No specific return value, used for its side effect of printing
 #'         genotypes.
@@ -714,13 +711,23 @@ summary.genalex <- function(object, ...) {
 #' @examples
 #' 
 #' data(Qagr_adult_genotypes)
-#' printGenalexGenotype(Qagr_adult_genotypes, rows = 6:8, callout.locus = "1c08")
+#' printGenotype(Qagr_adult_genotypes, rows = 6:8, callout.locus = "1c08")
 #' 
 #' @export
 #'
-printGenalexGenotype <- function(x, rows = 1:nrow(x), callout.locus = NULL,
-                                 sep = " ", allele.sep = "/", callout.char = "*", 
-                                 label = NULL) {
+#' @name printGenotype
+#'
+NULL
+
+printGenotype <- function(x, ...) UseMethod("printGenotype")
+
+#' @rdname printGenotype
+#'
+#' @export
+#'
+printGenotype.genalex <- function(x, rows = 1:nrow(x), callout.locus = NULL,
+                                  sep = " ", allele.sep = "/", callout.char = "*", 
+                                  label = NULL, ...) {
     stopifnot(is.genalex(x))
     cols <- names(x)
     ploidy <- attr(x, "ploidy")
@@ -754,6 +761,8 @@ printGenalexGenotype <- function(x, rows = 1:nrow(x), callout.locus = NULL,
 #' 
 #' @param ploidy Ploidy of data in \code{x}, if not supplied is extracted
 #'               from the \code{ploidy} attribute of \code{x}
+#'
+#' @param \dots  Additional arguments, currently none
 #' 
 #' @return A vector of column positions occupied by genotype data for loci
 #'         named in \code{locus}.
@@ -763,11 +772,21 @@ printGenalexGenotype <- function(x, rows = 1:nrow(x), callout.locus = NULL,
 #' @examples
 #' 
 #' data(Qagr_adult_genotypes)
-#' computeGenalexColumns(Qagr_adult_genotypes, c("0c19", "0m05"))
+#' getLocusColumns(Qagr_adult_genotypes, c("0c19", "0m05"))
 #' 
 #' @export
 #' 
-computeGenalexColumns <- function(x, locus, ploidy = NULL) {
+#' @name getLocusColumns
+#'
+NULL
+
+getLocusColumns <- function(x, ...) UseMethod("getLocusColumns")
+
+#' @rdname getLocusColumns
+#'
+#' @export
+#' 
+getLocusColumns.genalex <- function(x, locus, ploidy = NULL, ...) {
     if (is.null(ploidy)) ploidy <- attr(x, "ploidy")
     as.vector(sapply(attr(x, "locus.columns")[attr(x, "locus.names") %in% locus],
                      function(x) x:(x + ploidy - 1)))
@@ -785,6 +804,8 @@ computeGenalexColumns <- function(x, locus, ploidy = NULL) {
 #' @param loci The names of loci found in \code{x}, in the desired new 
 #'             order.  All loci in \code{x} must be named.  The order of
 #'             the alleles within each locus is preserved.
+#'
+#' @param \dots  Additional arguments, currently none
 #' 
 #' @return A data frame of class \code{'genalex'} containing the same 
 #' genotype data from \code{x} reordered according to \code{loci}.
@@ -796,23 +817,32 @@ computeGenalexColumns <- function(x, locus, ploidy = NULL) {
 #' data(Qagr_adult_genotypes)
 #' # reverse loci
 #' loci <- rev(attr(Qagr_adult_genotypes, "locus.names"))
-#' reord = reorderGenalexLoci(Qagr_adult_genotypes, rev(loci))
+#' reord = reorderLoci(Qagr_adult_genotypes, rev(loci))
 #' 
 #' @export
 #' 
-reorderGenalexLoci <- function(x, loci) {
-    x <- as.genalex(x)
+#' @name reorderLoci
+#'
+NULL
+
+reorderLoci <- function(x, ...) UseMethod("reorderLoci")
+
+#' @rdname reorderLoci
+#'
+#' @export
+#' 
+reorderLoci.genalex <- function(x, loci, ...) {
     existing.loci <- attr(x, "locus.names")
     if (! all(existing.loci %in% loci)) 
         stop("not all existing loci in reorder list")
     newdata <- x[,1:2]
     for (locus in loci) {
-        newdata <- cbind(newdata, getGenalexLocus(x, locus))
+        newdata <- cbind(newdata, getLocus(x, locus))
     }
     names.newdata <- names(newdata)
     attributes(newdata) <- attributes(x)
     names(newdata) <- names.newdata
-    attr(newdata,"locus.names") <- loci
+    attr(newdata, "locus.names") <- loci
     newdata
 }
 
@@ -831,6 +861,8 @@ reorderGenalexLoci <- function(x, loci) {
 #' 
 #' @param pop   If supplied, return only data for samples from the specified
 #'              populations
+#'
+#' @param \dots  Additional arguments, currently none
 #' 
 #' @return A data frame of class \code{'genalex'} containing genotype data 
 #' from \code{x} for loci specified in \code{code}, optionally restricted
@@ -843,16 +875,25 @@ reorderGenalexLoci <- function(x, loci) {
 #' data(Qagr_pericarp_genotypes)
 #' nm <- attr(Qagr_pericarp_genotypes, "locus.names")
 #' # get the first locus
-#' loc1 <- getGenalexLocus(Qagr_pericarp_genotypes, nm[1])
+#' loc1 <- getLocus(Qagr_pericarp_genotypes, nm[1])
 #' # get the second locus of the second population
 #' po <- attr(Qagr_pericarp_genotypes, "pop.labels")
-#' loc2.pop2 <- getGenalexLocus(Qagr_pericarp_genotypes, nm[2], po[2])
+#' loc2.pop2 <- getLocus(Qagr_pericarp_genotypes, nm[2], po[2])
 #' 
 #' @export
 #' 
-getGenalexLocus <- function(x, locus, pop = NULL) {
-    x <- as.genalex(x)
-    cols <- computeGenalexColumns(x, locus)
+#' @name getLocus
+#' 
+NULL
+
+getLocus <- function(x, ...) UseMethod("getLocus")
+
+#' @rdname getLocus
+#' 
+#' @export
+#' 
+getLocus.genalex <- function(x, locus, pop = NULL, ...) {
+    cols <- getLocusColumns(x, locus)
     if (! is.null(pop)) {
         pop.column <- attr(x, "pop.title")
         x <- subset(x, x[[pop.column]] %in% pop)
@@ -873,6 +914,8 @@ getGenalexLocus <- function(x, locus, pop = NULL) {
 #' 
 #' @param newdata New genotype data for loci specified in \code{locus}.  Must
 #'                have the same number of rows as \code{x}
+#'
+#' @param \dots  Additional arguments, currently none
 #' 
 #' @return A data frame of class \code{'genalex'} containing genotype data
 #' from \code{x} with data for loci specified in \code{locus} replaced
@@ -882,9 +925,18 @@ getGenalexLocus <- function(x, locus, pop = NULL) {
 #' 
 #' @export
 #' 
-putGenalexLocus <- function(x, locus, newdata) {
-    x <- as.genalex(x)
-    x[, computeGenalexColumns(x, locus)] <- newdata
+#' @name putLocus
+#' 
+NULL
+
+putLocus <- function(x, ...) UseMethod("putLocus")
+
+#' @rdname putLocus
+#' 
+#' @export
+#' 
+putLocus.genalex <- function(x, locus, newdata, ...) {
+    x[, getLocusColumns(x, locus)] <- newdata
     x
 }
 
@@ -895,44 +947,56 @@ putGenalexLocus <- function(x, locus, newdata) {
 #' Remove specified loci from the data frame of class \code{'genalex'}
 #' and updates attributes
 #' 
-#' @param x         An annotated data frame of class \code{'genalex'}
+#' @param x          An annotated data frame of class \code{'genalex'}
 #' 
-#' @param drop.loci The names of one or more loci found in \code{x}
+#' @param drop.locus The names of one or more loci found in \code{x}
 #' 
-#' @param quiet     If set to \code{TRUE}, quietly returns \code{x} 
-#'                  if none of \code{drop.loci} are found in \code{x}
+#' @param quiet      If set to \code{TRUE}, quietly returns \code{x} 
+#'                   if none of \code{drop.locus} are found in \code{x}
+#'
+#' @param \dots  Additional arguments, currently none
 #' 
 #' @return A data frame containing the data in \code{x} after removing
-#' loci specified by \code{drop.loci}, with attributes updated as required.
+#' loci specified by \code{drop.locus}, with attributes updated as
+#' required.
 #' 
 #' @author Douglas G. Scofield
 #' 
 #' @examples
 #' 
 #' data(Qagr_adult_genotypes)
-#' newdat <- dropGenalexLoci(Qagr_adult_genotypes, "Oe09")
+#' newdat <- dropLocus(Qagr_adult_genotypes, "Oe09")
 #' 
 #' @export
 #' 
-dropGenalexLoci <- function(x, drop.loci, quiet = FALSE) {
-    x <- as.genalex(x)
-    if (missing(drop.loci) || is.null(drop.loci))
+#' @name dropLocus
+#' 
+NULL
+
+dropLocus <- function(x, ...) UseMethod("dropLocus")
+
+#' @rdname dropLocus
+#' 
+#' @export
+#' 
+dropLocus.genalex <- function(x, drop.locus, quiet = FALSE, ...) {
+    if (missing(drop.locus) || is.null(drop.locus))
         return(x)
     locus.names <- attr(x, "locus.names")
-    if (! all(drop.loci %in% locus.names))  
-        if (any(drop.loci %in% locus.names)) # at least one matches
-          drop.loci <- drop.loci[drop.loci %in% locus.names]
+    if (! all(drop.locus %in% locus.names))  
+        if (any(drop.locus %in% locus.names)) # at least one matches
+          drop.locus <- drop.locus[drop.locus %in% locus.names]
         else
           if (quiet) 
               return(x) 
           else 
               stop("locus not present")
     att <- attributes(x)
-    x <- x[, -computeGenalexColumns(x, drop.loci)]
+    x <- x[, -getLocusColumns(x, drop.locus)]
     for (a in names(att))
         if (! a %in% c("names", "n.loci", "locus.names", "locus.columns"))
             attr(x, a) <- att[[a]]
-    locus.names <- locus.names[! locus.names %in% drop.loci]
+    locus.names <- locus.names[! locus.names %in% drop.locus]
     attr(x, "n.loci") <- length(locus.names)
     attr(x, "locus.names") <- locus.names
     attr(x, "locus.columns") <- which(names(x) %in% locus.names)
@@ -958,6 +1022,8 @@ dropGenalexLoci <- function(x, drop.loci, quiet = FALSE) {
 #'                   accepted value is 1, with ploidy of \code{x} being 2;
 #'                   a ploidy matching the current ploidy of \code{x} 
 #'                   silently returns \code{x}.
+#'
+#' @param \dots  Additional arguments, currently none
 #' 
 #' @return A data frame of class \code{'genalex'} containing genotype data
 #' from \code{x} reduced to the specified \code{new.ploidy}, with 
@@ -969,12 +1035,21 @@ dropGenalexLoci <- function(x, drop.loci, quiet = FALSE) {
 #' 
 #' data(Qagr_adult_genotypes)
 #' attr(Qagr_adult_genotypes, "ploidy")
-#' p1 <- reduceGenalexPloidy(Qagr_adult_genotypes, 1)
+#' p1 <- reducePloidy(Qagr_adult_genotypes, 1)
 #' 
 #' @export
 #' 
-reduceGenalexPloidy <- function(x, new.ploidy = 1) {
-    x <- as.genalex(x)
+#' @name reducePloidy
+#' 
+NULL
+
+reducePloidy <- function(x, ...) UseMethod("reducePloidy")
+
+#' @rdname reducePloidy
+#' 
+#' @export
+#' 
+reducePloidy.genalex <- function(x, new.ploidy = 1, ...) {
     # Would be nice to be more general, e.g., pick other than the first
     # column, or a random allele
     att <- attributes(x)
@@ -1000,87 +1075,60 @@ reduceGenalexPloidy <- function(x, new.ploidy = 1) {
 
 
 
-#' Coast live oak (Quercus agrifolia) adult microsatellite genotypes
+#' Deprecated functions in the \code{readGenalex} package
+#' 
+#' These functions are provided for compatibility with older version of
+#' the \code{readGenalex} package.  They may eventually be completely removed.
 #'
-#' This data set contains one annotated data frame of class \code{'genalex'},
-#' holding 10-locus diploid microsatellite genotypes of 262 adult coast live
-#' oak (\emph{Quercus agrifolia}) trees from Sedgwick Reserve, Santa Barbara
-#' County, California, USA.
+#' @rdname readGenalex-deprecated
 #'
-#' These data have been analysed in several published papers, and are also
-#' publicly available at the Dryad Digital Repository.  If using these data,
-#' please cite the original paper as well as the data, as shown below.
+#' @name readGenalex-deprecated
 #'
-#' @format Annotated data frames of class \code{'genalex'}.  Columns are:
-#' \tabular{ll}{
-#'   \code{AdultMomFamily} \tab Identifier for adult tree \cr
-#'   \code{Site}           \tab Population, always \code{Sedgwick} for this data set \cr
-#'   \code{0c11}           \tab First allele for microsatellite locus 0c11 \cr
-#'   \code{0c11.2}         \tab Second allele for microsatellite locus 0c11 \cr
-#'   \code{\dots}          \tab Remaining 9 microsatellite genotypes \cr
+#' @param ... Parameters to be passed to the current version of the function
+#'
+#' @docType package
+#'
+#' @export  printGenalexGenotype computeGenalexColumns reorderGenalexLoci getGenalexLocus putGenalexLocus dropGenalexLoci reduceGenalexPloidy
+#'
+#' @aliases  printGenalexGenotype computeGenalexColumns reorderGenalexLoci getGenalexLocus putGenalexLocus dropGenalexLoci reduceGenalexPloidy
+#'
+#' @section Details:
+#'
+#' \tabular{rl}{
+#'   \code{printGenalexGenotype} \tab now a synonym for \code{\link{printGenotype}}\cr
+#'   \code{computeGenalexColumns} \tab now a synonym for \code{\link{getLocusColumns}}\cr
+#'   \code{reorderGenalexLoci} \tab now a synonym for \code{\link{reorderLoci}}\cr
+#'   \code{getGenalexLocus} \tab now a synonym for \code{\link{getLocus}}\cr
+#'   \code{putGenalexLocus} \tab now a synonym for \code{\link{putLocus}}\cr
+#'   \code{dropGenalexLoci} \tab now a synonym for \code{\link{dropLocus}}\cr
+#'   \code{reduceGenalexPloidy} \tab now a synonym for \code{\link{reducePloidy}}\cr
 #' }
-#' 
-#' @source \url{http://datadryad.org/resource/doi:10.5061/dryad.40kq7}
-#'
-#' @references Scofield DG, Smouse PE, Karubian J, Sork VL (2012) Use of alpha,
-#' beta, and gamma diversity measures to characterize seed dispersal by 
-#' animals. The American Naturalist 180(6): 719-732. 
-#' \url{http://dx.doi.org/10.1086/668202}
-#' 
-#' Scofield DG, Smouse PE, Karubian J, Sork VL (2012) Data from: Use of alpha,
-#' beta, and gamma diversity measures to characterize seed dispersal by animals.
-#' Dryad Digital Repository. \url{http://dx.doi.org/10.5061/dryad.40kq7}
-#'
-#' \url{https://github.com/douglasgscofield/readGenalex}
-#'
-#' @keywords datasets
-#' 
-#' @docType data
-#' 
-#' @name Qagr_adult_genotypes
-#' 
-NULL
-
-
-#' Coast live oak (Quercus agrifolia) pericarp microsatellite genotypes
-#'
-#' This data set contains one annotated data frame of class \code{'genalex'},
-#' holding 10-locus diploid microsatellite genotypes of 568 pericarps (outer
-#' seed coats) from coast live oak (\emph{Quercus agrifolia}) acorns collected
-#' from 17 acorn woodpecker (\emph{Melanerpes formicivorus}) granaries at
-#' Sedgwick Reserve, Santa Barbara County, California, USA.
-#'
-#' These data have been analysed in several published papers, and are also
-#' publicly available at the Dryad Digital Repository.  If using these data,
-#' please cite the original paper as well as the data, as shown below.
-#'
-#' @format Annotated data frames of class \code{'genalex'}.  Columns are:
-#' \tabular{ll}{
-#'   \code{PericarpID} \tab Identifier for sampled pericarp \cr
-#'   \code{Granary}    \tab Granary from which the pericarp was collected \cr
-#'   \code{0c11}       \tab First allele for microsatellite locus 0c11 \cr
-#'   \code{0c11.2}     \tab Second allele for microsatellite locus 0c11 \cr
-#'   \code{\dots}      \tab Remaining 9 microsatellite genotypes \cr
-#' }
-#' 
-#' @source \url{http://datadryad.org/resource/doi:10.5061/dryad.40kq7}
-#'
-#' @references Scofield DG, Smouse PE, Karubian J, Sork VL (2012) Use of alpha,
-#' beta, and gamma diversity measures to characterize seed dispersal by 
-#' animals. The American Naturalist 180(6): 719-732. 
-#' \url{http://dx.doi.org/10.1086/668202}
-#' 
-#' Scofield DG, Smouse PE, Karubian J, Sork VL (2012) Data from: Use of alpha,
-#' beta, and gamma diversity measures to characterize seed dispersal by animals.
-#' Dryad Digital Repository. \url{http://dx.doi.org/10.5061/dryad.40kq7}
-#'
-#' \url{https://github.com/douglasgscofield/readGenalex}
-#'
-#' @keywords datasets
-#' 
-#' @docType data
-#' 
-#' @name Qagr_pericarp_genotypes
-#' 
-NULL
-
+#'  
+printGenalexGenotype <- function(...) {
+    .Deprecated("printGenotype", package = "readGenalex")
+    printGenotype(...)
+}
+computeGenalexColumns <- function(...) {
+    .Deprecated("getLocusColumns", package = "readGenalex")
+    getLocusColumns(...)
+}
+reorderGenalexLoci <- function(...) {
+    .Deprecated("reorderLoci", package = "readGenalex")
+    reorderLoci(...)
+}
+getGenalexLocus <- function(...) {
+    .Deprecated("getLocus", package = "readGenalex")
+    getLocus(...)
+}
+putGenalexLocus <- function(...) {
+    .Deprecated("putLocus", package = "readGenalex")
+    putLocus(...)
+}
+dropGenalexLoci <- function(...) {
+    .Deprecated("dropLocus", package = "readGenalex")
+    dropLocus(...)
+}
+reduceGenalexPloidy <- function(...) {
+    .Deprecated("reducePloidy", package = "readGenalex")
+    reducePloidy(...)
+}

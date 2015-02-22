@@ -136,13 +136,13 @@ checkNullAlleles <- function(ref, check, mode = c("column", "locus"),
                 if (length(potential.null.loci) > 0) {
                     if (! check.printed) {
                         check.printed <- TRUE
-                        printGenalexGenotype(check, j, label="check",
-                                             callout.locus=potential.null.loci, 
-                                             sep="\t")
+                        printGenotype(check, j, label="check",
+                                      callout.locus=potential.null.loci, 
+                                      sep="\t")
                     }
-                    printGenalexGenotype(ref, k, label="ref",
-                                         callout.locus=potential.null.loci, 
-                                         sep="\t")
+                    printGenotype(ref, k, label="ref",
+                                  callout.locus=potential.null.loci, 
+                                  sep="\t")
                 }
             }
         }

@@ -7,6 +7,8 @@ and manipulate it in that form.  Several functions are provided for accessing,
 manipulating, and printing this data.  GenAlEx and its documentation are
 available at <http://biology-assets.anu.edu.au/GenAlEx>.
 
+
+
 ## Development version
 
 This branch (**class_genalex**) is a development branch to implement the
@@ -14,6 +16,8 @@ functionality of this package by defining an S3 class `'genalex'` that is
 shared with `data.frame`.  This functionality will be present in the 1.0
 release of this package.  In the meantime, the code in this particular branch
 is not likely to be functional until further notice.
+
+
 
 ## Using the package
 
@@ -134,27 +138,43 @@ of class `'genalex'`:
 `as.data.frame()`
 : Method to convert class `'genalex'` to class `'data.frame'`, no attributes are removed
 
-`reduceGenalexPloidy()`
+`reducePloidy()`
 : Reduce the ploidy to 1 by selecting the first allele of each locus
 
-`dropGenalexLoci()`
+`dropLocus()`
 : Drop named loci
 
-`printGenalexGenotype()`
+`printGenotype()`
 : Print genotypes of specific rows
 
-`reorderGenalexLoci()`
+`reorderLoci()`
 : Reorder loci into a given order
 
-`computeGenalexColumns()`
+`computeLocusColumns()`
 : Return a vector of column numbers for specified loci
 
-`putGenalexLocus()`
+`putLocus()`
 : Replace genotypes of specified locus
 
-`getGenalexLocus()`
+`getLocus()`
 : Return genotypes of specified locus, optionally only for specific populations
 
 `checkNullAlleles()`
 : Compare genotypes against a set of reference genotypes to check for potential null (nonamplifying) alleles
 
+
+
+## Datasets
+
+The package also provides two data sets as class `'genalex'` objects that can be loaded with `data(*dataset*)`:
+
+* `Qagr_adult_genotypes`: Coast live oak (*Quercus agrifolia*) adult microsatellite genotypes, holding 10-locus diploid microsatellite genotypes of 262 adult coast live oak trees from Sedgwick Reserve, Santa Barbara County, California, USA
+* `Qagr_pericarp_genotypes`: Coast live oak (*Quercus agrifolia*) pericarp microsatellite genotypes, holding 10-locus diploid microsatellite genotypes of 568 pericarps (outer seed coats) from coast live oak acorns collected from 17 acorn woodpecker (*Melanerpes formicivorus*) granaries at Sedgwick Reserve, Santa Barbara County, California, USA
+
+These data sets are also available at the Dryad Data Repository, <http://datadryad.org/resource/doi:10.5061/dryad.40kq7>.
+
+Several papers have been published with these data.  If using them, please cite the original paper as well as the data:
+
+Scofield DG, Smouse PE, Karubian J, Sork VL (2012) Use of alpha, beta, and gamma diversity measures to characterize seed dispersal by animals. *The American Naturalist* 180(6): 719-732.  <http://dx.doi.org/10.1086/668202>
+
+Scofield DG, Smouse PE, Karubian J, Sork VL (2012) Data from: Use of alpha, beta, and gamma diversity measures to characterize seed dispersal by animals.  Dryad Digital Repository. <http://dx.doi.org/10.5061/dryad.40kq7>

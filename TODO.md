@@ -3,23 +3,26 @@
 TODO
 ----
 
-- Consider switching to a full-generic interface (reduceGenalexPloidy -> reducePloidy.genalex).  I lose the ability to "silently" convert pre-1.0 data frames to class genalex, but if I make the old names stubs with instructions to convert with as.genalex and then use the new interface, that might be fine.  I don't have that many users anyway.
+- `rbind.genalex` and `cbind.genalex`, and `updateGenalex(..., verbose=TRUE)` function to recalculate various quantities after a change to the object
 - Add used papers to the data description?
-- Functions for converting from/to some other genetic formats, attaching them to as.genalex
+- Functions for converting from/to some other genetic formats, attaching them to `as.genalex`
 - If I am converting from those other formats, do I need to have the specific packages loaded?
-- Initial dispersalDiversity package should that be based on class 'genalex'-enabled readGenalex
+- Initial `dispersalDiversity` package should that be based on class `'genalex'`-enabled readGenalex
 - check on any implicit version dependencies
 - document version dependencies
 - read from and write to Excel files
 - add more tests
-- complete checkNullAllele integration
-- add checkNullAllele return of matrices indicating possible null alleles
-- make null allele demo using createGenalex(), and also using adult and pericarp Q. agrifolia data?
+- straighten up `checkNullAllele` code
+- complete `checkNullAllele` integration
+- add `checkNullAllele` return of matrices indicating possible null alleles
+- make `checkNullAllele` demo using `createGenalex`
 
 Completed
 ---------
 
-* `createGenalex()`, for creating a de-novo class `'genalex'` data frame
+* Moved data documentation to `R/readGenalex-data.Rd`
+* Switched to full-generic interface, e.g., replaced `reduceGenalexPloidy` with `reducePloidy` generic and `reducePloidy.genalex` method, and deprecated old functions
+* Added `createGenalex()`, for creating a de-novo class `'genalex'` data frame
 * drawing on writeGenalex documentation about differences when writing, be more explicit about what happens with extra columns and with extra column names on input
 * straighten out test for writeGenalex with and without quote=
 * GenAlEx says all genotype data is numeric, so code it as numeric after reading
@@ -36,9 +39,5 @@ Completed
 * For 1.0, recognise pre-1.0 genalex data frames and convert automatically (on option of course) to 1.0 class.
 * Did above by adding as.genalex
 * implement `quote=` for `writeGenalex`
-* add null allele check to this package
+* Moved `checkNullAlleles` from popgen repository to this package
 
-## internal work
-
-x concatenate all files into one R source file
-x rethink method strategy

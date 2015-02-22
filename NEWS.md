@@ -2,8 +2,9 @@
 
 * Creates and manipulates data frames using the new class `'genalex'`.  The `"genetic.data.format"` attribute present in earlier versions of this package is removed.
 * Extensive documentation updates reflecting use of class `'genalex'`
+* Several functions have been deprecated and replaced with generics recognising class `'genalex'`: `printGenalexGenotype` is replaced by `printGenotype`, `computeGenalexColumns` is replaced by `getLocusColumns`, `reorderGenalexLoci` is replaced by `reorderLoci`, `getGenalexLocus` is replaced by `getLocus`, `putGenalexLocus` is replaced by `putLocus`, `dropGenalexLoci` is replaced by `dropLocus`, and `reduceGenalexPloidy` is replaced by `reducePloidy`
 * New `as.genalex` generic with `as.genalex.genalex` and `as.genalex.data.frame`.  The latter will convert a pre-class `'genalex'` data frame to class `'genalex'`, and is used wherever a data frame is returned so conversion from old to new format happens automatically.
-* There is a `summary` method for class `'genalex'` which prints a few lines describing the data set, followed by a summary of the data frame contents and a summary of the extra columns, if present.
+* There is a `summary` method for class `'genalex'` which prints a few lines describing the data set, followed by a summary of the data frame contents and a summary of the extra columns, if present
 * New `as.data.frame` method to convert class `'genalex'` to class `'data.frame'`
 * new `createGenalex` function to create a class `'genalex'` object from constituent data
 * `readGenalex` now has `...` in its argument list, for additional arguments to be passed to `scan()` while reading data
@@ -14,10 +15,10 @@
 * Added tests for `writeGenalex`
 * Rolled `checkNullAlleles` from my popgen repository into this package
 * Added test for `checkNullAlleles` and an example
-* NOT YET: Extended `checkNullAlleles` to return a matrix of potential null alleles, with a couple of indexing modes.  More extensions needed.
+* **NOT YET** Extended `checkNullAlleles` to return a matrix of potential null alleles, with a couple of indexing modes.  More extensions needed.
 * Added `Qagr_adult_genotypes`and `Qagr_pericarp_genotypes` data sets and modified examples to use them
 * Created `inst/extdata` to hold data in non-R formats (simple tables), which of course includes GenAlEx-format data
-* Added collation order to DESCRIPTION so that readGenalex.R is loaded before checkNullAlleles.R
+* DESCRIPTION now has an explicit collation order and bug report URL
 * Added 'data' target to Makefile to build specified RData files
 
 # readGenalex 0.4.1.9000 (current development version)

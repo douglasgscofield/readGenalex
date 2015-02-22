@@ -12,7 +12,9 @@ Description: A collection of R functions to read, manipulate and write genotype
     and its documentation are available at
     http://biology-assets.anu.edu.au/GenAlEx.
 URL: https://github.com/douglasgscofield/readGenalex
+BugReports: https://github.com/douglasgscofield/readGenalex/issues
 License: LGPL-3 | file LICENSE
 Collate:
     'readGenalex.R'
     'checkNullAlleles.R'
+    'readGenalex-data.R'

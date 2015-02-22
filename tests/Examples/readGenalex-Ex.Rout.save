@@ -87,24 +87,6 @@ ref4	1 ref	3/3	2/1	2/2	3/1	*2/3*
 > 
 > 
 > cleanEx()
-> nameEx("computeGenalexColumns")
-> ### * computeGenalexColumns
-> 
-> flush(stderr()); flush(stdout())
-> 
-> ### Name: computeGenalexColumns
-> ### Title: Determine numeric column positions occupied by named loci
-> ### Aliases: computeGenalexColumns
-> 
-> ### ** Examples
-> 
-> data(Qagr_adult_genotypes)
-> computeGenalexColumns(Qagr_adult_genotypes, c("0c19", "0m05"))
-[1]  5  6 11 12
-> 
-> 
-> 
-> cleanEx()
 > nameEx("createGenalex")
 > ### * createGenalex
 > 
@@ -175,41 +157,59 @@ $data.file.name
 > 
 > 
 > cleanEx()
-> nameEx("dropGenalexLoci")
-> ### * dropGenalexLoci
+> nameEx("dropLocus")
+> ### * dropLocus
 > 
 > flush(stderr()); flush(stdout())
 > 
-> ### Name: dropGenalexLoci
+> ### Name: dropLocus
 > ### Title: Remove specified loci from data frame of class "genalex"
-> ### Aliases: dropGenalexLoci
+> ### Aliases: dropLocus dropLocus.genalex
 > 
 > ### ** Examples
 > 
 > data(Qagr_adult_genotypes)
-> newdat <- dropGenalexLoci(Qagr_adult_genotypes, "Oe09")
+> newdat <- dropLocus(Qagr_adult_genotypes, "Oe09")
 > 
 > 
 > 
 > cleanEx()
-> nameEx("getGenalexLocus")
-> ### * getGenalexLocus
+> nameEx("getLocus")
+> ### * getLocus
 > 
 > flush(stderr()); flush(stdout())
 > 
-> ### Name: getGenalexLocus
+> ### Name: getLocus
 > ### Title: Return genotype data for specified loci from class "genalex"
-> ### Aliases: getGenalexLocus
+> ### Aliases: getLocus getLocus.genalex
 > 
 > ### ** Examples
 > 
 > data(Qagr_pericarp_genotypes)
 > nm <- attr(Qagr_pericarp_genotypes, "locus.names")
 > # get the first locus
-> loc1 <- getGenalexLocus(Qagr_pericarp_genotypes, nm[1])
+> loc1 <- getLocus(Qagr_pericarp_genotypes, nm[1])
 > # get the second locus of the second population
 > po <- attr(Qagr_pericarp_genotypes, "pop.labels")
-> loc2.pop2 <- getGenalexLocus(Qagr_pericarp_genotypes, nm[2], po[2])
+> loc2.pop2 <- getLocus(Qagr_pericarp_genotypes, nm[2], po[2])
+> 
+> 
+> 
+> cleanEx()
+> nameEx("getLocusColumns")
+> ### * getLocusColumns
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: getLocusColumns
+> ### Title: Determine numeric column positions occupied by named loci
+> ### Aliases: getLocusColumns getLocusColumns.genalex
+> 
+> ### ** Examples
+> 
+> data(Qagr_adult_genotypes)
+> getLocusColumns(Qagr_adult_genotypes, c("0c19", "0m05"))
+[1]  5  6 11 12
 > 
 > 
 > 
@@ -232,19 +232,19 @@ $data.file.name
 > 
 > 
 > cleanEx()
-> nameEx("printGenalexGenotype")
-> ### * printGenalexGenotype
+> nameEx("printGenotype")
+> ### * printGenotype
 > 
 > flush(stderr()); flush(stdout())
 > 
-> ### Name: printGenalexGenotype
+> ### Name: printGenotype
 > ### Title: Print selected genotypes
-> ### Aliases: printGenalexGenotype
+> ### Aliases: printGenotype printGenotype.genalex
 > 
 > ### ** Examples
 > 
 > data(Qagr_adult_genotypes)
-> printGenalexGenotype(Qagr_adult_genotypes, rows = 6:8, callout.locus = "1c08")
+> printGenotype(Qagr_adult_genotypes, rows = 6:8, callout.locus = "1c08")
 2206 Sedgwick 213/213 226/240 194/194 196/204 202/206 201/203 240/242 *271/273* 190/190 185/185 
 2207 Sedgwick 213/215 238/238 192/194 196/206 212/214 199/201 236/236 *271/273* 190/190 183/187 
 2208 Sedgwick 213/215 236/238 194/196 206/206 210/222 199/201 236/236 *269/273* 190/190 185/187 
@@ -350,40 +350,40 @@ $data.file.name
 > 
 > 
 > cleanEx()
-> nameEx("reduceGenalexPloidy")
-> ### * reduceGenalexPloidy
+> nameEx("reducePloidy")
+> ### * reducePloidy
 > 
 > flush(stderr()); flush(stdout())
 > 
-> ### Name: reduceGenalexPloidy
+> ### Name: reducePloidy
 > ### Title: Reduce the ploidy of a data frame of class "genalex"
-> ### Aliases: reduceGenalexPloidy
+> ### Aliases: reducePloidy reducePloidy.genalex
 > 
 > ### ** Examples
 > 
 > data(Qagr_adult_genotypes)
 > attr(Qagr_adult_genotypes, "ploidy")
 [1] 2
-> p1 <- reduceGenalexPloidy(Qagr_adult_genotypes, 1)
+> p1 <- reducePloidy(Qagr_adult_genotypes, 1)
 > 
 > 
 > 
 > cleanEx()
-> nameEx("reorderGenalexLoci")
-> ### * reorderGenalexLoci
+> nameEx("reorderLoci")
+> ### * reorderLoci
 > 
 > flush(stderr()); flush(stdout())
 > 
-> ### Name: reorderGenalexLoci
+> ### Name: reorderLoci
 > ### Title: Reorder a data frame of class "genalex"
-> ### Aliases: reorderGenalexLoci
+> ### Aliases: reorderLoci reorderLoci.genalex
 > 
 > ### ** Examples
 > 
 > data(Qagr_adult_genotypes)
 > # reverse loci
 > loci <- rev(attr(Qagr_adult_genotypes, "locus.names"))
-> reord = reorderGenalexLoci(Qagr_adult_genotypes, rev(loci))
+> reord = reorderLoci(Qagr_adult_genotypes, rev(loci))
 > 
 > 
 > 
@@ -414,14 +414,14 @@ Locus names:
  [1] "0c11" "0c19" "Oe09" "0i01" "0m05" "0m07" "1c06" "1c08" "1f02" "1g13"
 
 Summary of genotype data frame:
- AdultMomFamily           Site          0c11           0c11.2     
- Length:262         Sedgwick:262   Min.   :203.0   Min.   :213.0  
- Class :character                  1st Qu.:213.0   1st Qu.:213.0  
- Mode  :character                  Median :213.0   Median :215.0  
-                                   Mean   :213.2   Mean   :216.8  
-                                   3rd Qu.:213.0   3rd Qu.:217.0  
-                                   Max.   :225.0   Max.   :255.0  
-                                   NA's   :6       NA's   :6      
+ AdultMomFamily         Site                0c11           0c11.2     
+ Length:262         Length:262         Min.   :203.0   Min.   :213.0  
+ Class :character   Class :character   1st Qu.:213.0   1st Qu.:213.0  
+ Mode  :character   Mode  :character   Median :213.0   Median :215.0  
+                                       Mean   :213.2   Mean   :216.8  
+                                       3rd Qu.:213.0   3rd Qu.:217.0  
+                                       Max.   :225.0   Max.   :255.0  
+                                       NA's   :6       NA's   :6      
       0c19           0c19.2           Oe09           Oe09.2     
  Min.   :222.0   Min.   :226.0   Min.   :184.0   Min.   :186.0  
  1st Qu.:226.0   1st Qu.:238.0   1st Qu.:190.0   1st Qu.:194.0  
@@ -746,7 +746,7 @@ STD	Sedgwick	213	215	244	246	190	194	196	208	210	214	201	219	236	242	271	275	190
 > ###
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  0.328 0.011 0.34 0 0 
+Time elapsed:  0.327 0.011 0.338 0 0 
 > grDevices::dev.off()
 null device 
           1 
