@@ -3,7 +3,7 @@
 \name{getLocus}
 \alias{getLocus}
 \alias{getLocus.genalex}
-\title{Return genotype data for specified loci from class \code{'genalex'}}
+\title{Return genotype data for specified loci}
 \usage{
 \method{getLocus}{genalex}(x, locus, pop = NULL, ...)
 }
@@ -18,13 +18,13 @@
 \item{\dots}{Additional arguments, currently none}
 }
 \value{
-A data frame of class \code{'genalex'} containing genotype data
+An object of class \code{'data.frame'} containing genotype data
 from \code{x} for loci specified in \code{code}, optionally restricted
 to samples from populations specified in \code{pop}.
 }
 \description{
-Return genotype data for specified loci in the data frame of class
-\code{'genalex'}, optionally restricted to samples from specific
+Return genotype data for specified loci in an object of class
+\code{'data.frame'}, optionally restricted to samples from specific
 populations.
 }
 \examples{

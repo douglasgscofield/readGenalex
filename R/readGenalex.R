@@ -63,18 +63,35 @@ is.genalex <- function(x) {
 #' Convert object to class 'genalex'
 #' 
 #' Converts object \code{x} to a data frame of class \code{'genalex'}.
-#' There are three cases:
+#' There are four cases:
 #' \itemize{
 #'   \item If \code{x} is of class \code{'genalex'}, it is simply returned.
 #'   \item If \code{x} is of class \code{'data.frame'}, it is examined to
 #'         see if it might be a data frame created by an earlier version of
 #'         the \code{readGenalex} package.  If so, it is converted to
-#'         class \code{'genalex'} and returned.
+#'         class \code{'genalex'} and returned.  Any other arguments are
+#'         ignored.
+#'   \item If \code{x} is of class \code{'data.frame'} but does not appear to
+#'         be from an earlier version of \code{readGenalex}, it is converted
+#'         to class \code{'genalex'} using a call to \code{\link{genalex}}
+#'         assuming a format identical to class \code{'genalex'}, where the
+#'         first column holds sample names, the second column holds population
+#'         names, and the remaining columns hold genotypes.
 #'   \item Any other class is an error.  Further conversions between genetic
 #'         data formats may be added here as additional methods.
 #' }
 #' 
-#' @param x      An object
+#' @param x      An object of class \code{'genalex'} or class
+#'               \code{'data.frame'}
+#'
+#' @param names  A list of names to apply as accepted by \code{\link{genalex}}.
+#'               If any names are not provided, they are taken from the names
+#'               of the corresponding columns of \code{x}.  This option is 
+#'               only used if \code{x} is not class \code{'genalex'}.
+#'
+#' @param ploidy Ploidy of the genotype columns in \code{x}
+#'               (\code{x[, 3:ncol(x)]}).  This option is only
+#'               used if \code{x} is not class \code{'genalex'}.
 #'
 #' @param \dots  Additional arguments, currently ignored
 #'
@@ -111,23 +128,46 @@ as.genalex.genalex <- function(x, ...) {
 #'
 #' @export
 #' 
-as.genalex.data.frame <- function(x, ...) {
+as.genalex.data.frame <- function(x, names = NULL, ploidy = 2, ...) {
     if (! is.null(attr(x, "genetic.data.format")) &&
              attr(x, "genetic.data.format") == "genalex") {
         # convert earlier readGenalex format to class genalex
+        if (! missing(names) || ! missing(ploidy))
+            warning("args ignored, converting pre-1.0 readGenalex data frame")
         attr(x, "genetic.data.format") <- NULL
         return(structure(x, class = c('genalex', 'data.frame')))
+    } else {
+        this.call <- sys.call()
+        if (ncol(x) <= 2)
+            stop("not enough columns for class 'genalex'")
+        # call genalex() to coerce data frame
+        nm <- names(x)
+        if (is.null(names)) names = list()
+        if (is.null(names$title)) names$title <- "genalex"
+        if (is.null(names$sample)) names$sample <- nm[1]
+        if (is.null(names$pop)) names$pop <- nm[2]
+        z <- genalex(x[, 1], x[, 2], x[, 3:ncol(x), drop=FALSE], names, ploidy)
+        attr(z, "data.file.name") <- capture.output(print(this.call))
+        return(z)
     }
     stop("'", deparse(substitute(x)), "' cannot be coerced to class 'genalex'")
 }
 
 
 
-#' Convert class 'genalex' to data frame
+#' Convert class \code{'genalex'} to data frame
 #' 
-#' @param x      An object to convert to class \code{'data.frame'}
+#' Convert an object of class \code{'genalex'} to a data frame, optionally
+#' removing all \code{'genalex'}-specific attributes.  Note that the
+#' behaviour of \code{stringsAsFactors} will be applied to the data frame
+#' during conversion.
+#' 
+#' @param x         An object to convert to class \code{'data.frame'}
 #'
-#' @param \dots  Additional arguments passed to \code{as.data.frame}
+#' @param complete  If \code{TRUE}, also removes class 
+#'                  \code{'genalex'}-specific attributes
+#'
+#' @param \dots     Additional arguments passed to \code{as.data.frame}
 #'
 #' @return \code{x} as class \code{'data.frame'}.  No attributes
 #'         are removed, the class is simply changed to \code{data.frame}
@@ -137,10 +177,13 @@ as.genalex.data.frame <- function(x, ...) {
 #'
 #' @export
 #' 
-as.data.frame.genalex <- function(x, ...) {
-    if (is.genalex(x))
-        return(as.data.frame(structure(x, class = c('data.frame')), ...,
-                             stringsAsFactors = default.stringsAsFactors()))
+as.data.frame.genalex <- function(x, ..., complete = FALSE) {
+    if (is.genalex(x)) {
+        if (complete) x <- .clearGenalexAttributes(x)
+        z <- as.data.frame(structure(x, class = c('data.frame')), ...,
+                             stringsAsFactors = default.stringsAsFactors())
+        return(z)
+    }
     stop("'", deparse(substitute(x)), "' is not class 'genalex'")
 }
 
@@ -357,7 +400,11 @@ readGenalex <- function(file, sep = "\t", ploidy = 2,
         extra.columns <- cbind(dat[,1], raw.data$extra.columns)
         names(extra.columns)[1] <- names(dat)[1]
     }
-    f <- function(x) c(x, paste(sep = ".", x, seq(2, header$ploidy, 1)))
+    f <- function(x) {
+        c(x, if (header$ploidy > 1)
+                 paste(sep = ".", x, seq(2, header$ploidy, 1))
+             else NULL)
+    }
     data.column.names <- c(header$sample.title, header$pop.title,
                            unlist(lapply(header$locus.names, f)))
     names(dat) <- data.column.names
@@ -395,6 +442,114 @@ readGenalex <- function(file, sep = "\t", ploidy = 2,
 
 
 
+#' Combine class \code{genalex} data sets
+#'
+#' Combine class \code{genalex} data sets onto one larger class \code{genalex}
+#' data set.  Population names and sizes are adjusted accordingly.  The
+#' data sets must have the same locus names and ploidy; the order of the loci
+#' may differ, and the final data set will have the locus order of the first.
+#' Sample names must be unique across all data sets.  Data set title and
+#' sample and population column headers are taken from the first data set
+#' unless supplied in the \code{names} argument.  If one data set contains
+#' extra columns, all must contain extra columns, and these are combined along
+#' with the rest of the data.
+#' 
+#' @param \dots   Class \code{genalex} data sets.  If only one data set
+#'                is supplied, it is returned unmodified.
+#'
+#' @param names   List of names: \code{title} for data set title,
+#'                \code{sample} for sample column header, and
+#'                \code{pop} for population column header
+#'
+#' @param deparse.level Not used (yet)
+#'
+#' @return Annotated data frame of class \code{'genalex'}.  If \code{names}
+#' or any of its fields are not provided, the names of the first argument
+#' are used.  The \code{data.file.name} attribute is a character
+#' representation of the call to \code{rbind}.
+#'
+#' @note If one of the arguments is class \code{'data.frame'}, then this
+#' function will \emph{not} be called, instead the \code{rbind.data.frame}
+#' method of base R will be called silently and will return an object of
+#' class \code{'data.frame'}.  This occurs because objects of class
+#' \code{'genalex'} also have class \code{'data.frame'}.  This occurs
+#' during method dispatch for \code{rbind}, so it is not a condition that
+#' can be checked by this function.  Assure that data frames have been
+#' converted to class \code{'genalex'} prior to calling this function
+#' by using \code{as.genalex}.
+#'
+#' @author Douglas G. Scofield
+#'
+#' @seealso \code{\link{genalex}}, \code{\link{rbind}}, \code{\link{as.genalex}}
+#'
+#' @examples
+#'
+#' gt1 <- data.frame(a = 11:13, a.2 = 14:16, b = 101:103, b.2 = 104:106)
+#' x1 <- genalex(1:3, "snurf", gt1)
+#' gt2 <- data.frame(a = 21:23, a.2 = 24:26, b = 201:203, b.2 = 204:206)
+#' x2 <- genalex(4:6, "snirf", gt2)
+#' x <- rbind(x1, x2)
+#' x
+#' attributes(x)
+#'
+#' @export
+#'
+rbind.genalex <- function(..., names, deparse.level = 1) {
+    # dummy up a call for data.file.name
+    this.call <- sys.call()
+    a <- paste(collapse = ", ",
+               unlist(lapply(as.list(substitute(list(...)))[-1L],
+                             as.character)))
+    if (! missing(names))
+        a <- paste(sep = ", ", a, 
+                   paste("names =", deparse(substitute(names))))
+    this.call <- paste(sep="", as.character(this.call[[1]]), "(", a, ")")
+    # verify args
+    if (deparse.level != 1)
+        .NotYetUsed("deparse.level")
+    dots <- list(...)
+    if (! all(sapply(dots, is.genalex)))
+        stop("all arguments must be class 'genalex'")
+    if (length(dots) == 1)
+        return(dots[[1]])
+    dat.1 <- dots[[1]]
+    att.1 <- attributes(dat.1)
+    if (! all(sapply(dots, function(x) {
+                               is.null(attr(x, "extra.columns")) == 
+                               is.null(att.1$extra.columns)})))
+        stop("all arguments must either have or lack extra columns")
+    if (! all(sapply(dots, function(x) attr(x, "ploidy") == att.1$ploidy)))
+        stop("all arguments must have the same ploidy")
+    # make sure genotypes and extra columns are consistent
+    locn.1 <- att.1$locus.names
+    equal.but.order <- function(a, b) all(a %in% b) && all(b %in% a)
+    extra.columns <- if (is.null(att.1$extra.columns)) NULL 
+        else list(attr(dots[[1]], "extra.columns"))
+    for (i in 2:length(dots)) {
+        if (! equal.but.order(locn.1, attr(dots[[i]], "locus.names")))
+            stop("all arguments must contain the same loci")
+        else if (! all(locn.1 == attr(dots[[i]], "locus.names")))
+            dots[[i]] <- reorderLoci(dots[[i]], locn.1)
+        if (! is.null(extra.columns))
+            extra.columns[[i]] <- attr(dots[[i]], "extra.columns")
+    }
+    alldat <- do.call(rbind, lapply(dots, as.data.frame))
+    allextra <- if (is.null(extra.columns)) NULL 
+        else do.call(rbind, lapply(extra.columns, as.data.frame))
+    x <- genalex(alldat[, 1], alldat[, 2], alldat[, 3:ncol(alldat)],
+                 ploidy = att.1$ploidy, extra.columns = allextra)
+    attr(x, "dataset.title") <- if (missing(names) || is.null(names$title))
+        att.1$dataset.title else names$title
+    attr(x, "sample.title") <- if (missing(names) || is.null(names$sample))
+        att.1$sample.title else names$sample
+    attr(x, "pop.title") <- if (missing(names) || is.null(names$pop))
+        att.1$pop.title else names$pop
+    attr(x, "data.file.name") <- this.call  # note different from genalex()
+    return(x)
+}
+
+
+
 #' Create new object of class \code{'genalex'} from constituent data
 #'
 #' Create a new object of class \code{'genalex'} given sample and
@@ -426,7 +581,7 @@ readGenalex <- function(file, sep = "\t", ploidy = 2,
 #' @return Annotated data frame of class \code{'genalex'}.  If \code{names}
 #' or any of its fields are not provided, default names are used.  The 
 #' \code{data.file.name} attribute is a character representation of the call
-#' to \code{createGenalex}.
+#' to \code{genalex}.
 #'
 #' @author Douglas G. Scofield
 #'
@@ -436,15 +591,16 @@ readGenalex <- function(file, sep = "\t", ploidy = 2,
 #'
 #' gt <- data.frame(a = 11:13, a.2 = 14:16, b = 101:103, b.2 = 104:106)
 #' nms <- list(title = "Example")
-#' x <- createGenalex(1:3, "snurf", gt, nms)
+#' x <- genalex(1:3, "snurf", gt, nms)
 #' x
 #' attributes(x)
 #'
 #' @export
 #'
-createGenalex <- function(samples, pops, genotypes, names, ploidy = 2,
-                          extra.columns = NULL) {
+genalex <- function(samples, pops, genotypes, names = NULL, ploidy = 2,
+                    extra.columns = NULL) {
     this.call <- sys.call()
+    genotypes <- as.data.frame(genotypes)
     if (length(samples) != nrow(genotypes))
         stop("'samples' and 'genotypes' must have the same length")
     if (anyDuplicated(samples))
@@ -833,8 +989,10 @@ reorderLoci <- function(x, ...) UseMethod("reorderLoci")
 #' 
 reorderLoci.genalex <- function(x, loci, ...) {
     existing.loci <- attr(x, "locus.names")
-    if (! all(existing.loci %in% loci)) 
-        stop("not all existing loci in reorder list")
+    if (! (all(existing.loci %in% loci) && all(loci %in% existing.loci))) 
+        stop("reorder list must contain all existing loci")
+    if (length(loci) != length(existing.loci))
+        stop("loci must appear only once")
     newdata <- x[,1:2]
     for (locus in loci) {
         newdata <- cbind(newdata, getLocus(x, locus))
@@ -848,10 +1006,29 @@ reorderLoci.genalex <- function(x, loci, ...) {
 
 
 
-#' Return genotype data for specified loci from class \code{'genalex'}
+.clearGenalexAttributes <- function(x) {
+    attr(x, "data.file.name") <- NULL
+    attr(x, "ploidy") <- NULL
+    attr(x, "n.loci") <- NULL
+    attr(x, "n.samples") <- NULL
+    attr(x, "n.pops") <- NULL
+    attr(x, "pop.labels") <- NULL
+    attr(x, "pop.sizes") <- NULL
+    attr(x, "dataset.title") <- NULL
+    attr(x, "sample.title") <- NULL
+    attr(x, "pop.title") <- NULL
+    attr(x, "locus.names") <- NULL
+    attr(x, "locus.columns") <- NULL
+    attr(x, "extra.columns") <- NULL
+    return(x)
+}
+
+
+
+#' Return genotype data for specified loci
 #' 
-#' Return genotype data for specified loci in the data frame of class
-#' \code{'genalex'}, optionally restricted to samples from specific
+#' Return genotype data for specified loci in an object of class
+#' \code{'data.frame'}, optionally restricted to samples from specific
 #' populations.
 #' 
 #' 
@@ -864,7 +1041,7 @@ reorderLoci.genalex <- function(x, loci, ...) {
 #'
 #' @param \dots  Additional arguments, currently none
 #' 
-#' @return A data frame of class \code{'genalex'} containing genotype data 
+#' @return An object of class \code{'data.frame'} containing genotype data 
 #' from \code{x} for loci specified in \code{code}, optionally restricted
 #' to samples from populations specified in \code{pop}.
 #' 
@@ -898,7 +1075,9 @@ getLocus.genalex <- function(x, locus, pop = NULL, ...) {
         pop.column <- attr(x, "pop.title")
         x <- subset(x, x[[pop.column]] %in% pop)
     }
-    x[, cols]
+    x <- as.data.frame(x[, cols, drop=FALSE])
+    x <- .clearGenalexAttributes(x)
+    return(x)
 }
 
 
@@ -951,8 +1130,10 @@ putLocus.genalex <- function(x, locus, newdata, ...) {
 #' 
 #' @param drop.locus The names of one or more loci found in \code{x}
 #' 
-#' @param quiet      If set to \code{TRUE}, quietly returns \code{x} 
-#'                   if none of \code{drop.locus} are found in \code{x}
+#' @param quiet      If \code{FALSE}, produce an error if any of
+#'                   \code{drop.locus} are not found in \code{x}.  If
+#'                   \code{TRUE}, apply whichever of \code{drop.locus}
+#'                   are found in \code{x} and return the result.
 #'
 #' @param \dots  Additional arguments, currently none
 #' 
@@ -983,14 +1164,13 @@ dropLocus.genalex <- function(x, drop.locus, quiet = FALSE, ...) {
     if (missing(drop.locus) || is.null(drop.locus))
         return(x)
     locus.names <- attr(x, "locus.names")
-    if (! all(drop.locus %in% locus.names))  
-        if (any(drop.locus %in% locus.names)) # at least one matches
-          drop.locus <- drop.locus[drop.locus %in% locus.names]
-        else
-          if (quiet) 
-              return(x) 
-          else 
-              stop("locus not present")
+    if (! all(drop.locus %in% locus.names)) {
+        if (! quiet || ! any(drop.locus %in% locus.names))
+            stop("locus not present")
+        drop.locus <- drop.locus[drop.locus %in% locus.names]
+        if (length(drop.locus) == 0)
+            return(x)
+    }
     att <- attributes(x)
     x <- x[, -getLocusColumns(x, drop.locus)]
     for (a in names(att))

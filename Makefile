@@ -91,16 +91,21 @@ $(CHECKDIR): $(TARBALL_LOC)
 $(TARBALL_LOC): NEWS doc vignettes R/*.R man/*.Rd data/* inst/*
 	cd $(PARENTDIR) && RSTUDIO_PANDOC=`which pandoc` R CMD build $(PACKAGE)
 
-build: $(TARBALL_LOC)
+testthat:
+	if test -f tests/testthat.R ; then \
+		R --quiet -e 'devtools::install("."); library(testthat); setwd("tests"); test_check("readGenalex")' ; \
+	fi
 
-check: $(CHECKDIR)
+build: testthat $(TARBALL_LOC)
+
+check: testthat $(CHECKDIR)
 	cd $(CHECKDIR) && R CMD check $(TARBALL)
 
-check-cran: clean $(CHECKDIR)
+check-cran: clean testthat $(CHECKDIR)
 	cd $(CHECKDIR) && R CMD check --as-cran $(TARBALL)
 
 clean:
 	rm -rf $(CHECKDIR)
 	rm -f $(TARBALL_LOC)
 
-.PHONY: vars doc build vignettes
+.PHONY: vars doc build vignettes testthat

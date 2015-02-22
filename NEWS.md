@@ -3,16 +3,17 @@
 * Creates and manipulates data frames using the new class `'genalex'`.  The `"genetic.data.format"` attribute present in earlier versions of this package is removed.
 * Extensive documentation updates reflecting use of class `'genalex'`
 * Several functions have been deprecated and replaced with generics recognising class `'genalex'`: `printGenalexGenotype` is replaced by `printGenotype`, `computeGenalexColumns` is replaced by `getLocusColumns`, `reorderGenalexLoci` is replaced by `reorderLoci`, `getGenalexLocus` is replaced by `getLocus`, `putGenalexLocus` is replaced by `putLocus`, `dropGenalexLoci` is replaced by `dropLocus`, and `reduceGenalexPloidy` is replaced by `reducePloidy`
-* New `as.genalex` generic with `as.genalex.genalex` and `as.genalex.data.frame`.  The latter will convert a pre-class `'genalex'` data frame to class `'genalex'`, and is used wherever a data frame is returned so conversion from old to new format happens automatically.
+* New `as.genalex` generic with `as.genalex.genalex` and `as.genalex.data.frame`.  The latter will convert a pre-class `'genalex'` data frame to class `'genalex'`, and is used wherever a data frame is returned so conversion from old to new format happens automatically.  It will also convert a suitably-formatted data frame to class `'genalex'` after determining suitable attributes
 * There is a `summary` method for class `'genalex'` which prints a few lines describing the data set, followed by a summary of the data frame contents and a summary of the extra columns, if present
-* New `as.data.frame` method to convert class `'genalex'` to class `'data.frame'`
-* new `createGenalex` function to create a class `'genalex'` object from constituent data
+* New `as.data.frame` method to convert class `'genalex'` to class `'data.frame'`, optionally clearing all class `'genalex'`-specific attributes
+* new `genalex` function to create a class `'genalex'` object from constituent data
 * `readGenalex` now has `...` in its argument list, for additional arguments to be passed to `scan()` while reading data
 * Added `na.strings` argument to `readGenalex`, with defaults that reflect GenAlEx's own expectations for missing data
 * Added `na` and `na.character` arguments to `writeGenalex`, with values to use for NA in genotype/numeric/logical columns and character columns, respectively
 * Clarified typing of sample, population, genotype, and extra columns.  Sample and population columns are stored as character (population was previously a factor), genotype columns are stored as numeric, and extra columns are stored as their natural type as determined by `type.convert(..., as.is=TRUE)`, so that character columns are not converted to factors.
 * As a result of the clarified typing, `writeGenalex(..., quote=TRUE)` will only quote names in the GenAlEx header, in the first two columns, and in any character-valued extra columns
 * Added tests for `writeGenalex`
+* Added tests for most functions and found a few bugs along the way
 * Rolled `checkNullAlleles` from my popgen repository into this package
 * Added test for `checkNullAlleles` and an example
 * **NOT YET** Extended `checkNullAlleles` to return a matrix of potential null alleles, with a couple of indexing modes.  More extensions needed.

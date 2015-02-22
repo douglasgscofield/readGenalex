@@ -14,6 +14,8 @@ Description: A collection of R functions to read, manipulate and write genotype
 URL: https://github.com/douglasgscofield/readGenalex
 BugReports: https://github.com/douglasgscofield/readGenalex/issues
 License: LGPL-3 | file LICENSE
+Suggests:
+    testthat
 Collate:
     'readGenalex.R'
     'checkNullAlleles.R'

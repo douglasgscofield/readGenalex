@@ -120,8 +120,11 @@ columns.
 There are other functions supplied for manipulating population genetic data
 of class `'genalex'`:
 
-`createGenalex()`
+`genalex()`
 : Create a class `'genalex'` object from constituent data
+
+`rbind()`
+: Merge samples from two or more class `'genalex'` objects
 
 `writeGenalex()`
 : Write a GenAlEx-format text file
@@ -133,7 +136,7 @@ of class `'genalex'`:
 : Checks whether the object is class `'genalex'`
 
 `as.genalex()`
-: Generic function which converts a pre-1.0-style `readGenalex` data frame to class `'genalex'`, and is available for further expansion
+: Generic function which converts a pre-1.0-style `readGenalex` data frame to class `'genalex'`, or converts a suitably-formatted data frame to class `'genalex'`
 
 `as.data.frame()`
 : Method to convert class `'genalex'` to class `'data.frame'`, no attributes are removed

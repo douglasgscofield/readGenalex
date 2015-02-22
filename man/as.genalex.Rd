@@ -8,10 +8,20 @@
 \usage{
 \method{as.genalex}{genalex}(x, ...)
 
-\method{as.genalex}{data.frame}(x, ...)
+\method{as.genalex}{data.frame}(x, names = NULL, ploidy = 2, ...)
 }
 \arguments{
-\item{x}{An object}
+\item{x}{An object of class \code{'genalex'} or class
+              \code{'data.frame'}}
+
+\item{names}{A list of names to apply as accepted by \code{\link{genalex}}.
+              If any names are not provided, they are taken from the names
+              of the corresponding columns of \code{x}.  This option is
+              only used if \code{x} is not class \code{'genalex'}.}
+
+\item{ploidy}{Ploidy of the genotype columns in \code{x}
+              (\code{x[, 3:ncol(x)]}).  This option is only
+              used if \code{x} is not class \code{'genalex'}.}
 
 \item{\dots}{Additional arguments, currently ignored}
 }
@@ -20,13 +30,20 @@
 }
 \description{
 Converts object \code{x} to a data frame of class \code{'genalex'}.
-There are three cases:
+There are four cases:
 \itemize{
   \item If \code{x} is of class \code{'genalex'}, it is simply returned.
   \item If \code{x} is of class \code{'data.frame'}, it is examined to
         see if it might be a data frame created by an earlier version of
         the \code{readGenalex} package.  If so, it is converted to
-        class \code{'genalex'} and returned.
+        class \code{'genalex'} and returned.  Any other arguments are
+        ignored.
+  \item If \code{x} is of class \code{'data.frame'} but does not appear to
+        be from an earlier version of \code{readGenalex}, it is converted
+        to class \code{'genalex'} using a call to \code{\link{genalex}}
+        assuming a format identical to class \code{'genalex'}, where the
+        first column holds sample names, the second column holds population
+        names, and the remaining columns hold genotypes.
   \item Any other class is an error.  Further conversions between genetic
         data formats may be added here as additional methods.
 }

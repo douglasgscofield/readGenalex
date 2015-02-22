@@ -2,12 +2,15 @@
 % Please edit documentation in R/readGenalex.R
 \name{as.data.frame.genalex}
 \alias{as.data.frame.genalex}
-\title{Convert class 'genalex' to data frame}
+\title{Convert class \code{'genalex'} to data frame}
 \usage{
-\method{as.data.frame}{genalex}(x, ...)
+\method{as.data.frame}{genalex}(x, ..., complete = FALSE)
 }
 \arguments{
 \item{x}{An object to convert to class \code{'data.frame'}}
+
+\item{complete}{If \code{TRUE}, also removes class
+                 \code{'genalex'}-specific attributes}
 
 \item{\dots}{Additional arguments passed to \code{as.data.frame}}
 }
@@ -17,7 +20,10 @@
         and \code{as.data.frame} is called, with all that may entail.
 }
 \description{
-Convert class 'genalex' to data frame
+Convert an object of class \code{'genalex'} to a data frame, optionally
+removing all \code{'genalex'}-specific attributes.  Note that the
+behaviour of \code{stringsAsFactors} will be applied to the data frame
+during conversion.
 }
 \author{
 Douglas G. Scofield

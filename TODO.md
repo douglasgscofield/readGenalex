@@ -3,7 +3,8 @@
 TODO
 ----
 
-- `rbind.genalex` and `cbind.genalex`, and `updateGenalex(..., verbose=TRUE)` function to recalculate various quantities after a change to the object
+- `cbind.genalex`?
+- `updateGenalex(..., verbose=TRUE)` function to recalculate various quantities after a change to the object
 - Add used papers to the data description?
 - Functions for converting from/to some other genetic formats, attaching them to `as.genalex`
 - If I am converting from those other formats, do I need to have the specific packages loaded?
@@ -11,7 +12,7 @@ TODO
 - check on any implicit version dependencies
 - document version dependencies
 - read from and write to Excel files
-- add more tests
+- complete adding tests
 - straighten up `checkNullAllele` code
 - complete `checkNullAllele` integration
 - add `checkNullAllele` return of matrices indicating possible null alleles
@@ -20,6 +21,11 @@ TODO
 Completed
 ---------
 
+* Expanded `as.genalex.data.frame` to convert a suitably-formatted data frame to class `genalex` by determining suitable attributes
+* Added method `rbind.genalex`
+* Added many tests for over half the functions specified
+* Renamed `createGenalex()` to `genalex`, it is a constructor
+* Moved deprecated functions to `R/readGenalex-deprecated.Rd`
 * Moved data documentation to `R/readGenalex-data.Rd`
 * Switched to full-generic interface, e.g., replaced `reduceGenalexPloidy` with `reducePloidy` generic and `reducePloidy.genalex` method, and deprecated old functions
 * Added `createGenalex()`, for creating a de-novo class `'genalex'` data frame
