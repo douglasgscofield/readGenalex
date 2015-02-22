@@ -30,7 +30,7 @@ the \code{readGenalex} package.  They may eventually be completely removed.
   \code{computeGenalexColumns} \tab now a synonym for \code{\link{getLocusColumns}}\cr
   \code{reorderGenalexLoci} \tab now a synonym for \code{\link{reorderLoci}}\cr
   \code{getGenalexLocus} \tab now a synonym for \code{\link{getLocus}}\cr
-  \code{putGenalexLocus} \tab now a synonym for \code{\link{putLocus}}\cr
+  \code{putGenalexLocus} \tab now a synonym for \code{\link{replaceLocus}}\cr
   \code{dropGenalexLoci} \tab now a synonym for \code{\link{dropLocus}}\cr
   \code{reduceGenalexPloidy} \tab now a synonym for \code{\link{reducePloidy}}\cr
 }

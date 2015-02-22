@@ -9,7 +9,7 @@ readGenalex 0.9.9000 (class_genalex development branch)
     recognising class 'genalex': printGenalexGenotype is replaced by
     printGenotype, computeGenalexColumns is replaced by getLocusColumns,
     reorderGenalexLoci is replaced by reorderLoci, getGenalexLocus is
-    replaced by getLocus, putGenalexLocus is replaced by putLocus,
+    replaced by getLocus, putGenalexLocus is replaced by replaceLocus,
     dropGenalexLoci is replaced by dropLocus, and reduceGenalexPloidy is
     replaced by reducePloidy
 -   New as.genalex generic with as.genalex.genalex and

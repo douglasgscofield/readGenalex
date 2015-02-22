@@ -1104,17 +1104,17 @@ getLocus.genalex <- function(x, locus, pop = NULL, ...) {
 #' 
 #' @export
 #' 
-#' @name putLocus
+#' @name replaceLocus
 #' 
 NULL
 
-putLocus <- function(x, ...) UseMethod("putLocus")
+replaceLocus <- function(x, ...) UseMethod("replaceLocus")
 
-#' @rdname putLocus
+#' @rdname replaceLocus
 #' 
 #' @export
 #' 
-putLocus.genalex <- function(x, locus, newdata, ...) {
+replaceLocus.genalex <- function(x, locus, newdata, ...) {
     x[, getLocusColumns(x, locus)] <- newdata
     x
 }

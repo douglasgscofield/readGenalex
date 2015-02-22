@@ -3,7 +3,7 @@
 TODO
 ----
 
-- `cbind.genalex`?
+- `cbind.genalex`?  `insertLocus`?
 - `updateGenalex(..., verbose=TRUE)` function to recalculate various quantities after a change to the object
 - Add used papers to the data description?
 - Functions for converting from/to some other genetic formats, attaching them to `as.genalex`

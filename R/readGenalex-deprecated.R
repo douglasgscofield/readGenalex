@@ -22,7 +22,7 @@
 #'   \code{computeGenalexColumns} \tab now a synonym for \code{\link{getLocusColumns}}\cr
 #'   \code{reorderGenalexLoci} \tab now a synonym for \code{\link{reorderLoci}}\cr
 #'   \code{getGenalexLocus} \tab now a synonym for \code{\link{getLocus}}\cr
-#'   \code{putGenalexLocus} \tab now a synonym for \code{\link{putLocus}}\cr
+#'   \code{putGenalexLocus} \tab now a synonym for \code{\link{replaceLocus}}\cr
 #'   \code{dropGenalexLoci} \tab now a synonym for \code{\link{dropLocus}}\cr
 #'   \code{reduceGenalexPloidy} \tab now a synonym for \code{\link{reducePloidy}}\cr
 #' }
@@ -44,8 +44,8 @@ getGenalexLocus <- function(...) {
     getLocus(...)
 }
 putGenalexLocus <- function(...) {
-    .Deprecated("putLocus", package = "readGenalex")
-    putLocus(...)
+    .Deprecated("replaceLocus", package = "readGenalex")
+    replaceLocus(...)
 }
 dropGenalexLoci <- function(...) {
     .Deprecated("dropLocus", package = "readGenalex")
