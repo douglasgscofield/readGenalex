@@ -156,7 +156,7 @@ of class `'genalex'`:
 `computeLocusColumns()`
 : Return a vector of column numbers for specified loci
 
-`putLocus()`
+`replaceLocus()`
 : Replace genotypes of specified locus
 
 `getLocus()`
