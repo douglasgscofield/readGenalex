@@ -18,3 +18,4 @@ Collate:
     'readGenalex.R'
     'checkNullAlleles.R'
     'readGenalex-data.R'
+    'readGenalex-deprecated.R'
