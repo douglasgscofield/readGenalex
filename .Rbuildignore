@@ -1,4 +1,3 @@
-^example_genotypes\.txt$
 ^\.git$
 ^\.gitignore$
 ^\.RData$
@@ -9,4 +8,3 @@
 ^NEWS\.md$
 ^TODO\.md$
 ^GenAlEx.*\.pdf$
-^Scofield-et-al_AmNat_52938_Quercus-agrifolia_.*-genotypes\.txt$

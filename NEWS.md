@@ -17,7 +17,7 @@
 * Rolled `checkNullAlleles` from my popgen repository into this package
 * Added test for `checkNullAlleles` and an example
 * **NOT YET** Extended `checkNullAlleles` to return a matrix of potential null alleles, with a couple of indexing modes.  More extensions needed.
-* Added `Qagr_adult_genotypes`and `Qagr_pericarp_genotypes` data sets and modified examples to use them
+* Added `Qagr_adult_genotypes`and `Qagr_pericarp_genotypes` data sets and modified examples to use them, and removed the `example_genotypes` data set
 * Created `inst/extdata` to hold data in non-R formats (simple tables), which of course includes GenAlEx-format data
 * DESCRIPTION now has an explicit collation order and bug report URL
 * Added 'data' target to Makefile to build specified RData files

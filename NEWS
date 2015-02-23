@@ -50,7 +50,8 @@ readGenalex 0.9.9000 (class_genalex development branch)
     null alleles, with a couple of indexing modes. More extensions
     needed.
 -   Added Qagr_adult_genotypesand Qagr_pericarp_genotypes data sets and
-    modified examples to use them
+    modified examples to use them, and removed the example_genotypes
+    data set
 -   Created inst/extdata to hold data in non-R formats (simple tables),
     which of course includes GenAlEx-format data
 -   DESCRIPTION now has an explicit collation order and bug report URL
