@@ -20,11 +20,11 @@ NULL
 #' 
 #' @note  Only genotypes with ploidy of 2 are currently checked.
 #' 
-#' @param ref    Object of class \code{'genalex'}, or a character filename
+#' @param ref    Object of class \code{'genalex'} or a character filename
 #'               of a file that can be read by \code{readGenalex}, containing
 #'               reference genotypes.
 #' 
-#' @param check  Object of class \code{'genalex'}, or a character filename
+#' @param check  Object of class \code{'genalex'} or a character filename
 #'               of a file that can be read by \code{readGenalex}, containing
 #'               genotypes to check against \code{ref} for possible null
 #'               alleles.

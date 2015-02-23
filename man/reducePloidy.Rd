@@ -3,7 +3,7 @@
 \name{reducePloidy}
 \alias{reducePloidy}
 \alias{reducePloidy.genalex}
-\title{Reduce the ploidy of a data frame of class \code{'genalex'}}
+\title{Reduce the ploidy of an object of class \code{'genalex'}}
 \usage{
 \method{reducePloidy}{genalex}(x, new.ploidy = 1, ...)
 }
@@ -15,7 +15,7 @@
                   a ploidy matching the current ploidy of \code{x}
                   silently returns \code{x}.}
 
-\item{\dots}{Additional arguments, currently none}
+\item{\dots}{Additional arguments, currently ignored}
 }
 \value{
 A data frame of class \code{'genalex'} containing genotype data
@@ -23,7 +23,7 @@ from \code{x} reduced to the specified \code{new.ploidy}, with
 attributes updated as required.
 }
 \description{
-Reduce the ploidy of a data frame of class \code{'genalex'}.
+Reduce the ploidy of an object of class \code{'genalex'}.
 Currently restricted to reducing the ploidy of diploid data to haploid by
 selecting only the first allele of each locus.
 }

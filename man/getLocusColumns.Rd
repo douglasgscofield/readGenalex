@@ -15,7 +15,7 @@
 \item{ploidy}{Ploidy of data in \code{x}, if not supplied is extracted
               from the \code{ploidy} attribute of \code{x}}
 
-\item{\dots}{Additional arguments, currently none}
+\item{\dots}{Additional arguments, currently ignored}
 }
 \value{
 A vector of column positions occupied by genotype data for loci

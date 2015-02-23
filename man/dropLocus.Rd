@@ -17,7 +17,7 @@
                   \code{TRUE}, apply whichever of \code{drop.locus}
                   are found in \code{x} and return the result.}
 
-\item{\dots}{Additional arguments, currently none}
+\item{\dots}{Additional arguments, currently ignored}
 }
 \value{
 A data frame containing the data in \code{x} after removing

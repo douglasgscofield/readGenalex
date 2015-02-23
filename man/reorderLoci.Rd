@@ -3,7 +3,7 @@
 \name{reorderLoci}
 \alias{reorderLoci}
 \alias{reorderLoci.genalex}
-\title{Reorder a data frame of class \code{'genalex'}}
+\title{Reorder class \code{'genalex'} genotype columns}
 \usage{
 \method{reorderLoci}{genalex}(x, loci, ...)
 }
@@ -11,18 +11,18 @@
 \item{x}{An annotated data frame of class \code{'genalex'}}
 
 \item{loci}{The names of loci found in \code{x}, in the desired new
-            order.  All loci in \code{x} must be named.  The order of
+            order.  All loci in \code{x} must be named, and no loci
+            may be duplicated.  The order of
             the alleles within each locus is preserved.}
 
-\item{\dots}{Additional arguments, currently none}
+\item{\dots}{Additional arguments, currently ignored}
 }
 \value{
 A data frame of class \code{'genalex'} containing the same
 genotype data from \code{x} reordered according to \code{loci}.
 }
 \description{
-Reorder the genotype columns of a class \code{'genalex'} data frame by
-locus.
+Reorder the genotype columns of a class \code{'genalex'} object by locus.
 }
 \examples{
 data(Qagr_adult_genotypes)

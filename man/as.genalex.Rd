@@ -14,33 +14,36 @@
 \item{x}{An object of class \code{'genalex'} or class
               \code{'data.frame'}}
 
-\item{force}{If \code{TRUE}, and \code{x} has class \code{'genalex'},
-              check for consistency between data and annotations and
-              recalculate any inconsistent attributes.  Use
-              \code{is.genalex(..., force = TRUE)} to check whether
-              inconsistencies exist, and
-              \code{is.genalex(..., force = TRUE, verbose = TRUE)} for
-              descriptions of the inconsistencies.}
+\item{force}{If \code{TRUE}, check for consistency between data and
+              annotations in \code{x} and recalculate any inconsistent
+              attributes.  This option is only used if \code{x} has
+              class \code{'genalex'}.}
 
 \item{names}{A list of names to apply as accepted by \code{\link{genalex}}.
               If any names are not provided, they are taken from the names
               of the corresponding columns of \code{x}.  This option is
-              only used if \code{x} is not class \code{'genalex'}.}
+              only used if \code{x} does not have class \code{'genalex'}.}
 
 \item{ploidy}{Ploidy of the genotype columns in \code{x}
               (\code{x[, 3:ncol(x)]}).  This option is only
-              used if \code{x} is not class \code{'genalex'}.}
+              used if \code{x} does not have class \code{'genalex'}.}
 
 \item{\dots}{Additional arguments, currently ignored}
 }
 \value{
-\code{x} as a class \code{'genalex'} object
+\code{x} converted to a class \code{'genalex'} object
 }
 \description{
 Converts object \code{x} to a data frame of class \code{'genalex'}.
-There are four cases:
+There are five cases:
 \itemize{
   \item If \code{x} is of class \code{'genalex'}, it is simply returned.
+  \item If \code{x} is of class \code{'genalex'} and \code{force = TRUE},
+        \code{x} is examined for consistency between data and annotations,
+        and any inconsistencies are recalculated based on the data.  To
+        check whether inconsistencies exist, use
+        \code{is.genalex(..., force=TRUE)}; add \code{verbose=TRUE} for
+        descriptions of the inconsistencies.
   \item If \code{x} is of class \code{'data.frame'}, it is examined to
         see if it might be a data frame created by an earlier version of
         the \code{readGenalex} package.  If so, it is converted to

@@ -27,7 +27,7 @@
 \item{label}{Label to be included between the sample and population ID
        columns and the genotype columns in output}
 
-\item{\dots}{Additional arguments, currently none}
+\item{\dots}{Additional arguments, currently ignored}
 }
 \value{
 No specific return value, used for its side effect of printing

@@ -9,7 +9,7 @@ is.genalex(x, force = FALSE, verbose = FALSE)
 \arguments{
 \item{x}{An object that might be of class \code{'genalex'}}
 
-\item{force}{If \code{TRUE}, and \code{x} has class \code{'genalex'},
+\item{force}{If \code{TRUE} and \code{x} has class \code{'genalex'},
               force a deeper check to assure that the
               data and annotations are consistent with class
               \code{'genalex'}}
@@ -23,7 +23,7 @@ is.genalex(x, force = FALSE, verbose = FALSE)
 }
 \description{
 Check to see if an object is of class 'genalex' as recognised by
-the \code{readGenalex} package.  With the \code{force} option,
+the \code{readGenalex} package.  With \code{force = TRUE},
 the internal consistency of the data and annotations are checked.
 }
 \examples{

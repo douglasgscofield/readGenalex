@@ -19,7 +19,27 @@ x2.reord.x <- x2.reord; attr(x2.reord.x, "extra.columns") <- x1
 #########################################
 context("Correctness and errors with writeGenalex()")
 
-test_that("writeGenalex() obeys sep", {
+test_that("writeGenalex() obeys options", {
+    # sep= separator
+    expect_output(writeGenalex(x1, file = ""), "\n2\tsnurf\t12\t15\t")
+    expect_output(writeGenalex(x1, file = "", sep = ","), "\n1,snurf,11,14,")
+    expect_output(writeGenalex(x1, file = "", sep = " "), "\n3 snurf 13 16 ")
+    # eol= end of line
+    expect_output(writeGenalex(x1, file = ""), "\t102\t105\n")
+    expect_match(capture.output(writeGenalex(x1, file = "", eol = "\r")), "\t101\t104\r")
+    expect_output(writeGenalex(x1, file = "", eol = " "), "\t101\t104 2\tsnurf\t")
+    # na= na.character= NA
+    x1.na <- x1; x1.na[2, 4] <- NA
+    expect_output(writeGenalex(x1.na, file = ""), "\n2\tsnurf\t12\t0\t102\t")
+    expect_output(writeGenalex(x1.na, file = "", na = "NA"), "\n2\tsnurf\t12\tNA\t102\t")
+    expect_output(writeGenalex(x1.na, file = "", na = "."), "\n2\tsnurf\t12\t.\t102\t")
+    x1.na[2, 2] <- NA
+    expect_output(writeGenalex(x1.na, file = ""), "\n2\t\t12\t0\t102\t")
+    expect_output(writeGenalex(x1.na, file = "", na.character = "-missing-"), "\n2\t-missing-\t12\t0\t102\t")
+    expect_output(writeGenalex(x1.na, file = "", na = "NA", na.character = "."), "\n2\t.\t12\tNA\t102\t")
+    # quote= quote character values
+    expect_output(writeGenalex(x1, file = "", quote = TRUE), "\n\"2\"\t\"snurf\"\t12\t15\t")
+    # still missing extra.columns stuff
 })
 
 

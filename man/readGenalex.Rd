@@ -48,7 +48,7 @@ data, with column names determined by line 3 of the input file.  Special
   \code{type.convert(..., as.is = TRUE)}, so that characters are
   not converted to factors.  If no extra columns were found, this
   attribute does not exist.}
-\item{genetic.data.format }{\code{"genalex"}, not present >= 1.0}
+\item{genetic.data.format }{\code{"genalex"}, not present in package versions >= 1.0}
 }
 \description{
 Reads genotype data file in GenAlEx format into an annotated data frame of
@@ -117,7 +117,7 @@ Population genetic software for teaching and research. \emph{Molecular
 Ecology Notes} 6, 288-295.
 }
 \seealso{
-\code{\link{read.table}} \code{\link{type.convert}}
+\code{\link{read.table}}, \code{\link{type.convert}}
 }
 \keyword{attribute}
 \keyword{file}

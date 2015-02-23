@@ -15,7 +15,7 @@
 \item{pop}{If supplied, return only data for samples from the specified
              populations}
 
-\item{\dots}{Additional arguments, currently none}
+\item{\dots}{Additional arguments, currently ignored}
 }
 \value{
 An object of class \code{'data.frame'} containing genotype data

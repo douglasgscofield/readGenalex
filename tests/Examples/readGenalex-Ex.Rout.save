@@ -222,7 +222,7 @@ $data.file.name
 > flush(stderr()); flush(stdout())
 > 
 > ### Name: is.genalex
-> ### Title: Check to see if a data frame is of class 'genalex'
+> ### Title: Check to see if an object is of class 'genalex'
 > ### Aliases: is.genalex
 > 
 > ### ** Examples
@@ -433,7 +433,7 @@ $data.file.name
 > flush(stderr()); flush(stdout())
 > 
 > ### Name: reducePloidy
-> ### Title: Reduce the ploidy of a data frame of class "genalex"
+> ### Title: Reduce the ploidy of an object of class "genalex"
 > ### Aliases: reducePloidy reducePloidy.genalex
 > 
 > ### ** Examples
@@ -452,7 +452,7 @@ $data.file.name
 > flush(stderr()); flush(stdout())
 > 
 > ### Name: reorderLoci
-> ### Title: Reorder a data frame of class "genalex"
+> ### Title: Reorder class "genalex" genotype columns
 > ### Aliases: reorderLoci reorderLoci.genalex
 > 
 > ### ** Examples

@@ -8,11 +8,11 @@ checkNullAlleles(ref, check, mode = c("column", "locus"), quiet = FALSE,
   ...)
 }
 \arguments{
-\item{ref}{Object of class \code{'genalex'}, or a character filename
+\item{ref}{Object of class \code{'genalex'} or a character filename
               of a file that can be read by \code{readGenalex}, containing
               reference genotypes.}
 
-\item{check}{Object of class \code{'genalex'}, or a character filename
+\item{check}{Object of class \code{'genalex'} or a character filename
               of a file that can be read by \code{readGenalex}, containing
               genotypes to check against \code{ref} for possible null
               alleles.}

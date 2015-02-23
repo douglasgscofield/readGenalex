@@ -12,6 +12,8 @@ TODO
 - `cbind.genalex`?  `insertLocus`?
 - `reannotate.genalex(..., verbose=TRUE)` function to recalculate various quantities after a change to the object, or perhaps `as.genalex(..., force=TRUE, verbose=TRUE)`
 - `is.genalex(..., force=TRUE)` to check for consistency?
+- what happens to `as.genalex(as.data.frame(x1))`?
+- what happens to `as.genalex(as.data.frame(x1, complete = TRUE))`?
 - Add used papers to the data description?
 - Functions for converting from/to some other genetic formats, attaching them to `as.genalex`
 - If I am converting from those other formats, do I need to have the specific packages loaded?

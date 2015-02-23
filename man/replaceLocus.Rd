@@ -15,7 +15,7 @@
 \item{newdata}{New genotype data for loci specified in \code{locus}.  Must
                have the same number of rows as \code{x}}
 
-\item{\dots}{Additional arguments, currently none}
+\item{\dots}{Additional arguments, currently ignored}
 }
 \value{
 A data frame of class \code{'genalex'} containing genotype data

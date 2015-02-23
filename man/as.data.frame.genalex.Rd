@@ -28,4 +28,7 @@ during conversion.
 \author{
 Douglas G. Scofield
 }
+\seealso{
+\code{\link{as.data.frame}}
+}
 
