@@ -34,12 +34,22 @@ NULL
 
 
 
-#' Check to see if a data frame is of class 'genalex'
+#' Check to see if an object is of class 'genalex'
 #' 
-#' Check to see if a data frame is of class 'genalex' as recognised by
-#' the \code{readGenalex} package.
+#' Check to see if an object is of class 'genalex' as recognised by
+#' the \code{readGenalex} package.  With the \code{force} option,
+#' the internal consistency of the data and annotations are checked.
 #' 
-#' @param x      An data frame that might also be of class \code{'genalex'}
+#' @param x      An object that might be of class \code{'genalex'}
+#'
+#' @param force  If \code{TRUE}, and \code{x} has class \code{'genalex'},
+#'               force a deeper check to assure that the
+#'               data and annotations are consistent with class 
+#'               \code{'genalex'}
+#'
+#' @param verbose If \code{TRUE} and \code{force = TRUE}, describe any
+#'               inconsistencies discovered between the data and
+#'               annotations
 #'
 #' @return \code{TRUE} or \code{FALSE}
 #'
@@ -52,10 +62,12 @@ NULL
 #' 
 #' @export
 #' 
-is.genalex <- function(x) {
-    if (inherits(x, 'genalex'))
-        TRUE
-    else FALSE
+is.genalex <- function(x, force = FALSE, verbose = FALSE) {
+    if (! inherits(x, 'genalex'))
+        return(FALSE)
+    if (force == FALSE)
+        return(TRUE)
+    stop("force = TRUE not yet implemented")
 }
 
 
@@ -84,6 +96,14 @@ is.genalex <- function(x) {
 #' @param x      An object of class \code{'genalex'} or class
 #'               \code{'data.frame'}
 #'
+#' @param force  If \code{TRUE}, and \code{x} has class \code{'genalex'},
+#'               check for consistency between data and annotations and
+#'               recalculate any inconsistent attributes.  Use
+#'               \code{is.genalex(..., force = TRUE)} to check whether
+#'               inconsistencies exist, and 
+#'               \code{is.genalex(..., force = TRUE, verbose = TRUE)} for
+#'               descriptions of the inconsistencies.
+#'
 #' @param names  A list of names to apply as accepted by \code{\link{genalex}}.
 #'               If any names are not provided, they are taken from the names
 #'               of the corresponding columns of \code{x}.  This option is 
@@ -96,6 +116,8 @@ is.genalex <- function(x) {
 #' @param \dots  Additional arguments, currently ignored
 #'
 #' @return \code{x} as a class \code{'genalex'} object
+#'
+#' @seealso \code{\link{is.genalex}}
 #'
 #' @author Douglas G. Scofield
 #'
@@ -116,7 +138,7 @@ as.genalex <- function(x, ...) UseMethod("as.genalex")
 #'
 #' @export
 #'
-as.genalex.genalex <- function(x, ...) {
+as.genalex.genalex <- function(x, force = TRUE, ...) {
     if (is.genalex(x))  # already class genalex
         return(x)
     stop("'", deparse(substitute(x)), "' cannot be coerced to class 'genalex'")
