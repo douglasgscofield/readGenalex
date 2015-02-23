@@ -6,13 +6,21 @@
 \alias{as.genalex.genalex}
 \title{Convert object to class 'genalex'}
 \usage{
-\method{as.genalex}{genalex}(x, ...)
+\method{as.genalex}{genalex}(x, force = TRUE, ...)
 
 \method{as.genalex}{data.frame}(x, names = NULL, ploidy = 2, ...)
 }
 \arguments{
 \item{x}{An object of class \code{'genalex'} or class
               \code{'data.frame'}}
+
+\item{force}{If \code{TRUE}, and \code{x} has class \code{'genalex'},
+              check for consistency between data and annotations and
+              recalculate any inconsistent attributes.  Use
+              \code{is.genalex(..., force = TRUE)} to check whether
+              inconsistencies exist, and
+              \code{is.genalex(..., force = TRUE, verbose = TRUE)} for
+              descriptions of the inconsistencies.}
 
 \item{names}{A list of names to apply as accepted by \code{\link{genalex}}.
               If any names are not provided, they are taken from the names
@@ -54,5 +62,8 @@ gt <- as.genalex(Qagr_adult_genotypes)
 }
 \author{
 Douglas G. Scofield
+}
+\seealso{
+\code{\link{is.genalex}}
 }
 

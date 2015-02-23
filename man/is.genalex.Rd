@@ -2,19 +2,29 @@
 % Please edit documentation in R/readGenalex.R
 \name{is.genalex}
 \alias{is.genalex}
-\title{Check to see if a data frame is of class 'genalex'}
+\title{Check to see if an object is of class 'genalex'}
 \usage{
-is.genalex(x)
+is.genalex(x, force = FALSE, verbose = FALSE)
 }
 \arguments{
-\item{x}{An data frame that might also be of class \code{'genalex'}}
+\item{x}{An object that might be of class \code{'genalex'}}
+
+\item{force}{If \code{TRUE}, and \code{x} has class \code{'genalex'},
+              force a deeper check to assure that the
+              data and annotations are consistent with class
+              \code{'genalex'}}
+
+\item{verbose}{If \code{TRUE} and \code{force = TRUE}, describe any
+              inconsistencies discovered between the data and
+              annotations}
 }
 \value{
 \code{TRUE} or \code{FALSE}
 }
 \description{
-Check to see if a data frame is of class 'genalex' as recognised by
-the \code{readGenalex} package.
+Check to see if an object is of class 'genalex' as recognised by
+the \code{readGenalex} package.  With the \code{force} option,
+the internal consistency of the data and annotations are checked.
 }
 \examples{
 data(Qagr_adult_genotypes)
