@@ -72,6 +72,20 @@ is.genalex <- function(x, force = FALSE, verbose = FALSE) {
 
 .calculateGenalexAttributes <- function(x, verbose = TRUE) {
     stopifnot(is.genalex(x))  # relax this later
+    # names: sample pop loc1 ... loc2 ... 
+    # class: "genalex" "data.frame"
+    # n.loci
+    # ploidy
+    # n.samples
+    # n.pops
+    # pop.labels
+    # pop.sizes
+    # locus.columns
+    # dataset.title
+    # sample.title
+    # pop.title
+    # locus.names
+    # data.file.name
     msg <- character(0)
     n.samples <- nrow(x)
     if (n.samples != attr(x, "n.samples"))
@@ -83,6 +97,10 @@ is.genalex <- function(x, force = FALSE, verbose = FALSE) {
         locus.columns <- getLocusColumns(x, attr(x, "locus.names"))
     }
     pop.sizes <- sapply(split(x[,2], x[,2]), length)
+}
+
+.compareGenalexAttributes <- function(x, y = .calculateGenalexAttributes(x)) {
+    FALSE
 }
 
 
@@ -924,7 +942,6 @@ printGenotype <- function(x, ...) UseMethod("printGenotype")
 printGenotype.genalex <- function(x, rows = 1:nrow(x), callout.locus = NULL,
                                   sep = " ", allele.sep = "/", callout.char = "*", 
                                   label = NULL, ...) {
-    stopifnot(is.genalex(x))
     cols <- names(x)
     ploidy <- attr(x, "ploidy")
     for (row in rows) {
