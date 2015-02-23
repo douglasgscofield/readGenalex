@@ -70,6 +70,20 @@ is.genalex <- function(x, force = FALSE, verbose = FALSE) {
     stop("force = TRUE not yet implemented")
 }
 
+.calculateGenalexAttributes <- function(x, verbose = TRUE) {
+    stopifnot(is.genalex(x))  # relax this later
+    msg <- character(0)
+    n.samples <- nrow(x)
+    if (n.samples != attr(x, "n.samples"))
+        msg <- c(msg, "n.samples attribute not equal to number of samples")
+    ploidy <- attr(x, "ploidy")
+    if (is.null(ploidy))
+        msg <- c(msg, "ploidy attribute missing")
+    else {
+        locus.columns <- getLocusColumns(x, attr(x, "locus.names"))
+    }
+    pop.sizes <- sapply(split(x[,2], x[,2]), length)
+}
 
 
 #' Convert object to class 'genalex'
