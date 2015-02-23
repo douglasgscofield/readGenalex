@@ -66,12 +66,12 @@ test_that("reorderLoci checks for same numbers of loci and handles several permu
 
 
 #########################################
-context("Correctness and errors with putLocus()")
+context("Correctness and errors with replaceLocus()")
 
-pl.1 <- putLocus(x1, "b", data.frame(d=101:103, d.2=104:106))
-pl.2 <- putLocus(x1, "b", matrix(101:106, byrow=FALSE, nrow=3, ncol=2))
+pl.1 <- replaceLocus(x1, "b", data.frame(d=101:103, d.2=104:106))
+pl.2 <- replaceLocus(x1, "b", matrix(101:106, byrow=FALSE, nrow=3, ncol=2))
 
-test_that("putLocus()", {
+test_that("replaceLocus()", {
     # replace with its own data
     expect_is(pl.1, "genalex")
     expect_is(pl.1, "data.frame")
