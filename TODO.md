@@ -3,21 +3,21 @@
 TODO
 ----
 
+- read from and write to Excel files
+- add `checkNullAllele` return of matrices indicating possible null alleles
+- straighten up `checkNullAllele` code
+- complete `checkNullAllele` integration
+- make `checkNullAllele` demo using `createGenalex`
 - devtools::test() runs testthat tests, how to run *other* tests?
 - `cbind.genalex`?  `insertLocus`?
-- `updateGenalex(..., verbose=TRUE)` function to recalculate various quantities after a change to the object
+- `reannotate.genalex(..., verbose=TRUE)` function to recalculate various quantities after a change to the object, or perhaps `as.genalex(..., force=TRUE, verbose=TRUE)`
+- `is.genalex(..., force=TRUE)` to check for consistency?
 - Add used papers to the data description?
 - Functions for converting from/to some other genetic formats, attaching them to `as.genalex`
 - If I am converting from those other formats, do I need to have the specific packages loaded?
-- Initial `dispersalDiversity` package should that be based on class `'genalex'`-enabled readGenalex
-- check on any implicit version dependencies
-- document version dependencies
-- read from and write to Excel files
+- check on any implicit version dependencies and document them
 - complete adding tests
-- straighten up `checkNullAllele` code
-- complete `checkNullAllele` integration
-- add `checkNullAllele` return of matrices indicating possible null alleles
-- make `checkNullAllele` demo using `createGenalex`
+- Initial `dispersalDiversity` package should use readGenalex 1.0
 
 Completed
 ---------
@@ -44,8 +44,7 @@ Completed
 * how to add citation instructions to data?  see data/datasource for that info
 * create an S3 class "genalex" based on data.frame and modify is.genalex to check for that (or could we then use the generic?)  I ended up creating as.genalex and using this internally where the class will be returned.
 * Implementing class "genalex" needs to bump version to 1.0, since there would be API changes.
-* For 1.0, recognise pre-1.0 genalex data frames and convert automatically (on option of course) to 1.0 class.
-* Did above by adding as.genalex
+* For 1.0, recognise pre-1.0 genalex data frames and convert to 1.0 class (via `as.genalex`)
 * implement `quote=` for `writeGenalex`
 * Moved `checkNullAlleles` from popgen repository to this package
 
