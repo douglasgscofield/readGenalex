@@ -850,12 +850,11 @@ summary.genalex <- function(object, ...) {
     cat("Number of loci:", a$n.loci, "\n")
     cat("Locus names:\n")
     print(a$locus.names)
-    cat("\nSummary of genotype data frame:\n")
+    cat("\nSummary of genotypes:\n")
     print(oo <- NextMethod(object, ...))  # this may not be interesting here
-    cat("\n")
     if (! is.null(a$extra.columns)) {
         cat("\nSummary of extra.columns data frame:\n")
-        summary(a$extra.columns)
+        print(summary(a$extra.columns))
     }
     invisible(oo)
 }
@@ -926,7 +925,7 @@ printGenotype.genalex <- function(x, rows = 1:nrow(x), callout.locus = NULL,
                 gt <- paste(sep = "", callout.char, gt, callout.char)
             full.gt <- paste(sep = sep, collapse = sep, full.gt, gt)
         }
-        cat(full.gt, "\n")
+        cat(sep = "", full.gt, "\n")
     }
 }
 
@@ -934,17 +933,14 @@ printGenotype.genalex <- function(x, rows = 1:nrow(x), callout.locus = NULL,
 
 #' Determine numeric column positions occupied by named loci
 #' 
-#' Determine the numeric column positions occupied by named loci in a
-#' date frame produced by \code{readGenalex}.  This is mostly used as
+#' Determine the numeric column positions occupied by named loci in an
+#' object of class \code{'genalex'}.  This is mostly used as
 #' a utility routine by other functions in the \code{readGenalex} package.
 #' 
 #' @param x      An annotated data frame created by \code{readGenalex}
 #' 
 #' @param locus  The names of one or more loci found in \code{x}
 #' 
-#' @param ploidy Ploidy of data in \code{x}, if not supplied is extracted
-#'               from the \code{ploidy} attribute of \code{x}
-#'
 #' @param \dots  Additional arguments, currently ignored
 #' 
 #' @return A vector of column positions occupied by genotype data for loci
@@ -969,10 +965,9 @@ getLocusColumns <- function(x, ...) UseMethod("getLocusColumns")
 #'
 #' @export
 #' 
-getLocusColumns.genalex <- function(x, locus, ploidy = NULL, ...) {
-    if (is.null(ploidy)) ploidy <- attr(x, "ploidy")
+getLocusColumns.genalex <- function(x, locus, ...) {
     as.vector(sapply(attr(x, "locus.columns")[attr(x, "locus.names") %in% locus],
-                     function(x) x:(x + ploidy - 1)))
+                     function(y) y:(y + attr(x, "ploidy") - 1)))
 }
 
 

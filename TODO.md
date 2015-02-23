@@ -9,16 +9,15 @@ TODO
 - complete `checkNullAllele` integration
 - make `checkNullAllele` demo using `createGenalex`
 - devtools::test() runs testthat tests, how to run *other* tests?
+- `as.genalex(..., force=TRUE, verbose=TRUE)`
+- `is.genalex(..., force=TRUE)` to check for consistency
 - `cbind.genalex`?  `insertLocus`?
-- `reannotate.genalex(..., verbose=TRUE)` function to recalculate various quantities after a change to the object, or perhaps `as.genalex(..., force=TRUE, verbose=TRUE)`
-- `is.genalex(..., force=TRUE)` to check for consistency?
 - what happens to `as.genalex(as.data.frame(x1))`?
 - what happens to `as.genalex(as.data.frame(x1, complete = TRUE))`?
 - Add used papers to the data description?
 - Functions for converting from/to some other genetic formats, attaching them to `as.genalex`
 - If I am converting from those other formats, do I need to have the specific packages loaded?
 - check on any implicit version dependencies and document them
-- complete adding tests
 - Initial `dispersalDiversity` package should use readGenalex 1.0
 
 Completed
@@ -27,7 +26,7 @@ Completed
 * Renamed `putLocus` to the much more semantically consistent `replaceLocus`
 * Expanded `as.genalex.data.frame` to convert a suitably-formatted data frame to class `genalex` by determining suitable attributes
 * Added method `rbind.genalex`
-* Added many tests for over half the functions specified
+* Added tests for all package functions
 * Renamed `createGenalex()` to `genalex`, it is a constructor
 * Moved deprecated functions to `R/readGenalex-deprecated.Rd`
 * Moved data documentation to `R/readGenalex-data.Rd`

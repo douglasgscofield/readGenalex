@@ -490,7 +490,7 @@ Number of loci: 10
 Locus names:
  [1] "0c11" "0c19" "Oe09" "0i01" "0m05" "0m07" "1c06" "1c08" "1f02" "1g13"
 
-Summary of genotype data frame:
+Summary of genotypes:
  AdultMomFamily         Site                0c11           0c11.2     
  Length:262         Length:262         Min.   :203.0   Min.   :213.0  
  Class :character   Class :character   1st Qu.:213.0   1st Qu.:213.0  
@@ -531,7 +531,6 @@ Summary of genotype data frame:
  3rd Qu.:273.0   3rd Qu.:190.0   3rd Qu.:190.0   3rd Qu.:187   3rd Qu.:191.0  
  Max.   :339.0   Max.   :190.0   Max.   :202.0   Max.   :191   Max.   :198.0  
  NA's   :6       NA's   :1       NA's   :1       NA's   :8     NA's   :8      
-
 > 
 > 
 > 

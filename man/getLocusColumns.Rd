@@ -5,15 +5,12 @@
 \alias{getLocusColumns.genalex}
 \title{Determine numeric column positions occupied by named loci}
 \usage{
-\method{getLocusColumns}{genalex}(x, locus, ploidy = NULL, ...)
+\method{getLocusColumns}{genalex}(x, locus, ...)
 }
 \arguments{
 \item{x}{An annotated data frame created by \code{readGenalex}}
 
 \item{locus}{The names of one or more loci found in \code{x}}
-
-\item{ploidy}{Ploidy of data in \code{x}, if not supplied is extracted
-              from the \code{ploidy} attribute of \code{x}}
 
 \item{\dots}{Additional arguments, currently ignored}
 }
@@ -22,8 +19,8 @@ A vector of column positions occupied by genotype data for loci
         named in \code{locus}.
 }
 \description{
-Determine the numeric column positions occupied by named loci in a
-date frame produced by \code{readGenalex}.  This is mostly used as
+Determine the numeric column positions occupied by named loci in an
+object of class \code{'genalex'}.  This is mostly used as
 a utility routine by other functions in the \code{readGenalex} package.
 }
 \examples{

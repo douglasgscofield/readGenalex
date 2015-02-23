@@ -11,13 +11,26 @@ x2 <- genalex(4:6, "snirf", g2)
 g2.reord <- data.frame(b = 201:203, b.2 = 204:206, a = 21:23, a.2 = 24:26) 
 x2.reord <- genalex(4:6, "snirf", g2.reord)
 
-x1.x <- x1; attr(x1.x, "extra.columns") <- x2
-x2.x <- x2; attr(x2.x, "extra.columns") <- x1
-x2.reord.x <- x2.reord; attr(x2.reord.x, "extra.columns") <- x1
+x1.x <- x1; attr(x1.x, "extra.columns") <- as.data.frame(x2, complete = TRUE)
+x2.x <- x2; attr(x2.x, "extra.columns") <- as.data.frame(x1, complete = TRUE)
+x2.reord.x <- x2.reord; attr(x2.reord.x, "extra.columns") <- as.data.frame(x1, complete = TRUE)
 
 
 #########################################
-context("Correctness and errors with writeGenalex()")
+context("Testing is.genalex()")
+
+test_that("is.genalex() works", {
+    expect_true(is.genalex(x1))
+    expect_true(is.genalex(x2.reord))
+    expect_true(is.genalex(x2.reord.x))
+    expect_equal(is.genalex(g1), FALSE)
+    expect_equal(is.genalex(as.data.frame(x2)), FALSE)
+    expect_equal(is.genalex(as.data.frame(x2, complete = FALSE)), FALSE)
+})
+
+
+#########################################
+context("Testing writeGenalex()")
 
 test_that("writeGenalex() obeys options", {
     # sep= separator
@@ -44,28 +57,46 @@ test_that("writeGenalex() obeys options", {
 
 
 #########################################
-context("Correctness and errors with summary.genalex()")
+context("Testing summary.genalex()")
 
 test_that("summary.genalex summarises pops etc., genotypes, and extra data", {
+    s <- capture.output(summary(x1))
+    expect_output(s, "Number of samples: 3")
+    expect_output(s, "Number of loci: 2")
+    expect_output(s, "Min.   :104.0")
+    expect_that(s, not(prints_text("Summary of extra.columns data frame:")))
+    s.x <- capture.output(summary(x1.x))
+    expect_output(s.x, "Summary of extra.columns data frame:")
+    expect_output(s.x, "Min.   :204.0")
 })
 
 
 #########################################
-context("Correctness and errors with printGenotype()")
+context("Testing printGenotype()")
 
 test_that("printGenotype prints selected lines and calls out genotypes", {
+    s <- capture.output(printGenotype(x1, rows = 3, callout.locus = "b"))
+    expect_equal(s, "3 snurf 13/16 *103/106*")
+    #expect_match(s, "3 snurf 13/16 *103/106*", fixed = TRUE)
+    s2 <- capture.output(printGenotype(x2, rows = 1, callout.locus = "a", allele.sep = "|"))
+    expect_equal(s2, "4 snirf *21|24* 201|204")
+    s3 <- paste(collapse = ":", capture.output(printGenotype(x2, allele.sep = "|")))
+    expect_equal(s3, "4 snirf 21|24 201|204:5 snirf 22|25 202|205:6 snirf 23|26 203|206")
 })
 
 
 #########################################
-context("Correctness and errors with getLocusColumns()")
+context("Testing getLocusColumns()")
 
 test_that("getLocusColumns works with 1 or more loci and regardless of ploidy", {
+    expect_equal(getLocusColumns(x1, c("a","b")), getLocusColumns(x2, c("a","b")))
+    expect_equal(getLocusColumns(x2, "b"), 5:6)
+    expect_equal(getLocusColumns(x2.reord, "b"), 3:4)
 })
 
 
 #########################################
-context("Correctness and errors with reorderLoci()")
+context("Testing reorderLoci()")
 
 test_that("reorderLoci checks for same numbers of loci and handles several permutations", {
     locn <- attr(x1, "locus.names")
@@ -86,7 +117,7 @@ test_that("reorderLoci checks for same numbers of loci and handles several permu
 
 
 #########################################
-context("Correctness and errors with replaceLocus()")
+context("Testing replaceLocus()")
 
 pl.1 <- replaceLocus(x1, "b", data.frame(d=101:103, d.2=104:106))
 pl.2 <- replaceLocus(x1, "b", matrix(101:106, byrow=FALSE, nrow=3, ncol=2))
@@ -103,7 +134,7 @@ test_that("replaceLocus()", {
 
 
 #########################################
-context("Correctness and errors with getLocus()")
+context("Testing getLocus()")
 
 test_that("getLocus()", {
     # return is a data.frame
@@ -116,7 +147,7 @@ test_that("getLocus()", {
 
 
 #########################################
-context("Correctness and errors with dropLocus()")
+context("Testing dropLocus()")
 
 
 test_that("dropLocus()", {
@@ -140,7 +171,7 @@ test_that("dropLocus()", {
 
 
 #########################################
-context("Correctness and errors with reducePloidy()")
+context("Testing reducePloidy()")
 
 test_that("reducePloidy()", {
     p1 <- reducePloidy(x1, 1)
@@ -160,7 +191,7 @@ test_that("reducePloidy()", {
 })
 
 #########################################
-context("Correctness and errors with genalex()")
+context("Testing genalex()")
 
 test_that("genalex() object identities correct", {
     expect_is(x1,        "genalex")
@@ -210,7 +241,7 @@ test_that("genalex() generates errors for data inconsistencies", {
 
 
 #########################################
-context("Correctness and errors with as.genalex()")
+context("Testing as.genalex()")
 
 g1 <- data.frame(a = 11:13, a.2 = 14:16, b = 101:103, b.2 = 104:106)
 df1 <- cbind(sampxx = 1:3, popyy = c("a","a","b"), g1)
@@ -283,7 +314,7 @@ test_that("as.genalex correctly applies names", {
 
 
 #########################################
-context("Correctness and errors with rbind.genalex()")
+context("Testing rbind.genalex()")
 
 rb <- rbind(x1, x2)
 rb.reord <- rbind(x1, x2.reord)
