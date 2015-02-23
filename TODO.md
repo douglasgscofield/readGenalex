@@ -3,6 +3,7 @@
 TODO
 ----
 
+- devtools::test() runs testthat tests, how to run *other* tests?
 - `cbind.genalex`?  `insertLocus`?
 - `updateGenalex(..., verbose=TRUE)` function to recalculate various quantities after a change to the object
 - Add used papers to the data description?
@@ -21,6 +22,7 @@ TODO
 Completed
 ---------
 
+* Renamed `putLocus` to the much more semantically consistent `replaceLocus`
 * Expanded `as.genalex.data.frame` to convert a suitably-formatted data frame to class `genalex` by determining suitable attributes
 * Added method `rbind.genalex`
 * Added many tests for over half the functions specified

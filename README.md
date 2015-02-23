@@ -35,7 +35,8 @@ Github and can always be installed via:
 > devtools::install_github("douglasgscofield/readGenalex", ref = "class_genalex")
 ```
 
-To use:
+Class `genalex` is an annotated data frame with attributes containing
+additional information specified by the user:
 
 ~~~~
 > library(readGenalex)
@@ -101,14 +102,16 @@ $n.pops
 ...
 ~~~~
 
-`readGenalex` only reads the number of samples specified by the GenAlEX
-header, and only treats as genotypes the number of genotype columns implied
-by the GenAlEx header in concert with the stated ploidy level.
+GenAlEx is an Excel plugin, and this package attempts to deal with various
+issues that may arise when exporting text files from Excel.  `readGenalex` only
+reads the number of samples specified by the GenAlEX header, and only treats as
+genotypes the number of genotype columns implied by the GenAlEx header in
+concert with the stated ploidy level.
 
 `readGenalex` also tries to ignore extra tab characters that tools such as
-Excel can insert when exporting tab-delimited text, otherwise these could
-imply both additional columns and additional rows.  Hopefully the latter is
-avoided by only reading the number of samples specified by the header.
+Excel can insert when exporting tab-delimited text, otherwise these could imply
+both additional columns and additional rows.  Hopefully the latter is avoided
+by only reading the number of samples specified by the header.
 
 If there are additional **named** columns to the right of the genotypes, these
 are read and stored in a data frame attached to the attribute `extra.columns`.
@@ -117,11 +120,13 @@ column from the genotypes, e.g., the `id` column from the above example).  It
 attempts to ignore additional unnamed columns scattered amongst the named extra
 columns.
 
-There are other functions supplied for manipulating population genetic data
-of class `'genalex'`:
+Other functions:
 
 `genalex()`
 : Create a class `'genalex'` object from constituent data
+
+`as.genalex()`
+: Generic function which converts a pre-1.0-style `readGenalex` data frame to class `'genalex'`, or converts a suitably-formatted data frame to class `'genalex'`
 
 `rbind()`
 : Merge samples from two or more class `'genalex'` objects
@@ -134,9 +139,6 @@ of class `'genalex'`:
 
 `is.genalex()`
 : Checks whether the object is class `'genalex'`
-
-`as.genalex()`
-: Generic function which converts a pre-1.0-style `readGenalex` data frame to class `'genalex'`, or converts a suitably-formatted data frame to class `'genalex'`
 
 `as.data.frame()`
 : Method to convert class `'genalex'` to class `'data.frame'`, optionally all class `'genalex'`-specific attributes are removed
