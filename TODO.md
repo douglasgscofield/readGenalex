@@ -20,6 +20,19 @@ TODO
 - check on any implicit version dependencies and document them
 - Initial `dispersalDiversity` package should use readGenalex 1.0
 
+
+### internal for reading Excel files
+
+* what is the current state of the art?
+
+### internal for force=TRUE stuff
+
+* straighten up names code, too much duplication
+* straighten up implied attributes code, also too much duplication
+* keep calling genalex() to do the lifting, but perhaps there is some additional that can be done there, perhaps splitting genalex() into an internal and external function
+* perhaps makes sense to start on importing/exporting data iwth another package to see what additional issues may come up
+
+
 Completed
 ---------
 
