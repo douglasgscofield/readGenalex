@@ -4,7 +4,7 @@
 \alias{checkNullAlleles}
 \title{Check for potential null (non-amplifying) alleles}
 \usage{
-checkNullAlleles(ref, check, mode = c("column", "locus"), quiet = FALSE,
+checkNullAlleles(ref, check, mode = c("locus", "column"), quiet = FALSE,
   ...)
 }
 \arguments{
@@ -17,7 +17,7 @@ checkNullAlleles(ref, check, mode = c("column", "locus"), quiet = FALSE,
               genotypes to check against \code{ref} for possible null
               alleles.}
 
-\item{mode}{\code{"column"} or \code{"locus"}.  Determines how each locus
+\item{mode}{\code{"locus"} or \code{"column"}.  Determines how each locus
               containing a potential null allele is indicated in the second
               index of each element of the return value.  If
               \code{"column"}, then the value is the column index within

@@ -21,7 +21,7 @@
 * DESCRIPTION now has an explicit collation order and bug report URL
 * Added 'data' target to Makefile to build specified RData files
 
-# readGenalex 0.4.1.9000 (current development version)
+# readGenalex 0.4.1.9000 (development version)
 
 * Moved documentation from separate *.Rd files to Roxygen2 comments in R source using the really helpful Rd2roxygen package.
 * Implemented `writeGenalex`, to write a data.frame created by this package to a GenAlEx-compatible text file, and documented differences between output of `writeGenalex` and input to `readGenalex`
