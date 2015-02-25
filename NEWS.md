@@ -14,8 +14,8 @@
 * As a result of the clarified typing, `writeGenalex(..., quote=TRUE)` will only quote names in the GenAlEx header, in the first two columns, and in any character-valued extra columns
 * Added tests for all functions and found a few bugs along the way
 * Rolled `checkNullAlleles` from my popgen repository into this package
-* Added test for `checkNullAlleles` and an example
-* **NOT YET** Extended `checkNullAlleles` to return a matrix of potential null alleles, with a couple of indexing modes.  More extensions needed.
+* Extended `checkNullAlleles` to return a matrix of potential null alleles, with a couple of indexing modes
+* Added `quiet=` option to `checkNullAlleles`, and pass through some arguments to `printGenotype` when `quiet=FALSE`
 * Added `Qagr_adult_genotypes`and `Qagr_pericarp_genotypes` data sets and modified examples to use them, and removed the `example_genotypes` data set
 * Created `inst/extdata` to hold data in non-R formats (simple tables), which of course includes GenAlEx-format data
 * DESCRIPTION now has an explicit collation order and bug report URL

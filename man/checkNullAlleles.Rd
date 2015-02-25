@@ -5,71 +5,91 @@
 \title{Check for potential null (non-amplifying) alleles}
 \usage{
 checkNullAlleles(ref, check, mode = c("locus", "column"), quiet = FALSE,
-  ...)
+  sep = "\\t", ...)
 }
 \arguments{
-\item{ref}{Object of class \code{'genalex'} or a character filename
-              of a file that can be read by \code{readGenalex}, containing
-              reference genotypes.}
+\item{ref}{Object of class \code{'genalex'} containing reference
+              genotypes}
 
-\item{check}{Object of class \code{'genalex'} or a character filename
-              of a file that can be read by \code{readGenalex}, containing
-              genotypes to check against \code{ref} for possible null
-              alleles.}
+\item{check}{Object of class \code{'genalex'} containing genotypes to
+              check against \code{ref} for possible null alleles}
 
-\item{mode}{\code{"locus"} or \code{"column"}.  Determines how each locus
+\item{mode}{\code{"locus"} or \code{"column"}.  Determines
               containing a potential null allele is indicated in the second
-              index of each element of the return value.  If
-              \code{"column"}, then the value is the column index within
-              the class \code{'genalex'} data frame.  If \code{"locus"},
-              the value is the locus index, starting from \code{1}.}
+              index of each element of the return value.  If \code{"locus"},
+              the value is the locus index, starting from \code{1}.
+              If \code{"column"}, then the value is the column index within
+              the class \code{'genalex'} data frame.}
 
-\item{quiet}{\code{TRUE} or \code{FALSE}, if \code{FALSE} then messages
+\item{quiet}{Logical.  If \code{FALSE}, then messages
               are printed during the check for null alleles in
-              \code{check}.  If \code{TRUE} then null allele information
-              is available in the return value.}
+              \code{check}, and the matrix of potential null allele
+              positions is returned invisibly.  If \code{TRUE}, then no
+              messages or genotypes are printed, and the matrix of
+              potential null allele positions is returned visibly.}
 
-\item{...}{Additional arguments to pass to \code{readGenalex} when
-              reading \code{ref} or \code{check}, if either was a filename.}
+\item{sep}{Separator between loci in output, passed to
+              \code{\link{printGenotype}}}
+
+\item{\dots}{Additional parameters passed to \code{\link{printGenotype}}}
 }
 \value{
-A list of coordinates within \code{check} that contain potential
-        null alleles.  Each element is an integer vector with the first
-        value being the row in \code{check} and the second value being the
-        column at which the genotype with the potential null allele is
-        found.  If \code{quiet = FALSE}, informational messages are also
-        printed during execution.
+A matrix referencing positions within \code{check} that contain
+        potential, with its specific format dependent upon the value of
+        \code{mode}:
+        \itemize{
+          \item \code{"locus"}: a logical matrix having dimensions
+                \code{(attr(check,"n.samples"),attr(check,"n.loci"))}
+                and dimnames
+                \code{list(check[,1],attr(check,"locus.names"))} with
+                \code{TRUE} for each locus in \code{check} that might
+                contain a potential null allele
+          \item \code{"column"}: an integer matrix having dimensions
+                \code{dim(check)} and dimnames \code{dimnames(check))}
+                with nonzero values for each position within \code{check}
+                that might contain a potential null allele
+        }
+        If \code{quiet = FALSE}, this value is returned invisibly.
+
+If \code{quiet = FALSE} (the default), output is also written in the
+form of two messages indicating the number of reference and check
+genotypes, as well as a listing of specific check and matching reference
+genotypes with the loci containing the potential null alleles called out.
+The check and reference genotypes are printed together with a label
+equal to the respective argument names to indicate their origins.  This
+listing is produced using \code{printGenotype}, and arguments can be
+passed through to modify its  output.
 }
 \description{
 Check genotypes against a set of reference genotypes and look for
 loci that differ in a way consistent with the occurrence of a null
 allele, that is, heterozygous in the reference and homozygous matching
-one of the alleles in the heterozygous reference.
-}
-\details{
-The reference and check genotypes are in GenAlEx format, and are
-names of files to be read with \code{readGenalex} or are class
-\code{'genalex'} data frames.
+one of the alleles in the heterozygous reference.  A report of genotypes
+with potential null is generated, unless \code{quiet = TRUE}, and
+a matrix is returned indicating the positions of potential null alleles
+within the check genotypes.  The configuration of this matrix depends
+on the \code{mode} argument.
 }
 \note{
 The reference genotypes are assumed to be genotyped correctly,
        without null alleles of their own.  The check for null alleles is
        only as complete as the set of reference genotypes.
 
-Only genotypes with ploidy of 2 are currently checked.
+Only genotypes with ploidy of 2 are currently supported.
 }
 \examples{
 reffile <- system.file("extdata", "ref_genotypes.txt",
                        package="readGenalex")
 checkfile <- system.file("extdata", "check_genotypes.txt",
                          package="readGenalex")
-res1 <- checkNullAlleles(reffile, checkfile)
 ref <- readGenalex(reffile)
 check <- readGenalex(checkfile)
-res2 <- checkNullAlleles(reffile, checkfile)
-stopifnot(identical(res1, res2))
+checkNullAlleles(ref, check)
 }
 \author{
 Douglas G. Scofield
+}
+\seealso{
+\code{\link{printGenotype}}
 }
 

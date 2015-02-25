@@ -948,7 +948,7 @@ printGenotype.genalex <- function(x, rows = 1:nrow(x), callout.locus = NULL,
         cat(paste(sep = sep, as.character(x[row, 1]), 
                   as.character(x[row, 2])))
         if (! is.null(label))
-            cat("", label)
+            cat(sep = "", sep, label)
         full.gt <- ""
         for (col in seq(from = 3, to = length(cols), by = ploidy)) {
             gt <- paste(collapse = allele.sep, x[row, col:(col+ploidy-1)])
