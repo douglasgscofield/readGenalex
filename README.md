@@ -9,13 +9,14 @@ available at <http://biology-assets.anu.edu.au/GenAlEx>.
 
 
 
-## Development version
+## Development version 0.9.9000
 
-This branch (**class_genalex**) is a development branch to implement the
-functionality of this package by defining an S3 class `'genalex'` that is
-shared with `data.frame`.  This functionality will be present in the 1.0
-release of this package.  In the meantime, the code in this particular branch
-is not likely to be functional until further notice.
+This is a development version which implements the functionality of this
+package by defining an S3 class `'genalex'` that is shared with `data.frame`.
+This functionality will be released to CRAN in the 1.0 version of this package.
+In the meantime, the code in this master branch may have odd little bugs.  I
+will not make a commit to the master branch that does not pass the test suite,
+but please use caution.
 
 
 
@@ -27,12 +28,12 @@ is not likely to be functional until further notice.
 > install.packages("readGenalex")
 ```
 
-The development version 0.9.9000 on this branch (`class_genalex`) is hosted on
-Github and can always be installed via:
+The development version here (**0.9.9000**) is hosted on Github and can always
+be installed via:
 
 ```R
 > install.packages("devtools")
-> devtools::install_github("douglasgscofield/readGenalex", ref = "class_genalex")
+> devtools::install_github("douglasgscofield/readGenalex")
 ```
 
 Class `genalex` is an annotated data frame with attributes containing
