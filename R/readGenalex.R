@@ -73,34 +73,37 @@ is.genalex <- function(x, force = FALSE, verbose = FALSE) {
 .calculateGenalexAttributes <- function(x, verbose = TRUE) {
     stopifnot(is.genalex(x))  # relax this later
     # names: sample pop loc1 ... loc2 ... 
+    # named list of apparent attributes, compare with real attributes later
+    ans <- list()
     # class: "genalex" "data.frame"
+    ## samples
+    ans$n.samples <- nrow(x)
+    ans$sample.title <- names(x)[1]
+    ## try to infer info about loci from names?
+    # this will only be possible if there is a common prefix that is 
+    # consistent across allele columns, like is automatically generated
     # n.loci
     # ploidy
-    # n.samples
-    # n.pops
-    # pop.labels
-    # pop.sizes
     # locus.columns
+    ## populations
+    p <- sapply(split(x[, 2], x[, 2]), length)
+    ans$n.pop <- length(p)
+    ans$pop.labels <- names(p)
+    ans$pop.sizes <- p
+    ans$pop.title <- names(x)[2]
     # dataset.title
-    # sample.title
-    # pop.title
     # locus.names
     # data.file.name
-    msg <- character(0)
-    n.samples <- nrow(x)
-    if (n.samples != attr(x, "n.samples"))
-        msg <- c(msg, "n.samples attribute not equal to number of samples")
-    ploidy <- attr(x, "ploidy")
-    if (is.null(ploidy))
-        msg <- c(msg, "ploidy attribute missing")
-    else {
-        locus.columns <- getLocusColumns(x, attr(x, "locus.names"))
-    }
     pop.sizes <- sapply(split(x[,2], x[,2]), length)
 }
 
-.compareGenalexAttributes <- function(x, y = .calculateGenalexAttributes(x)) {
+.compareGenalexAttributes <- function(x,
+                                      y = .calculateGenalexAttributes(x)) {
     FALSE
+    if (a.n.samples != n.samples)
+        msg <- c(msg,
+                 paste("n.samples", a.n.samples, 
+                 "not equal to apparent number of samples", n.samples))
 }
 
 
