@@ -3,30 +3,33 @@
 \name{as.genalex}
 \alias{as.genalex}
 \alias{as.genalex.data.frame}
+\alias{as.genalex.default}
 \alias{as.genalex.genalex}
 \title{Convert object to class 'genalex'}
 \usage{
-\method{as.genalex}{genalex}(x, force = TRUE, ...)
+\method{as.genalex}{genalex}(x, force = FALSE, ...)
 
 \method{as.genalex}{data.frame}(x, names = NULL, ploidy = 2, ...)
+
+\method{as.genalex}{default}(x, ...)
 }
 \arguments{
 \item{x}{An object of class \code{'genalex'} or class
-              \code{'data.frame'}}
+\code{'data.frame'}}
 
 \item{force}{If \code{TRUE}, check for consistency between data and
-              annotations in \code{x} and recalculate any inconsistent
-              attributes.  This option is only used if \code{x} has
-              class \code{'genalex'}.}
+annotations in \code{x} and recalculate and reset any inconsistent
+attributes.  This option is only used if \code{x} has class
+\code{'genalex'}, and is \code{FALSE} by default.}
 
 \item{names}{A list of names to apply as accepted by \code{\link{genalex}}.
-              If any names are not provided, they are taken from the names
-              of the corresponding columns of \code{x}.  This option is
-              only used if \code{x} does not have class \code{'genalex'}.}
+If any names are not provided, they are taken from the names of the
+corresponding columns of \code{x}.  This option is only used if \code{x}
+does not have class \code{'genalex'}.}
 
 \item{ploidy}{Ploidy of the genotype columns in \code{x}
-              (\code{x[, 3:ncol(x)]}).  This option is only
-              used if \code{x} does not have class \code{'genalex'}.}
+(\code{x[, 3:ncol(x)]}).  This option is only used if \code{x} does not
+have class \code{'genalex'}.}
 
 \item{\dots}{Additional arguments, currently ignored}
 }
@@ -42,8 +45,12 @@ There are five cases:
         \code{x} is examined for consistency between data and annotations,
         and any inconsistencies are recalculated based on the data.  To
         check whether inconsistencies exist, use
-        \code{is.genalex(..., force=TRUE)}; add \code{verbose=TRUE} for
-        descriptions of the inconsistencies.
+        \code{is.genalex(..., force = TRUE)} and add \code{verbose = TRUE}
+        for descriptions of the inconsistencies.  Ploidy is taken from
+        \code{x} and is not reset.  Attributes that may be reset include
+        \code{n.samples}, \code{sample.title}, \code{n.loci},
+        \code{locus.columns}, \code{locus.names}, \code{n.pops},
+        \code{pop.labels}, \code{pop.sizes} and \code{pop.title}.
   \item If \code{x} is of class \code{'data.frame'}, it is examined to
         see if it might be a data frame created by an earlier version of
         the \code{readGenalex} package.  If so, it is converted to
@@ -56,7 +63,7 @@ There are five cases:
         first column holds sample names, the second column holds population
         names, and the remaining columns hold genotypes.
   \item Any other class is an error.  Further conversions between genetic
-        data formats may be added here as additional methods.
+        data formats may be added as additional methods.
 }
 }
 \examples{
@@ -67,6 +74,6 @@ gt <- as.genalex(Qagr_adult_genotypes)
 Douglas G. Scofield
 }
 \seealso{
-\code{\link{is.genalex}}
+\code{\link{is.genalex}}, \code{\link{genalex}}
 }
 

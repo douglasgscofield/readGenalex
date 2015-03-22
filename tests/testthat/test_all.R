@@ -1,7 +1,7 @@
 library(readGenalex)
 
 #########################################
-context("Setting up some test data")
+context("Setting up some test data and testing genalex()")
 
 g1 <- data.frame(a = 11:13, a.2 = 14:16, b = 101:103, b.2 = 104:106)
 x1 <- genalex(1:3, "snurf", g1)
@@ -15,6 +15,16 @@ x1.x <- x1; attr(x1.x, "extra.columns") <- as.data.frame(x2, complete = TRUE)
 x2.x <- x2; attr(x2.x, "extra.columns") <- as.data.frame(x1, complete = TRUE)
 x2.reord.x <- x2.reord; attr(x2.reord.x, "extra.columns") <- as.data.frame(x1, complete = TRUE)
 
+test_that("genalex() works", {
+    expect_true(nrow(x1) == attr(x1, "n.samples"))
+    expect_true(ncol(x1) == 2 + attr(x1, "ploidy") * attr(x1, "n.loci"))
+    expect_true(attr(x1, "pop.labels") == "snurf")
+    expect_true(attr(x1, "n.loci") == attr(x2, "n.loci"))
+    expect_true(attr(x2, "pop.labels") == "snirf")
+    expect_true(attr(x1, "sample.title") == attr(x2, "sample.title"))
+    expect_true(all(x1$sample == 1:3))
+})
+
 
 #########################################
 context("Testing is.genalex()")
@@ -27,6 +37,38 @@ test_that("is.genalex() works", {
     expect_equal(is.genalex(as.data.frame(x2)), FALSE)
     expect_equal(is.genalex(as.data.frame(x2, complete = FALSE)), FALSE)
 })
+
+test_that("is.genalex() 'force =' works", {
+    x0 <- x1
+    expect_true(is.genalex(x0))
+    expect_true(is.genalex(x0, force = TRUE))
+    expect_true(is.genalex(x0, force = TRUE, verbose = TRUE))
+    # create inconsistent n.loci annotation
+    attr(x0, "n.loci") <- attr(x0, "n.loci") + 2
+    expect_true(! is.genalex(x0, force = TRUE))
+    expect_match(capture.output(r <- is.genalex(x0, force = TRUE, verbose = TRUE)), "x and inferred attributes for x attributes do not match : n.loci")
+    # create inconsistent annotation throughout
+    attr(x0, "n.samples") <- attr(x0, "n.samples") - 1
+    attr(x0, "sample.title") <- "silly sample title"
+    attr(x0, "locus.columns") <- attr(x0, "locus.columns") + 1
+    attr(x0, "locus.names") <- "my test population"
+    attr(x0, "n.pops") <- attr(x0, "n.pops") + 10
+    attr(x0, "pop.title") <- "my test population"
+    attr(x0, "pop.labels") <- "Zyzyx"
+    attr(x0, "pop.sizes") <- setNames(5, "Zyzyx")
+    attr(x0, "dataset.title") <- "my test dataset"
+    attr(x0, "data.file.name") <- "blahblah"
+    expect_true(is.genalex(x0))
+    expect_true(! is.genalex(x0, force = TRUE))
+    expect_match(capture.output(r <- is.genalex(x0, force = TRUE, verbose = TRUE)), 
+                "x and inferred attributes for x attributes do not match : n.samples sample.title n.loci locus.columns locus.names n.pops pop.labels pop.sizes pop.title")
+    # create inconsistent ploidy
+    x0 <- x1
+    attr(x0, "ploidy") <- 3
+    expect_true(is.genalex(x0))
+    expect_error(is.genalex(x0, force = TRUE), "ploidy 3 inconsistent with apparent number of locus columns 4")
+})
+
 
 
 #########################################
@@ -232,10 +274,10 @@ test_that("genalex() generates errors for data inconsistencies", {
         "genotype data must be numeric")
     g3 <- data.frame(a = 21:23, a.2 = 24:26, b = 201:203)
     expect_error(genalex(7:9, "missing1", g3, ploidy = 2),
-        "'genotypes' must have a number of columns dividable by ploidy")
+        "'genotypes' must have a number of columns divisible by ploidy")
     g4 <- data.frame(a=21:23, a.2=24:26, b=201:203, b.2=204:206, c=1:3)
     expect_error(genalex(7:9, "added1", g4, ploidy = 2),
-        "'genotypes' must have a number of columns dividable by ploidy")
+        "'genotypes' must have a number of columns divisible by ploidy")
 })
 
 
@@ -311,7 +353,39 @@ test_that("as.genalex correctly applies names", {
     expect_equal(attr(gdf1.p, "pop.title"), "ppp")
 })
 
+test_that("as.genalex(..., force = TRUE) works", {
+    gdf1.n <- as.genalex(gdf1.n)
+    x0 <- as.genalex(gdf1.n, force = TRUE)
+    expect_equal(gdf1.n, x0)
+    attr(x0, "n.samples") <- attr(x0, "n.samples") - 1
+    attr(x0, "sample.title") <- "sillier sample title"
+    attr(x0, "n.loci") <- attr(x0, "n.loci") + 2
+    attr(x0, "locus.columns") <- attr(x0, "locus.columns") + 1
+    attr(x0, "locus.names") <- "my test population"
+    attr(x0, "pop.title") <- "my test population"
+    attr(x0, "pop.sizes") <- setNames(5, "Zyzyx")
+    expect_true(is.genalex(x0))
+    expect_true(! is.genalex(x0, force = TRUE))
+    # assign r here to capture the FALSE so expect_match doesn't see it
+    expect_match(capture.output(r <- is.genalex(x0, force = TRUE, verbose = TRUE)),
+                 "n.samples sample.title n.loci locus.columns locus.names pop.sizes pop.title")
+    expect_that(gdf1.n, not(equals(x0)))
+    # now restore it
+    x0 <- as.genalex(x0, force = TRUE)
+    expect_equal(gdf1.n, x0)
+})
 
+test_that("as.genalex.data.frame", {
+    xy <- as.genalex(as.data.frame(x1))
+    expect_equal(attr(xy, "data.file.name"),
+                 "as.genalex.data.frame(as.data.frame(x1))") 
+    xz <- as.genalex(as.data.frame(x1, complete = TRUE))
+    expect_equal(attr(xz, "data.file.name"),
+                 "as.genalex.data.frame(as.data.frame(x1, complete = TRUE))") 
+    # reset mismatched attribute to check everything else
+    attr(xy, "data.file.name") <- attr(xz, "data.file.name") <- ""
+    expect_equal(xy, xz)
+})
 
 #########################################
 context("Testing rbind.genalex()")

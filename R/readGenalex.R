@@ -7,13 +7,12 @@
 #' @param x      An object that might be of class \code{'genalex'}
 #'
 #' @param force  If \code{TRUE} and \code{x} has class \code{'genalex'},
-#'               force a deeper check to assure that the
-#'               data and annotations are consistent with class 
-#'               \code{'genalex'}
+#' force a deeper check to assure that the data and annotations are 
+#' consistent with class \code{'genalex'}
 #'
-#' @param verbose If \code{TRUE} and \code{force = TRUE}, describe any
-#'               inconsistencies discovered between the data and
-#'               annotations
+#' @param verbose If \code{TRUE} and \code{force = TRUE}, indicate any
+#' inconsistencies discovered between the data and annotations. if
+#' there are no inconsistencies, nothing is printed.
 #'
 #' @return \code{TRUE} or \code{FALSE}
 #'
@@ -23,6 +22,13 @@
 #' 
 #' data(Qagr_adult_genotypes)
 #' is.genalex(Qagr_adult_genotypes)
+#' ## create an inconsistent attribute
+#' attr(Qagr_adult_genotypes, "n.loci") <- 20
+#' ## this doesn't detect the inconsistency
+#' is.genalex(Qagr_adult_genotypes)
+#' ## this detects the inconsistency, returns FALSE
+#' is.genalex(Qagr_adult_genotypes, force = TRUE)
+#' is.genalex(Qagr_adult_genotypes, force = TRUE, verbose = TRUE)
 #' 
 #' @export is.genalex
 #' 
@@ -31,9 +37,18 @@ is.genalex <- function(x, force = FALSE, verbose = FALSE) {
         return(FALSE)
     if (force == FALSE)
         return(TRUE)
-    stop("force = TRUE not yet implemented")
+    msg <- .compareGenalexAttributes(x)
+    if (msg != "" && verbose)
+        cat(msg, "\n")
+    return(msg == "")
 }
 
+
+
+#############################################
+#
+# Internal functions for calculating and comparing attributes
+#
 .calculateGenalexAttributes <- function(x, ploidy = NULL) {
     if (! inherits(x, 'genalex') && ! inherits(x, 'data.frame'))
         x <- as.data.frame(x)
@@ -67,7 +82,7 @@ is.genalex <- function(x, force = FALSE, verbose = FALSE) {
 
     # populations
     p <- sapply(split(x[, 2], x[, 2]), length)
-    ans$n.pop <- length(p)
+    ans$n.pops <- length(p)
     ans$pop.labels <- names(p)
     ans$pop.sizes <- p
     ans$pop.title <- names(x)[2]
@@ -78,37 +93,53 @@ is.genalex <- function(x, force = FALSE, verbose = FALSE) {
     return(ans)
 }
 
+.compare.attribute <- function(a, b, n) {
+    if (is.null(a[[n]]) || is.null(b[[n]]) || any(a[[n]] != b[[n]]))
+        return(n)
+    else return(character(0))
+}
+
+.compare.char.attribute <- function(a, b, n, empty.ok = FALSE) {
+    if (is.null(a[[n]]) || is.null(b[[n]]) || (a[[n]] != b[[n]] && 
+         (! empty.ok || (a[[n]] != "" && b[[n]] != ""))))
+        return(n)
+    else return(character(0))
+}
+
 .compareGenalexAttributes <- function(x, y = NULL) {
-    # don't assume genalex for x or y
-    x.attr <- attributes(x)
+    # don't assume genalex for x or y, but make soft assumptions for both
+    xa <- attributes(x)
     x.name <- deparse(substitute(x))
     y.name <- deparse(substitute(y))
     # If y is not supplied, instead de novo-infer attributes for x,
     # using only ploidy
-    y.attr <- 
-        if (is.null(y)) {
-            x.ploidy <- x.attr$ploidy
-            if (! is.null(x.ploidy))
-                .calculateGenalexAttributes(x, x.ploidy)
-            else .calculateGenalexAttributes(x)
+    ya <- if (is.null(y)) {
             y.name <- paste("inferred attributes for", x.name)
+            x.ploidy <- xa$ploidy
+            if (! is.null(x.ploidy))
+                .calculateGenalexAttributes(x, ploidy = x.ploidy)
+            else .calculateGenalexAttributes(x)
         } else attributes(y)
     # compare
-    msg <- ""
-    string.compare <- function(a, b, n, empty.ok = FALSE) {
-        if (is.null(a[[n]]) || is.null(b[[n]]) || 
-            (a[[n]] != b[[n]] && 
-             (! empty.ok || (a[[n]] != "" && b[[n]] != ""))))
-            return(paste0("attribute ", n, " does not match\n"))
-        else return("")
-    }
+    msg <- character(0)
+    msg <- c(msg, .compare.attribute(xa, ya, "n.samples"))
+    msg <- c(msg, .compare.attribute(xa, ya, "sample.title"))
+    msg <- c(msg, .compare.attribute(xa, ya, "ploidy"))
+    msg <- c(msg, .compare.attribute(xa, ya, "n.loci"))
+    msg <- c(msg, .compare.attribute(xa, ya, "locus.columns"))
+    msg <- c(msg, .compare.attribute(xa, ya, "locus.names"))
+    msg <- c(msg, .compare.attribute(xa, ya, "n.pops"))
+    msg <- c(msg, .compare.attribute(xa, ya, "pop.labels"))
+    msg <- c(msg, .compare.attribute(xa, ya, "pop.sizes"))
+    msg <- c(msg, .compare.attribute(xa, ya, "pop.title"))
+    msg <- c(msg, .compare.char.attribute(xa, ya, "dataset.title", TRUE))
+    msg <- c(msg, .compare.char.attribute(xa, ya, "data.file.name", TRUE))
+    if (length(msg)) 
+        msg <- paste(x.name, "and", y.name, "attributes do not match :", 
+                     paste(collapse=" ", msg))
+    else msg <- ""
 
-
-    FALSE
-    #if (a.n.samples != n.samples)
-    #    msg <- c(msg,
-    #             paste("n.samples", a.n.samples, 
-    #             "not equal to apparent number of samples", n.samples))
+    return(msg)
 }
 
 
@@ -123,8 +154,12 @@ is.genalex <- function(x, force = FALSE, verbose = FALSE) {
 #'         \code{x} is examined for consistency between data and annotations,
 #'         and any inconsistencies are recalculated based on the data.  To
 #'         check whether inconsistencies exist, use 
-#'         \code{is.genalex(..., force=TRUE)}; add \code{verbose=TRUE} for
-#'         descriptions of the inconsistencies.
+#'         \code{is.genalex(..., force = TRUE)} and add \code{verbose = TRUE} 
+#'         for descriptions of the inconsistencies.  Ploidy is taken from
+#'         \code{x} and is not reset.  Attributes that may be reset include
+#'         \code{n.samples}, \code{sample.title}, \code{n.loci}, 
+#'         \code{locus.columns}, \code{locus.names}, \code{n.pops}, 
+#'         \code{pop.labels}, \code{pop.sizes} and \code{pop.title}. 
 #'   \item If \code{x} is of class \code{'data.frame'}, it is examined to
 #'         see if it might be a data frame created by an earlier version of
 #'         the \code{readGenalex} package.  If so, it is converted to
@@ -137,31 +172,31 @@ is.genalex <- function(x, force = FALSE, verbose = FALSE) {
 #'         first column holds sample names, the second column holds population
 #'         names, and the remaining columns hold genotypes.
 #'   \item Any other class is an error.  Further conversions between genetic
-#'         data formats may be added here as additional methods.
+#'         data formats may be added as additional methods.
 #' }
 #' 
 #' @param x      An object of class \code{'genalex'} or class
-#'               \code{'data.frame'}
+#' \code{'data.frame'}
 #'
 #' @param force  If \code{TRUE}, check for consistency between data and
-#'               annotations in \code{x} and recalculate any inconsistent
-#'               attributes.  This option is only used if \code{x} has
-#'               class \code{'genalex'}.
+#' annotations in \code{x} and recalculate and reset any inconsistent
+#' attributes.  This option is only used if \code{x} has class
+#' \code{'genalex'}, and is \code{FALSE} by default.
 #'
 #' @param names  A list of names to apply as accepted by \code{\link{genalex}}.
-#'               If any names are not provided, they are taken from the names
-#'               of the corresponding columns of \code{x}.  This option is 
-#'               only used if \code{x} does not have class \code{'genalex'}.
+#' If any names are not provided, they are taken from the names of the 
+#' corresponding columns of \code{x}.  This option is only used if \code{x} 
+#' does not have class \code{'genalex'}.
 #'
 #' @param ploidy Ploidy of the genotype columns in \code{x}
-#'               (\code{x[, 3:ncol(x)]}).  This option is only
-#'               used if \code{x} does not have class \code{'genalex'}.
+#' (\code{x[, 3:ncol(x)]}).  This option is only used if \code{x} does not 
+#' have class \code{'genalex'}.
 #'
 #' @param \dots  Additional arguments, currently ignored
 #'
 #' @return \code{x} converted to a class \code{'genalex'} object
 #'
-#' @seealso \code{\link{is.genalex}}
+#' @seealso \code{\link{is.genalex}}, \code{\link{genalex}}
 #'
 #' @author Douglas G. Scofield
 #'
@@ -178,14 +213,34 @@ NULL
 
 as.genalex <- function(x, ...) UseMethod("as.genalex")
 
+
+
+.reset.attribute <- function(a, b, n) {
+    if (any(a[[n]] != b[[n]]) && all(b[[n]] != ""))
+        a[[n]] <- b[[n]]
+    return(a)
+}
+
 #' @rdname as.genalex
 #'
 #' @export
 #'
-as.genalex.genalex <- function(x, force = TRUE, ...) {
-    if (is.genalex(x))  # already class genalex
+as.genalex.genalex <- function(x, force = FALSE, ...) {
+    if (! force)
         return(x)
-    stop("'", deparse(substitute(x)), "' cannot be coerced to class 'genalex'")
+    xa <- attributes(x)
+    ya <- .calculateGenalexAttributes(x, ploidy = xa$ploidy)
+    xa <- .reset.attribute(xa, ya, "n.samples")
+    xa <- .reset.attribute(xa, ya, "sample.title")
+    xa <- .reset.attribute(xa, ya, "n.loci")
+    xa <- .reset.attribute(xa, ya, "locus.columns")
+    xa <- .reset.attribute(xa, ya, "locus.names")
+    xa <- .reset.attribute(xa, ya, "n.pops")
+    xa <- .reset.attribute(xa, ya, "pop.labels")
+    xa <- .reset.attribute(xa, ya, "pop.sizes")
+    xa <- .reset.attribute(xa, ya, "pop.title")
+    attributes(x) <- xa
+    return(x)
 }
 
 
@@ -216,6 +271,15 @@ as.genalex.data.frame <- function(x, names = NULL, ploidy = 2, ...) {
         attr(z, "data.file.name") <- capture.output(print(this.call))
         return(z)
     }
+}
+
+
+
+#' @rdname as.genalex
+#'
+#' @export
+#' 
+as.genalex.default <- function(x, ...) {
     stop("'", deparse(substitute(x)), "' cannot be coerced to class 'genalex'")
 }
 
@@ -675,7 +739,7 @@ genalex <- function(samples, pops, genotypes, names = NULL, ploidy = 2,
         stop("sample names must be unique")
     n.loci <- ncol(genotypes) / ploidy
     if (as.integer(n.loci) != n.loci)
-        stop("'genotypes' must have a number of columns dividable by ploidy")
+        stop("'genotypes' must have a number of columns divisible by ploidy")
     dat <- data.frame(samples = samples, pops = pops, stringsAsFactors = FALSE)
     if (! all(sapply(genotypes, function(x) all(is.numeric(x) | is.na(x)))))
         stop("genotype data must be numeric")

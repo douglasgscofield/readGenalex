@@ -4,8 +4,6 @@ TODO
 ----
 
 - read from and write to Excel files
-- `as.genalex(..., force=TRUE, verbose=TRUE)`
-- `is.genalex(..., force=TRUE)` to check for consistency
 - `cbind.genalex`?  `insertLocus`?
 - what happens to `as.genalex(as.data.frame(x1))`?
 - what happens to `as.genalex(as.data.frame(x1, complete = TRUE))`?
@@ -14,6 +12,7 @@ TODO
 - If I am converting from those other formats, do I need to have the specific packages loaded?
 - check on any implicit version dependencies and document them
 - Initial `dispersalDiversity` package should use readGenalex 1.0
+
 
 ### R Extension rules for using types from other packages
 
@@ -31,12 +30,16 @@ TODO
 * straighten up names code, too much duplication
 * straighten up implied attributes code, also too much duplication
 * keep calling genalex() to do the lifting, but perhaps there is some additional that can be done there, perhaps splitting genalex() into an internal and external function
-* perhaps makes sense to start on importing/exporting data iwth another package to see what additional issues may come up
+* perhaps makes sense to start on importing/exporting data with another package to see what additional issues may come up
 
 
 Completed
 ---------
 
+* `is.genalex(...)` is a shallow `inherits()` check
+* `is.genalex(..., force=TRUE)` is a deeper comparison that rederives attributes from the data and compares the ones safe to compare, returning `FALSE` if the attributes are not consistent
+* `is.genalex(..., force=TRUE, verbose=TRUE)` does what `is.genalex(..., force=TRUE)` does, but adds the printing of which attributes differed, via `message()`
+* `as.genalex(..., force=TRUE)` will rederive attributes from the data and will reset them so that data and attributes are again consistent.  It does not report which attributes differed, for that use `is.genalex(..., force=TRUE, verbose=TRUE)`
 * Other tests are run during CRAN check, so test that way
 * Straightened up `checkNullAllele` code, added return of matrices indicating possible null alleles with mode="locus" and mode="column", and added `checkNullAllele()`-specific test suite
 * Renamed `putLocus` to the much more semantically consistent `replaceLocus`
@@ -51,7 +54,7 @@ Completed
 * drawing on writeGenalex documentation about differences when writing, be more explicit about what happens with extra columns and with extra column names on input
 * straighten out test for writeGenalex with and without quote=
 * GenAlEx says all genotype data is numeric, so code it as numeric after reading
-* Is `as` a generic and `as.genalex` a method?
+* S3 methods for `as.genalex` append to the base method name `as.genalex`, e.g., `as.genalex.genalex`
 * Add summary.genalex method
 * Update README for new data sets
 * Fix WARNING during make check, probably because of the following:

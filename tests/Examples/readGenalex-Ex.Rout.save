@@ -20,6 +20,13 @@ Type 'q()' to quit R.
 > pkgname <- "readGenalex"
 > source(file.path(R.home("share"), "R", "examples-header.R"))
 > options(warn = 1)
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
 > 
 > ### * </HEADER>
 > library('readGenalex')
@@ -33,7 +40,8 @@ Type 'q()' to quit R.
 > 
 > ### Name: as.genalex
 > ### Title: Convert object to class 'genalex'
-> ### Aliases: as.genalex as.genalex.data.frame as.genalex.genalex
+> ### Aliases: as.genalex as.genalex.data.frame as.genalex.default
+> ###   as.genalex.genalex
 > 
 > ### ** Examples
 > 
@@ -63,14 +71,14 @@ Type 'q()' to quit R.
 > checkNullAlleles(ref, check)
 6 reference genotypes
 6 check genotypes
-comp8	1	check	1/1	2/1	2/5	*3/3*	3/1 
-ref6	1	ref	1/1	2/1	2/5	*2/3*	3/1 
+comp8	1	check	1/1	2/1	2/5	*3/3*	3/1
+ref6	1	ref	1/1	2/1	2/5	*2/3*	3/1
 
-comp10	1	check	2/3	1/1	*4/4*	3/3	6/1 
-ref2	1	ref	2/3	1/1	*2/4*	3/3	6/1 
+comp10	1	check	2/3	1/1	*4/4*	3/3	6/1
+ref2	1	ref	2/3	1/1	*2/4*	3/3	6/1
 
-comp12	1	check	3/3	2/1	2/2	3/1	*3/3* 
-ref4	1	ref	3/3	2/1	2/2	3/1	*2/3* 
+comp12	1	check	3/3	2/1	2/2	3/1	*3/3*
+ref4	1	ref	3/3	2/1	2/2	3/1	*2/3*
 
 > 
 > 
@@ -217,6 +225,17 @@ $data.file.name
 > data(Qagr_adult_genotypes)
 > is.genalex(Qagr_adult_genotypes)
 [1] TRUE
+> ## create an inconsistent attribute
+> attr(Qagr_adult_genotypes, "n.loci") <- 20
+> ## this doesn't detect the inconsistency
+> is.genalex(Qagr_adult_genotypes)
+[1] TRUE
+> ## this detects the inconsistency, returns FALSE
+> is.genalex(Qagr_adult_genotypes, force = TRUE)
+[1] FALSE
+> is.genalex(Qagr_adult_genotypes, force = TRUE, verbose = TRUE)
+x and inferred attributes for x attributes do not match : n.loci 
+[1] FALSE
 > 
 > 
 > 
@@ -234,9 +253,9 @@ $data.file.name
 > 
 > data(Qagr_adult_genotypes)
 > printGenotype(Qagr_adult_genotypes, rows = 6:8, callout.locus = "1c08")
-2206 Sedgwick 213/213 226/240 194/194 196/204 202/206 201/203 240/242 *271/273* 190/190 185/185 
-2207 Sedgwick 213/215 238/238 192/194 196/206 212/214 199/201 236/236 *271/273* 190/190 183/187 
-2208 Sedgwick 213/215 236/238 194/196 206/206 210/222 199/201 236/236 *269/273* 190/190 185/187 
+2206 Sedgwick 213/213 226/240 194/194 196/204 202/206 201/203 240/242 *271/273* 190/190 185/185
+2207 Sedgwick 213/215 238/238 192/194 196/206 212/214 199/201 236/236 *271/273* 190/190 183/187
+2208 Sedgwick 213/215 236/238 194/196 206/206 210/222 199/201 236/236 *269/273* 190/190 185/187
 > 
 > 
 > 
@@ -808,7 +827,7 @@ STD	Sedgwick	213	215	244	246	190	194	196	208	210	214	201	219	236	242	271	275	190
 > ### * <FOOTER>
 > ###
 > options(digits = 7L)
-Time elapsed:  0.342 0.013 0.356 0 0 
+Time elapsed:  0.318 0.013 0.33 0 0 
 > grDevices::dev.off()
 null device 
           1 

@@ -10,13 +10,12 @@ is.genalex(x, force = FALSE, verbose = FALSE)
 \item{x}{An object that might be of class \code{'genalex'}}
 
 \item{force}{If \code{TRUE} and \code{x} has class \code{'genalex'},
-              force a deeper check to assure that the
-              data and annotations are consistent with class
-              \code{'genalex'}}
+force a deeper check to assure that the data and annotations are
+consistent with class \code{'genalex'}}
 
-\item{verbose}{If \code{TRUE} and \code{force = TRUE}, describe any
-              inconsistencies discovered between the data and
-              annotations}
+\item{verbose}{If \code{TRUE} and \code{force = TRUE}, indicate any
+inconsistencies discovered between the data and annotations. if
+there are no inconsistencies, nothing is printed.}
 }
 \value{
 \code{TRUE} or \code{FALSE}
@@ -29,6 +28,13 @@ the internal consistency of the data and annotations are checked.
 \examples{
 data(Qagr_adult_genotypes)
 is.genalex(Qagr_adult_genotypes)
+## create an inconsistent attribute
+attr(Qagr_adult_genotypes, "n.loci") <- 20
+## this doesn't detect the inconsistency
+is.genalex(Qagr_adult_genotypes)
+## this detects the inconsistency, returns FALSE
+is.genalex(Qagr_adult_genotypes, force = TRUE)
+is.genalex(Qagr_adult_genotypes, force = TRUE, verbose = TRUE)
 }
 \author{
 Douglas G. Scofield

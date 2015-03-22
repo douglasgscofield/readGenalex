@@ -2,6 +2,7 @@
 
 S3method(as.data.frame,genalex)
 S3method(as.genalex,data.frame)
+S3method(as.genalex,default)
 S3method(as.genalex,genalex)
 S3method(dropLocus,genalex)
 S3method(getLocus,genalex)
