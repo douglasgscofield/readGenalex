@@ -1,39 +1,3 @@
-#' Read and manipulate GenAlEx-format genotype files
-#'
-#' A collection of R functions to read, manipulate and write genotype data in
-#' GenAlEx format.  GenAlEx is a widely-used Excel plugin for manipulating and
-#' analysing genotype data.  This package reads GenAlEx data that has been
-#' exported from Excel as a delimited text file and creates an annotated
-#' data frame of class \code{'genalex'}.  Several functions are provided for
-#' accessing and printing this data.  GenAlEx and its documentation are
-#' available at \url{http://biology-assets.anu.edu.au/GenAlEx}.  Descriptions
-#' of the file format and of the annotations added to the class as attributes
-#' are available via \code{help(readGenalex)}.
-#' 
-#' @references Peakall, R. and Smouse P.E. (2012) GenAlEx 6.5: genetic analysis
-#' in Excel. Population genetic software for teaching and research-an update.
-#' \emph{Bioinformatics} 28, 2537-2539.
-#' 
-#' Peakall, R. and Smouse P.E. (2006) GENALEX 6: genetic analysis in Excel.
-#' Population genetic software for teaching and research. \emph{Molecular
-#' Ecology Notes} 6, 288-295.
-#'
-#' \url{https://github.com/douglasgscofield/readGenalex}
-#'
-#' @seealso \link{readGenalex}
-#'
-#' @keywords package attribute manip file
-#'
-#' @docType package
-#'
-#' @name readGenalex-package
-#'
-#' @aliases readGenalex-package GenAlEx genotype
-#'
-NULL
-
-
-
 #' Check to see if an object is of class 'genalex'
 #' 
 #' Check to see if an object is of class 'genalex' as recognised by
@@ -60,7 +24,7 @@ NULL
 #' data(Qagr_adult_genotypes)
 #' is.genalex(Qagr_adult_genotypes)
 #' 
-#' @export
+#' @export is.genalex
 #' 
 is.genalex <- function(x, force = FALSE, verbose = FALSE) {
     if (! inherits(x, 'genalex'))
@@ -70,31 +34,47 @@ is.genalex <- function(x, force = FALSE, verbose = FALSE) {
     stop("force = TRUE not yet implemented")
 }
 
-.calculateGenalexAttributes <- function(x, verbose = TRUE) {
+.calculateGenalexAttributes <- function(x, ploidy = NULL, verbose = TRUE) {
     stopifnot(is.genalex(x))  # relax this later
     # names: sample pop loc1 ... loc2 ... 
-    # named list of apparent attributes, compare with real attributes later
     ans <- list()
     # class: "genalex" "data.frame"
-    ## samples
+
+    # samples
     ans$n.samples <- nrow(x)
     ans$sample.title <- names(x)[1]
-    ## try to infer info about loci from names?
-    # this will only be possible if there is a common prefix that is 
-    # consistent across allele columns, like is automatically generated
-    # n.loci
-    # ploidy
-    # locus.columns
-    ## populations
+
+    # ploidy and loci
+    if (! is.null(ploidy)) {
+        ans$ploidy <- ploidy
+    } else if (ncol(x) == 3) {
+        ans$ploidy <- 1
+    } else {
+        # Here we look for the name of the locus being a prefix for the
+        # other locus column names, with the prefix ending with *.*
+        pat <- paste0("^", names(x)[3], "\\.")
+        ln <- names(x)[4:ncol(x)]
+        runs <- rle(grepl(pat, ln, perl = TRUE))
+        ans$ploidy <- if (runs$values[1] == TRUE) (runs$lengths[1] + 1) else 1
+    }
+    if ((ncol(x) - 2) %% ans$ploidy)
+        stop("ploidy ", ans$ploidy, " inconsistent with apparent number of ",
+             "locus columns ", ncol(x) - 2) 
+    ans$n.loci <- (ncol(x) - 2) / ans$ploidy
+    ans$locus.columns <- seq(3, ncol(x), by = ans$ploidy)
+    ans$locus.names <- names(x)[ans$locus.columns]
+
+    # populations
     p <- sapply(split(x[, 2], x[, 2]), length)
     ans$n.pop <- length(p)
     ans$pop.labels <- names(p)
     ans$pop.sizes <- p
     ans$pop.title <- names(x)[2]
-    # dataset.title
-    # locus.names
-    # data.file.name
-    pop.sizes <- sapply(split(x[,2], x[,2]), length)
+
+    # other attributes, fill with empty string
+    ans$dataset.title <- ""
+    ans$data.file.name <- ""
+    return(ans)
 }
 
 .compareGenalexAttributes <- function(x,
@@ -105,6 +85,7 @@ is.genalex <- function(x, force = FALSE, verbose = FALSE) {
     #             paste("n.samples", a.n.samples, 
     #             "not equal to apparent number of samples", n.samples))
 }
+
 
 
 #' Convert object to class 'genalex'

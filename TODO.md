@@ -4,7 +4,6 @@ TODO
 ----
 
 - read from and write to Excel files
-- devtools::test() runs testthat tests, how to run *other* tests?
 - `as.genalex(..., force=TRUE, verbose=TRUE)`
 - `is.genalex(..., force=TRUE)` to check for consistency
 - `cbind.genalex`?  `insertLocus`?
@@ -38,6 +37,7 @@ TODO
 Completed
 ---------
 
+* Other tests are run during CRAN check, so test that way
 * Straightened up `checkNullAllele` code, added return of matrices indicating possible null alleles with mode="locus" and mode="column", and added `checkNullAllele()`-specific test suite
 * Renamed `putLocus` to the much more semantically consistent `replaceLocus`
 * Expanded `as.genalex.data.frame` to convert a suitably-formatted data frame to class `genalex` by determining suitable attributes
