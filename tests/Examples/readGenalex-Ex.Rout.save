@@ -408,7 +408,7 @@ $locus.names
  [1] "0c11" "0c19" "Oe09" "0i01" "0m05" "0m07" "1c06" "1c08" "1f02" "1g13"
 
 $data.file.name
-[1] "../inst/extdata/Qagr_adult_genotypes.txt"
+[1] "inst/extdata/Qagr_adult_genotypes.txt"
 
 > 
 > 

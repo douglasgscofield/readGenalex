@@ -100,10 +100,10 @@ is.genalex <- function(x, force = FALSE, verbose = FALSE) {
 .compareGenalexAttributes <- function(x,
                                       y = .calculateGenalexAttributes(x)) {
     FALSE
-    if (a.n.samples != n.samples)
-        msg <- c(msg,
-                 paste("n.samples", a.n.samples, 
-                 "not equal to apparent number of samples", n.samples))
+    #if (a.n.samples != n.samples)
+    #    msg <- c(msg,
+    #             paste("n.samples", a.n.samples, 
+    #             "not equal to apparent number of samples", n.samples))
 }
 
 
