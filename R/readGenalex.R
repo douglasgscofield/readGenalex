@@ -34,8 +34,9 @@ is.genalex <- function(x, force = FALSE, verbose = FALSE) {
     stop("force = TRUE not yet implemented")
 }
 
-.calculateGenalexAttributes <- function(x, ploidy = NULL, verbose = TRUE) {
-    stopifnot(is.genalex(x))  # relax this later
+.calculateGenalexAttributes <- function(x, ploidy = NULL) {
+    if (! inherits(x, 'genalex') && ! inherits(x, 'data.frame'))
+        x <- as.data.frame(x)
     # names: sample pop loc1 ... loc2 ... 
     ans <- list()
     # class: "genalex" "data.frame"
@@ -71,14 +72,38 @@ is.genalex <- function(x, force = FALSE, verbose = FALSE) {
     ans$pop.sizes <- p
     ans$pop.title <- names(x)[2]
 
-    # other attributes, fill with empty string
+    # remaining attributes, set to empty string
     ans$dataset.title <- ""
     ans$data.file.name <- ""
     return(ans)
 }
 
-.compareGenalexAttributes <- function(x,
-                                      y = .calculateGenalexAttributes(x)) {
+.compareGenalexAttributes <- function(x, y = NULL) {
+    # don't assume genalex for x or y
+    x.attr <- attributes(x)
+    x.name <- deparse(substitute(x))
+    y.name <- deparse(substitute(y))
+    # If y is not supplied, instead de novo-infer attributes for x,
+    # using only ploidy
+    y.attr <- 
+        if (is.null(y)) {
+            x.ploidy <- x.attr$ploidy
+            if (! is.null(x.ploidy))
+                .calculateGenalexAttributes(x, x.ploidy)
+            else .calculateGenalexAttributes(x)
+            y.name <- paste("inferred attributes for", x.name)
+        } else attributes(y)
+    # compare
+    msg <- ""
+    string.compare <- function(a, b, n, empty.ok = FALSE) {
+        if (is.null(a[[n]]) || is.null(b[[n]]) || 
+            (a[[n]] != b[[n]] && 
+             (! empty.ok || (a[[n]] != "" && b[[n]] != ""))))
+            return(paste0("attribute ", n, " does not match\n"))
+        else return("")
+    }
+
+
     FALSE
     #if (a.n.samples != n.samples)
     #    msg <- c(msg,
