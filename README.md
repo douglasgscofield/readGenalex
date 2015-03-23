@@ -123,51 +123,23 @@ columns.
 
 Other functions:
 
-`genalex()`
-: Create a class `'genalex'` object from constituent data
-
-`as.genalex()`
-: Generic function which converts a pre-1.0-style `readGenalex` data frame to class `'genalex'`, or converts a suitably-formatted data frame to class `'genalex'`
-
-`rbind()`
-: Merge samples from two or more class `'genalex'` objects
-
-`writeGenalex()`
-: Write a GenAlEx-format text file
-
-`summary()`
-: Prints a summary of the data set, a summary of the genotype data frame, and a summary of the extra columns, if any
-
-`is.genalex()`
-: Checks whether the object is class `'genalex'`
-
-`as.data.frame()`
-: Method to convert class `'genalex'` to class `'data.frame'`, optionally all class `'genalex'`-specific attributes are removed
-
-`reducePloidy()`
-: Reduce the ploidy to 1 by selecting the first allele of each locus
-
-`dropLocus()`
-: Drop named loci
-
-`printGenotype()`
-: Print genotypes of specific rows
-
-`reorderLoci()`
-: Reorder loci into a given order
-
-`computeLocusColumns()`
-: Return a vector of column numbers for specified loci
-
-`replaceLocus()`
-: Replace genotypes of specified locus
-
-`getLocus()`
-: Return genotypes of specified locus, optionally only for specific populations
-
-`checkNullAlleles()`
-: Compare genotypes against a set of reference genotypes to check for potential null (nonamplifying) alleles
-
+Function | Description
+-------- | -----------
+`genalex()` | Create a class `'genalex'` object from constituent data
+`as.genalex()` | Generic function which converts a pre-1.0-style `readGenalex` data frame to class `'genalex'`, or converts a suitably-formatted data frame to class `'genalex'`
+`rbind()` | Merge samples from two or more class `'genalex'` objects
+`writeGenalex()` | Write a GenAlEx-format text file
+`summary()` | Prints a summary of the data set, a summary of the genotype data frame, and a summary of the extra columns, if any
+`is.genalex()` | Checks whether the object is class `'genalex'`
+`as.data.frame()` | Method to convert class `'genalex'` to class `'data.frame'`, optionally all class `'genalex'`-specific attributes are removed
+`reducePloidy()` | Reduce the ploidy to 1 by selecting the first allele of each locus
+`dropLocus()` | Drop named loci
+`printGenotype()` | Print genotypes of specific rows
+`reorderLoci()` | Reorder loci into a given order
+`computeLocusColumns()` | Return a vector of column numbers for specified loci
+`replaceLocus()` | Replace genotypes of specified locus
+`getLocus()` | Return genotypes of specified locus, optionally only for specific populations
+`checkNullAlleles()` | Compare genotypes against a set of reference genotypes to check for potential null (nonamplifying) alleles
 
 
 ## Datasets
