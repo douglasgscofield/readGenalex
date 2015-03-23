@@ -126,11 +126,11 @@ Other functions:
 Function | Description
 -------- | -----------
 `genalex()` | Create a class `'genalex'` object from constituent data
-`as.genalex()` | Generic function which converts a pre-1.0-style `readGenalex` data frame to class `'genalex'`, or converts a suitably-formatted data frame to class `'genalex'`
+`as.genalex()` | Generic function which converts a pre-1.0-style `readGenalex` data frame to class `'genalex'`, or converts a suitably-formatted data frame to class `'genalex'`.  Optionally it can determine structure implied by the data and update attributes to reflect that structure.
 `rbind()` | Merge samples from two or more class `'genalex'` objects
 `writeGenalex()` | Write a GenAlEx-format text file
 `summary()` | Prints a summary of the data set, a summary of the genotype data frame, and a summary of the extra columns, if any
-`is.genalex()` | Checks whether the object is class `'genalex'`
+`is.genalex()` | Checks whether the object is class `'genalex'`, optionally does a deeper check to determine whether the structure described in the attributes matches the structure implied by the data
 `as.data.frame()` | Method to convert class `'genalex'` to class `'data.frame'`, optionally all class `'genalex'`-specific attributes are removed
 `reducePloidy()` | Reduce the ploidy to 1 by selecting the first allele of each locus
 `dropLocus()` | Drop named loci
@@ -139,6 +139,7 @@ Function | Description
 `computeLocusColumns()` | Return a vector of column numbers for specified loci
 `replaceLocus()` | Replace genotypes of specified locus
 `getLocus()` | Return genotypes of specified locus, optionally only for specific populations
+`rbind()` | Add rows to a class `'genalex'` object and recalculate attributes
 `checkNullAlleles()` | Compare genotypes against a set of reference genotypes to check for potential null (nonamplifying) alleles
 
 
