@@ -4,31 +4,48 @@
 \alias{as.data.frame.genalex}
 \title{Convert class \code{'genalex'} to data frame}
 \usage{
-\method{as.data.frame}{genalex}(x, ..., complete = FALSE)
+\method{as.data.frame}{genalex}(x, ..., complete = FALSE,
+  stringsAsFactors = default.stringsAsFactors())
 }
 \arguments{
 \item{x}{An object to convert to class \code{'data.frame'}}
 
 \item{complete}{If \code{TRUE}, also removes class
-                 \code{'genalex'}-specific attributes}
+\code{'genalex'}-specific attributes}
+
+\item{stringsAsFactors}{Should \code{character} vectors be converted
+to factors?  This could affect sample and population names.}
 
 \item{\dots}{Additional arguments passed to \code{as.data.frame}}
 }
 \value{
-\code{x} as class \code{'data.frame'}.  No attributes
-        are removed, the class is simply changed to \code{data.frame}
-        and \code{as.data.frame} is called, with all that may entail.
+\code{x} as class \code{'data.frame'}.  With the default
+\code{complete = FALSE}, no attributes are removed, and the class is
+simply changed to \code{data.frame} and \code{as.data.frame} is
+called.  With \code{complete = TRUE}, all \code{'genalex'}-specific
+attributes are removed.
 }
 \description{
 Convert an object of class \code{'genalex'} to a data frame, optionally
 removing all \code{'genalex'}-specific attributes.  Note that the
-behaviour of \code{stringsAsFactors} will be applied to the data frame
-during conversion.
+behaviour of \code{stringsAsFactors} will be used to determine whether
+to convert \code{character} columns in the data frame to factors during
+conversion.  Note also that any extra columns are not affected by this
+conversion, as they are already stored in a data frame.
+}
+\examples{
+data(Qagr_adult_genotypes)
+## leave genalex-specific attributes in place
+dat <- as.data.frame(Qagr_adult_genotypes)
+## remove genalex-specific attributes
+dat.clean <- as.data.frame(Qagr_adult_genotypes, complete = TRUE)
+## both should result in an identical data frame, though the
+## data.file.name attribute will be different.
 }
 \author{
 Douglas G. Scofield
 }
 \seealso{
-\code{\link{as.data.frame}}
+\code{\link{as.data.frame}}, \code{\link{data.frame}}, \code{\link{as.genalex}}
 }
 

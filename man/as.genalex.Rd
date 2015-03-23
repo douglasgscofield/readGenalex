@@ -65,10 +65,15 @@ There are five cases:
   \item Any other class is an error.  Further conversions between genetic
         data formats may be added as additional methods.
 }
+If the object is not originally of class \code{'genalex'}, the
+\code{"data.file.name"} attribute should reflect this function call.
 }
 \examples{
 data(Qagr_adult_genotypes)
 gt <- as.genalex(Qagr_adult_genotypes)
+cat(attr(gt, "data.file.name"), "\\n")
+gt.2 <- as.genalex(as.data.frame(Qagr_adult_genotypes))
+cat(attr(gt.2, "data.file.name"), "\\n")
 }
 \author{
 Douglas G. Scofield

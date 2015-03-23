@@ -5,8 +5,6 @@ TODO
 
 - read from and write to Excel files
 - `cbind.genalex`?  `insertLocus`?
-- what happens to `as.genalex(as.data.frame(x1))`?
-- what happens to `as.genalex(as.data.frame(x1, complete = TRUE))`?
 - Add used papers to the data description?
 - Functions for converting from/to some other genetic formats, attaching them to `as.genalex`
 - If I am converting from those other formats, do I need to have the specific packages loaded?
@@ -36,6 +34,7 @@ TODO
 Completed
 ---------
 
+* In most cases, both `as.genalex(as.data.frame(x1))` and `as.genalex(as.data.frame(x1, complete = TRUE))` will result in identical class `'genalex'` objects, except for the `"data.file.name"` attribute.  If the column names are not well-formed so that it is difficult to tell the ploidy *de novo*, then perhaps there may be some issues.
 * `is.genalex(...)` is a shallow `inherits()` check
 * `is.genalex(..., force=TRUE)` is a deeper comparison that rederives attributes from the data and compares the ones safe to compare, returning `FALSE` if the attributes are not consistent
 * `is.genalex(..., force=TRUE, verbose=TRUE)` does what `is.genalex(..., force=TRUE)` does, but adds the printing of which attributes differed, via `message()`

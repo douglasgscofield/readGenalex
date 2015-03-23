@@ -9,20 +9,19 @@ readGenalex(file, sep = "\\t", ploidy = 2, na.strings = c("0", "-1", ".",
 }
 \arguments{
 \item{file}{Delimited text file in GenAlEx format, typically exported
-                  as tab- or comma-delimited text from Excel}
+as tab- or comma-delimited text from Excel}
 
 \item{sep}{Column separator used when \code{file} was created
-                  (defaults to tab)}
+(defaults to tab)}
 
 \item{ploidy}{The ploidy of genotypes encoded in \code{file} (defaults
-                  to 2)}
+to 2)}
 
 \item{na.strings}{Strings encoding missing data.  Default is to include the
-                  GenAlEx missing values ("0" and "-1") as well as ".",
-                  "NA" and "" (empty).}
+GenAlEx missing values ("0" and "-1") as well as ".", "NA" and "" (empty).}
 
 \item{\dots}{Additional arguments passed to \code{\link{scan}} when
-                  reading data}
+reading data}
 }
 \value{
 An annotated data frame of class \code{'genalex'} containing sample

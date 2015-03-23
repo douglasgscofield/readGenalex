@@ -174,6 +174,8 @@ is.genalex <- function(x, force = FALSE, verbose = FALSE) {
 #'   \item Any other class is an error.  Further conversions between genetic
 #'         data formats may be added as additional methods.
 #' }
+#' If the object is not originally of class \code{'genalex'}, the
+#' \code{"data.file.name"} attribute should reflect this function call.
 #' 
 #' @param x      An object of class \code{'genalex'} or class
 #' \code{'data.frame'}
@@ -204,6 +206,9 @@ is.genalex <- function(x, force = FALSE, verbose = FALSE) {
 #' 
 #' data(Qagr_adult_genotypes)
 #' gt <- as.genalex(Qagr_adult_genotypes)
+#' cat(attr(gt, "data.file.name"), "\n")
+#' gt.2 <- as.genalex(as.data.frame(Qagr_adult_genotypes))
+#' cat(attr(gt.2, "data.file.name"), "\n")
 #' 
 #' @export
 #'
@@ -289,31 +294,50 @@ as.genalex.default <- function(x, ...) {
 #' 
 #' Convert an object of class \code{'genalex'} to a data frame, optionally
 #' removing all \code{'genalex'}-specific attributes.  Note that the
-#' behaviour of \code{stringsAsFactors} will be applied to the data frame
-#' during conversion.
+#' behaviour of \code{stringsAsFactors} will be used to determine whether
+#' to convert \code{character} columns in the data frame to factors during
+#' conversion.  Note also that any extra columns are not affected by this
+#' conversion, as they are already stored in a data frame.
 #' 
 #' @param x         An object to convert to class \code{'data.frame'}
 #'
 #' @param complete  If \code{TRUE}, also removes class 
-#'                  \code{'genalex'}-specific attributes
+#' \code{'genalex'}-specific attributes
+#'
+#' @param stringsAsFactors  Should \code{character} vectors be converted
+#' to factors?  This could affect sample and population names.
 #'
 #' @param \dots     Additional arguments passed to \code{as.data.frame}
 #'
-#' @return \code{x} as class \code{'data.frame'}.  No attributes
-#'         are removed, the class is simply changed to \code{data.frame}
-#'         and \code{as.data.frame} is called, with all that may entail.
+#' @return \code{x} as class \code{'data.frame'}.  With the default
+#' \code{complete = FALSE}, no attributes are removed, and the class is 
+#' simply changed to \code{data.frame} and \code{as.data.frame} is 
+#' called.  With \code{complete = TRUE}, all \code{'genalex'}-specific
+#' attributes are removed.
 #'
 #' @author Douglas G. Scofield
 #'
-#' @seealso \code{\link{as.data.frame}}
+#' @seealso \code{\link{as.data.frame}}, \code{\link{data.frame}}, \code{\link{as.genalex}}
+#'
+#' @examples
+#' 
+#' data(Qagr_adult_genotypes)
+#' ## leave genalex-specific attributes in place
+#' dat <- as.data.frame(Qagr_adult_genotypes)
+#' ## remove genalex-specific attributes
+#' dat.clean <- as.data.frame(Qagr_adult_genotypes, complete = TRUE)
+#' ## both should result in an identical data frame, though the
+#' ## data.file.name attribute will be different.
 #'
 #' @export
 #' 
-as.data.frame.genalex <- function(x, ..., complete = FALSE) {
+as.data.frame.genalex <- function(x, ..., complete = FALSE,
+         stringsAsFactors = default.stringsAsFactors()) {
     if (is.genalex(x)) {
-        if (complete) x <- .clearGenalexAttributes(x)
+        if (complete) 
+            x <- .clearGenalexAttributes(x)
         x <- as.data.frame(structure(x, class = c('data.frame')), ...,
-                             stringsAsFactors = default.stringsAsFactors())
+                             stringsAsFactors = stringsAsFactors)
         return(x)
     }
     stop("'", deparse(substitute(x)), "' is not class 'genalex'")
@@ -371,20 +395,19 @@ as.data.frame.genalex <- function(x, ..., complete = FALSE) {
 #' information must be encoded numerically.
 #' 
 #' @param file       Delimited text file in GenAlEx format, typically exported
-#'                   as tab- or comma-delimited text from Excel
+#' as tab- or comma-delimited text from Excel
 #' 
 #' @param sep        Column separator used when \code{file} was created 
-#'                   (defaults to tab)
+#' (defaults to tab)
 #' 
 #' @param ploidy     The ploidy of genotypes encoded in \code{file} (defaults
-#'                   to 2)
+#' to 2)
 #' 
 #' @param na.strings Strings encoding missing data.  Default is to include the
-#'                   GenAlEx missing values ("0" and "-1") as well as ".",
-#'                   "NA" and "" (empty).
+#' GenAlEx missing values ("0" and "-1") as well as ".", "NA" and "" (empty).
 #' 
 #' @param \dots      Additional arguments passed to \code{\link{scan}} when
-#'                   reading data
+#' reading data
 #' 
 #' @return An annotated data frame of class \code{'genalex'} containing sample
 #' data, with column names determined by line 3 of the input file.  Special
