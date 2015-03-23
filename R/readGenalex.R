@@ -285,7 +285,7 @@ as.genalex.data.frame <- function(x, names = NULL, ploidy = 2, ...) {
 #' @export
 #' 
 as.genalex.default <- function(x, ...) {
-    stop("'", deparse(substitute(x)), "' cannot be coerced to class 'genalex'")
+    stop("'", deparse(substitute(x)), "' cannot be coerced to class 'genalex', perhaps it could be converted to a data.frame?")
 }
 
 
