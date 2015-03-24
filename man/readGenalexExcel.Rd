@@ -44,7 +44,7 @@ xl.file <- system.file("extdata/Qagr_genotypes.xlsx",
                        package = "readGenalex")
 gt <- readGenalexExcel(xl.file, worksheet = "Qagr_pericarp_genotypes")
 head(gt)
-attributes(gt)
+names(attributes(gt))
 }
 \author{
 Douglas G. Scofield

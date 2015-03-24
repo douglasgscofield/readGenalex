@@ -107,7 +107,7 @@
 #'                        package = "readGenalex")
 #' gt <- readGenalex(gt.file)
 #' head(gt)
-#' attributes(gt)
+#' names(attributes(gt))
 #'
 #' @export
 #'
@@ -182,7 +182,7 @@ readGenalex <- function(file, sep = "\t", ploidy = 2,
 #'                        package = "readGenalex")
 #' gt <- readGenalexExcel(xl.file, worksheet = "Qagr_pericarp_genotypes")
 #' head(gt)
-#' attributes(gt)
+#' names(attributes(gt))
 #'
 #' @export
 #'

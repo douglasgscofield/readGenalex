@@ -103,7 +103,7 @@ gt.file <- system.file("extdata/Qagr_pericarp_genotypes.txt",
                        package = "readGenalex")
 gt <- readGenalex(gt.file)
 head(gt)
-attributes(gt)
+names(attributes(gt))
 }
 \author{
 Douglas G. Scofield
