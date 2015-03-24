@@ -27,6 +27,57 @@ test_that("genalex() works", {
 
 
 #########################################
+context("Testing readGenalex()")
+
+fa <- system.file("extdata/Qagr_adult_genotypes.txt", package = "readGenalex")
+ga <- readGenalex(fa)
+fp <- system.file("extdata/Qagr_pericarp_genotypes.txt", package = "readGenalex")
+gp <- readGenalex(fp)
+
+test_that("readGenalex() works", {
+    # adult genotypes
+    expect_true(attr(ga, "n.samples") == 262)
+    expect_true(attr(ga, "n.pops") == 1)
+    expect_true(attr(ga, "dataset.title") == "Q.agrifolia adults at Sedgwick")
+    expect_true(all(attr(ga, "pop.labels") == c("Sedgwick")))
+    expect_true(all(attr(ga, "pop.sizes") == c(262)))
+    expect_match(attr(ga, "data.file.name"), "Qagr_adult_genotypes.txt", fixed = TRUE)
+    # pericarp genotypes
+    expect_true(attr(gp, "n.samples") == 568)
+    expect_true(attr(gp, "n.pops") == 17)
+    expect_true(attr(gp, "dataset.title") == "Sedgwick Q.agrifolia 2006 granary pericarps")
+    expect_true(all(attr(gp, "pop.labels") == c("L0010", "L0031", "L0039", "L0048", "L0107",
+                                                "L0108", "L0140", "L0151", "L0152", "L0162",
+                                                "L0163", "L0922", "L0931", "L0938", "L0942",
+                                                "L0990", "L0991")))
+    expect_true(all(attr(gp, "pop.sizes") == c(12, 12, 49, 50, 50, 12, 12, 50, 50, 12, 50,
+                                               7, 11, 50, 47, 50, 44)))
+    expect_match(attr(gp, "data.file.name"), "Qagr_pericarp_genotypes.txt", fixed = TRUE)
+})
+
+
+#########################################
+if (require("XLConnect", character.only = TRUE)) {
+    # only of XLConnect package is available
+
+    context("Testing readGenalexExcel()")
+
+    fx <- system.file("extdata/Qagr_genotypes.xlsx", package = "readGenalex")
+    xp <- readGenalexExcel(fx, worksheet = 1)
+    xa <- readGenalexExcel(fx, worksheet = "Qagr_adult_genotypes")
+
+    test_that("readGenalexExcel() works", {
+        expect_match(attr(xp, "data.file.name"), "Qagr_genotypes.xlsx(1)", fixed = TRUE)
+        expect_match(attr(xa, "data.file.name"), "Qagr_genotypes.xlsx(Qagr_adult_genotypes)", fixed = TRUE)
+        lxp <- xp; lxa <- xa; lgp <- gp; lga <- ga
+        attr(lxp, "data.file.name") <- attr(lxa, "data.file.name") <- 
+            attr(lgp, "data.file.name") <- attr(lga, "data.file.name") <- NULL
+        expect_equal(lxp, lgp)
+        expect_equal(lxa, lga)
+    })
+}
+
+#########################################
 context("Testing is.genalex()")
 
 test_that("is.genalex() works", {

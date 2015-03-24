@@ -66,7 +66,7 @@ There are five cases:
         data formats may be added as additional methods.
 }
 If the object is not originally of class \code{'genalex'}, the
-\code{"data.file.name"} attribute should reflect this function call.
+\code{"data.file.name"} attribute will reflect this function call.
 }
 \examples{
 data(Qagr_adult_genotypes)

@@ -13,12 +13,16 @@ Description: A collection of R functions to read, manipulate and write genotype
     http://biology-assets.anu.edu.au/GenAlEx.
 URL: https://github.com/douglasgscofield/readGenalex
 BugReports: https://github.com/douglasgscofield/readGenalex/issues
-License: LGPL-3 | file LICENSE
+Depends:
+    R (>= 3.0.0)
 Suggests:
+    XLConnect,
     testthat
+License: LGPL-3 | file LICENSE
 Collate:
     'readGenalex.R'
     'checkNullAlleles.R'
     'readGenalex-data.R'
     'readGenalex-deprecated.R'
     'readGenalex-package.R'
+    'readGenalex-readwrite.R'
