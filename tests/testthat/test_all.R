@@ -57,7 +57,8 @@ test_that("readGenalex() works", {
 
 
 #########################################
-if (require("XLConnect", character.only = TRUE)) {
+if (suppressPackageStartupMessages(require("XLConnect", character.only = TRUE, 
+                                           quietly = TRUE, warn.conflicts = FALSE))) {
     # only of XLConnect package is available
 
     context("Testing readGenalexExcel()")
