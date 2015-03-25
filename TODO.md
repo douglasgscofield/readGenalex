@@ -34,7 +34,8 @@ TODO
 Completed
 ---------
 
-* `readGenalexExcel()` will read from an Excel file in `.xls` or `.xlsx` format, using the `XLConnect` package.
+* `writeGenalexExcel()` will write to an Excel file, using the `XLConnect` package
+* `readGenalexExcel()` will read from an Excel file, using the `XLConnect` package
 * In most cases, both `as.genalex(as.data.frame(x1))` and `as.genalex(as.data.frame(x1, complete = TRUE))` will result in identical class `'genalex'` objects, except for the `"data.file.name"` attribute.  If the column names are not well-formed so that it is difficult to tell the ploidy *de novo*, then perhaps there may be some issues.
 * `is.genalex(...)` is a shallow `inherits()` check
 * `is.genalex(..., force=TRUE)` is a deeper comparison that rederives attributes from the data and compares the ones safe to compare, returning `FALSE` if the attributes are not consistent
