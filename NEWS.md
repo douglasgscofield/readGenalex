@@ -10,6 +10,7 @@
 * `readGenalex` now has `...` in its argument list, for additional arguments to be passed to `scan()` while reading data
 * Added `na.strings` argument to `readGenalex`, with defaults that reflect GenAlEx's own expectations for missing data
 * Added `na` and `na.character` arguments to `writeGenalex`, with values to use for NA in genotype/numeric/logical columns and character columns, respectively
+* Added `readGenalexExcel` and `writeGenalexExcel` which use the `XLConnect` package to read and write to Excel files of both `.xls` and `.xlsx` formats.  These functions verify the consistency of their annotations and data prior to writing; this check can be removed on option.
 * Clarified typing of sample, population, genotype, and extra columns.  Sample and population columns are stored as character (population was previously a factor), genotype columns are stored as numeric, and extra columns are stored as their natural type as determined by `type.convert(..., as.is=TRUE)`, so that character columns are not converted to factors.
 * As a result of the clarified typing, `writeGenalex(..., quote=TRUE)` will only quote names in the GenAlEx header, in the first two columns, and in any character-valued extra columns
 * Added tests for all functions and found a few bugs along the way

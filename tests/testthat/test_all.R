@@ -141,13 +141,62 @@ test_that("writeGenalex() obeys options", {
     expect_output(writeGenalex(x1.na, file = "", na = "NA"), "\n2\tsnurf\t12\tNA\t102\t")
     expect_output(writeGenalex(x1.na, file = "", na = "."), "\n2\tsnurf\t12\t.\t102\t")
     x1.na[2, 2] <- NA
-    expect_output(writeGenalex(x1.na, file = ""), "\n2\t\t12\t0\t102\t")
-    expect_output(writeGenalex(x1.na, file = "", na.character = "-missing-"), "\n2\t-missing-\t12\t0\t102\t")
-    expect_output(writeGenalex(x1.na, file = "", na = "NA", na.character = "."), "\n2\t.\t12\tNA\t102\t")
+    # we expect population sizes not to match the annotation, because we set a pop to NA
+    expect_error(writeGenalex(x1.na, file = ""), "x1.na class 'genalex' annotations are inconsistent, not writing")
+    expect_output(writeGenalex(x1.na, file = "", check.annotation = FALSE), "\n2\t\t12\t0\t102\t")
+    expect_output(writeGenalex(x1.na, file = "", na.character = "-missing-", check.annotation = FALSE), "\n2\t-missing-\t12\t0\t102\t")
+    expect_output(writeGenalex(x1.na, file = "", na = "NA", na.character = ".", check.annotation = FALSE), "\n2\t.\t12\tNA\t102\t")
     # quote= quote character values
     expect_output(writeGenalex(x1, file = "", quote = TRUE), "\n\"2\"\t\"snurf\"\t12\t15\t")
     # still missing extra.columns stuff
 })
+
+
+#########################################
+if (suppressPackageStartupMessages(require("XLConnect", character.only = TRUE, 
+                                           quietly = TRUE, warn.conflicts = FALSE))) {
+    # only of XLConnect package is available
+
+    context("Testing writeGenalexExcel()")
+
+    xlfile <- "test.xlsx"
+    unlink(xlfile)
+
+    test_that("writeGenalexExcel() obeys options", {
+        sheet <- "sheet1"
+        writeGenalexExcel(x1, xlfile, sheet)
+        x1.in <- readGenalexExcel(xlfile, sheet)
+        df.x1 <- attr(x1, "data.file.name"); df.x1.in <- attr(x1.in, "data.file.name")
+        attr(x1, "data.file.name") <- attr(x1.in, "data.file.name") <- ""
+        expect_equal(x1, x1.in)
+        # we expect not to be able to overwrite the sheet
+        expect_error(writeGenalexExcel(x1, xlfile, sheet), "worksheet sheet1 already exists in workbook test.xlsx, will not overwrite")
+        # we expect population sizes not to match the annotation, because we set a pop to NA
+        x1.na <- x1; x1.na[2, 4] <- NA
+        x1.na[2, 2] <- NA
+        expect_error(writeGenalexExcel(x1.na, xlfile, sheet), "x1.na class 'genalex' annotations are inconsistent, not writing")
+        expect_error(writeGenalexExcel(x1.na, xlfile, sheet, check.annotation = FALSE), "worksheet sheet1 already exists in workbook test.xlsx, will not overwrite")
+        # write a proper NA
+        x1.na <- x1; x1.na[2, 4] <- NA
+        expect_error(writeGenalexExcel(x1.na, xlfile, sheet, na = "", overwrite = TRUE), "should be one of ")
+        writeGenalexExcel(x1.na, xlfile, sheet, na = "0", overwrite = TRUE)
+        # do we read this back in correctly?
+        x1.na.in <- readGenalexExcel(xlfile, sheet)
+        attr(x1.na, "data.file.name") <- attr(x1.na.in, "data.file.name") <- ""
+        expect_equal(x1.na, x1.na.in)
+        # multiple sheets
+        writeGenalexExcel(x1, xlfile, sheet, overwrite = TRUE)
+        sheet <- "sheet2"
+        writeGenalexExcel(x1, xlfile, sheet)
+        writeGenalexExcel(x1.na, xlfile, "sheet3")
+        x.1 <- readGenalexExcel(xlfile, 1)
+        x.2 <- readGenalexExcel(xlfile, 2)
+        attr(x.1, "data.file.name") <- attr(x.2, "data.file.name") <- ""
+        expect_equal(x.1, x.2)
+    })
+
+    # unlink(xlfile)
+}
 
 
 #########################################

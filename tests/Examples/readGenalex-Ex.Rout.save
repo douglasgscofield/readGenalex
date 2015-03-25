@@ -20,6 +20,8 @@ Type 'q()' to quit R.
 > pkgname <- "readGenalex"
 > source(file.path(R.home("share"), "R", "examples-header.R"))
 > options(warn = 1)
+> 
+> ### * </HEADER>
 > library('readGenalex')
 > 
 > base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
@@ -404,29 +406,14 @@ $data.file.name
 > 
 > ### ** Examples
 > 
-> xl.file <- system.file("extdata/Qagr_genotypes.xlsx",
-+                        package = "readGenalex")
-> gt <- readGenalexExcel(xl.file, worksheet = "Qagr_pericarp_genotypes")
-> head(gt)
-  PericarpID Granary 0c11 0c11.2 0c19 0c19.2 Oe09 Oe09.2 0i01 0i01.2 0m05
-1  L0010_001   L0010  213    231  238    240  192    192  206    208  220
-2  L0010_002   L0010  213    231  238    240  192    192  206    208  220
-3  L0010_003   L0010  213    231  238    240  192    192  206    208  220
-4  L0010_004   L0010  213    231  238    240  192    192  206    208  220
-5  L0010_005   L0010  213    231  238    240  192    192  206    208  220
-6  L0010_006   L0010  213    231  238    240  192    192  206    208  220
-  0m05.2 0m07 0m07.2 1c06 1c06.2 1c08 1c08.2 1f02 1f02.2 1g13 1g13.2
-1    226  201    221  242    244  271    271  190    190  181    191
-2    226  201    221  242    244  271    271  190    190  181    191
-3    226  201    221  242    244  271    271  190    190  181    191
-4    226  201    221  242    244  271    271  190    190  181    191
-5    226  201    221  242    244  271    271  190    190  181    191
-6    226  201    221  242    244  271    271  190    190  181    191
-> names(attributes(gt))
- [1] "names"          "row.names"      "class"          "n.loci"        
- [5] "ploidy"         "n.samples"      "n.pops"         "dataset.title" 
- [9] "sample.title"   "pop.title"      "pop.labels"     "pop.sizes"     
-[13] "locus.columns"  "locus.names"    "data.file.name"
+> ## Not run: 
+> ##D xl.file <- system.file("extdata/Qagr_genotypes.xlsx",
+> ##D                        package = "readGenalex")
+> ##D ## this could take ~5 sec or longer
+> ##D gt <- readGenalexExcel(xl.file, worksheet = "Qagr_pericarp_genotypes")
+> ##D head(gt)
+> ##D names(attributes(gt))
+> ## End(Not run)
 > 
 > 
 > 
@@ -822,11 +809,32 @@ STD	Sedgwick	213	215	244	246	190	194	196	208	210	214	201	219	236	242	271	275	190
 > 
 > 
 > 
+> cleanEx()
+> nameEx("writeGenalexExcel")
+> ### * writeGenalexExcel
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: writeGenalexExcel
+> ### Title: Write GenAlEx-format genotypes to an Excel worksheet
+> ### Aliases: writeGenalexExcel
+> ### Keywords: attribute file manip
+> 
+> ### ** Examples
+> 
+> data(Qagr_adult_genotypes)
+> d <- head(Qagr_adult_genotypes)
+> ## recalculate class attributes
+> d <- as.genalex(d, force = TRUE)
+> ## create Excel worksheet, will not overwrite existing
+> writeGenalexExcel(d, "test.xlsx", "test")
+> 
+> 
+> 
 > ### * <FOOTER>
 > ###
 > options(digits = 7L)
-> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  4.743 0.129 2.776 0 0 
+Time elapsed:  2.14 0.08 1.841 0 0 
 > grDevices::dev.off()
 null device 
           1 

@@ -40,11 +40,14 @@ it is recommended to export the worksheet from Excel as tab-delimited
 text and read it with \code{\link{readGenalex}}.
 }
 \examples{
+\dontrun{
 xl.file <- system.file("extdata/Qagr_genotypes.xlsx",
                        package = "readGenalex")
+## this could take ~5 sec or longer
 gt <- readGenalexExcel(xl.file, worksheet = "Qagr_pericarp_genotypes")
 head(gt)
 names(attributes(gt))
+}
 }
 \author{
 Douglas G. Scofield

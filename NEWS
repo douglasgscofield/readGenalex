@@ -33,6 +33,10 @@ readGenalex 0.9.9000 (development version)
 -   Added na and na.character arguments to writeGenalex, with values to
     use for NA in genotype/numeric/logical columns and character
     columns, respectively
+-   Added readGenalexExcel and writeGenalexExcel which use the XLConnect
+    package to read and write to Excel files of both .xls and .xlsx
+    formats. These functions verify the consistency of their annotations
+    and data prior to writing; this check can be removed on option.
 -   Clarified typing of sample, population, genotype, and extra columns.
     Sample and population columns are stored as character (population
     was previously a factor), genotype columns are stored as numeric,

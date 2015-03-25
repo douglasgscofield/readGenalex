@@ -124,14 +124,19 @@ column from the genotypes, e.g., the `id` column from the above example).  It
 attempts to ignore additional unnamed columns scattered amongst the named extra
 columns.
 
-Other functions:
+There are also corresponding `writeGenalex` and `writeGenalexExcel` functions.
+
+Functions:
 
 Function | Description
 -------- | -----------
+`readGenalex()` | Read GenAlEx-format data from a text file
+`readGenalexExcel()` | Read GenAlEx-format data from a worksheet of an Excel workbook
 `genalex()` | Create a class `'genalex'` object from constituent data
 `as.genalex()` | Generic function which converts a pre-1.0-style `readGenalex` data frame to class `'genalex'`, or converts a suitably-formatted data frame to class `'genalex'`.  Optionally it can determine structure implied by the data and update attributes to reflect that structure.
 `rbind()` | Merge samples from two or more class `'genalex'` objects
 `writeGenalex()` | Write a GenAlEx-format text file
+`writeGenalexExcel()` | Write a GenAlEx-format worksheet to an Excel workbook
 `summary()` | Prints a summary of the data set, a summary of the genotype data frame, and a summary of the extra columns, if any
 `is.genalex()` | Checks whether the object is class `'genalex'`, optionally does a deeper check to determine whether the structure described in the attributes matches the structure implied by the data
 `as.data.frame()` | Method to convert class `'genalex'` to class `'data.frame'`, optionally all class `'genalex'`-specific attributes are removed

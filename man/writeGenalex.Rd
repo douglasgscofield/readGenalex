@@ -5,31 +5,34 @@
 \title{Write GenAlEx-format genotypes to a text file}
 \usage{
 writeGenalex(x, file, quote = FALSE, sep = "\\t", eol = "\\n", na = "0",
-  na.character = "")
+  na.character = "", check.annotation = TRUE)
 }
 \arguments{
 \item{x}{Annotated data frame of class \code{'genalex'}}
 
 \item{file}{File name or connection for writing.  If given as \code{""},
-             \code{stdout()} is used.}
+\code{stdout()} is used.}
 
 \item{quote}{Logical value (\code{TRUE} or \code{FALSE}).  If \code{TRUE},
-             all character data are surrounded by double quotes, and all
-             header fields except for counts are quoted if they exist.
-             Note that genotype data will not be quoted, as they are
-             numeric values.  Data in the extra columns will be quoted,
-             unless some have been made numeric since being read.  If
-             \code{FALSE}, nothing is quoted.}
+all character data are surrounded by double quotes, and all header fields
+except for counts are quoted if they exist.  Note that genotype data will
+not be quoted, as they are' numeric values.  Data in the extra columns
+will be quoted, unless some have been made numeric since being read.  If
+\code{FALSE}, nothing is quoted.}
 
 \item{sep}{Column separator for output (defaults to \code{"\t"}).}
 
 \item{eol}{End-of-line character used for output (defaults to \code{"\n"}).}
 
 \item{na}{The string to use when writing missing values in genotype
-             data.  Defaults to \code{"0"}.}
+data.  Defaults to \code{"0"}.}
 
 \item{na.character}{The string to use when writing missing values in
-             character data.  Defaults to \code{""}.}
+character data.  Defaults to \code{""}.}
+
+\item{check.annotation}{If \code{TRUE}, the annotations for the dataset
+are checked using \code{"is.genalex(x, force = TRUE, skip.strings = TRUE)"}.
+If that returns \code{FALSE}, nothing is written and an error is generated.}
 }
 \value{
 No value is returned.

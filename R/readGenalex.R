@@ -4,11 +4,23 @@
 #' the \code{readGenalex} package.  With \code{force = TRUE},
 #' the internal consistency of the data and annotations are checked.
 #' 
+#' Two attributes that may commonly be found to differ from inferred
+#' values are \code{"dataset.title"} and \code{"data.file.name"},
+#' if there have been manipulations to the class.  These attributes
+#' cannot be removed from a valid object of class \code{'genalex'},
+#' but they can be set to the empty string (\code{""}) to avoid this
+#' check.  Alternatively, the option \code{skip.strings = TRUE} may
+#' be set to not check these specific attributes for consistency.
+#' 
 #' @param x      An object that might be of class \code{'genalex'}
 #'
 #' @param force  If \code{TRUE} and \code{x} has class \code{'genalex'},
 #' force a deeper check to assure that the data and annotations are 
 #' consistent with class \code{'genalex'}
+#'
+#' @param skip.strings  If \code{TRUE} and \code{force = TRUE},
+#' do not check the attributes \code{"dataset.title"} and
+#' \code{"data.file.name"} for consistency.
 #'
 #' @param verbose If \code{TRUE} and \code{force = TRUE}, indicate any
 #' inconsistencies discovered between the data and annotations. if
@@ -32,12 +44,13 @@
 #' 
 #' @export is.genalex
 #' 
-is.genalex <- function(x, force = FALSE, verbose = FALSE) {
+is.genalex <- function(x, force = FALSE, skip.strings = FALSE,
+                       verbose = FALSE) {
     if (! inherits(x, 'genalex'))
         return(FALSE)
     if (force == FALSE)
         return(TRUE)
-    msg <- .compareGenalexAttributes(x)
+    msg <- .compareGenalexAttributes(x, skip.strings = skip.strings)
     if (msg != "" && verbose)
         cat(msg, "\n")
     return(msg == "")
@@ -106,7 +119,7 @@ is.genalex <- function(x, force = FALSE, verbose = FALSE) {
     else return(character(0))
 }
 
-.compareGenalexAttributes <- function(x, y = NULL) {
+.compareGenalexAttributes <- function(x, y = NULL, skip.strings = FALSE) {
     # don't assume genalex for x or y, but make soft assumptions for both
     xa <- attributes(x)
     x.name <- deparse(substitute(x))
@@ -132,8 +145,10 @@ is.genalex <- function(x, force = FALSE, verbose = FALSE) {
     msg <- c(msg, .compare.attribute(xa, ya, "pop.labels"))
     msg <- c(msg, .compare.attribute(xa, ya, "pop.sizes"))
     msg <- c(msg, .compare.attribute(xa, ya, "pop.title"))
-    msg <- c(msg, .compare.char.attribute(xa, ya, "dataset.title", TRUE))
-    msg <- c(msg, .compare.char.attribute(xa, ya, "data.file.name", TRUE))
+    if (! skip.strings) {
+        msg <- c(msg, .compare.char.attribute(xa, ya, "dataset.title", TRUE))
+        msg <- c(msg, .compare.char.attribute(xa, ya, "data.file.name", TRUE))
+    }
     if (length(msg)) 
         msg <- paste(x.name, "and", y.name, "attributes do not match :", 
                      paste(collapse=" ", msg))
@@ -503,6 +518,8 @@ rbind.genalex <- function(..., names, deparse.level = 1) {
 genalex <- function(samples, pops, genotypes, names = NULL, ploidy = 2,
                     extra.columns = NULL) {
     this.call <- sys.call()
+    samples <- as.character(samples)
+    pops <- as.character(pops)
     genotypes <- as.data.frame(genotypes)
     if (length(samples) != nrow(genotypes))
         stop("'samples' and 'genotypes' must have the same length")

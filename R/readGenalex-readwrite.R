@@ -178,15 +178,20 @@ readGenalex <- function(file, sep = "\t", ploidy = 2,
 #'
 #' @examples
 #'
+#' \dontrun{
 #' xl.file <- system.file("extdata/Qagr_genotypes.xlsx",
 #'                        package = "readGenalex")
+#' ## this could take ~5 sec or longer
 #' gt <- readGenalexExcel(xl.file, worksheet = "Qagr_pericarp_genotypes")
 #' head(gt)
 #' names(attributes(gt))
+#' }
 #'
 #' @export
 #'
 readGenalexExcel <- function(file, worksheet, ploidy = 2) {
+    if (length(worksheet) > 1)
+        stop("must provide a single worksheet name")
     dat <- XLConnect::readWorksheetFromFile(file, sheet = worksheet,
                                             header = FALSE)
     # replace NA cells (empty in the Excel file) with empty strings
@@ -412,25 +417,28 @@ readGenalexExcel <- function(file, worksheet, ploidy = 2) {
 #' @param x     Annotated data frame of class \code{'genalex'}
 #'
 #' @param file  File name or connection for writing.  If given as \code{""},
-#'              \code{stdout()} is used.
+#' \code{stdout()} is used.
 #'
 #' @param quote Logical value (\code{TRUE} or \code{FALSE}).  If \code{TRUE},
-#'              all character data are surrounded by double quotes, and all
-#'              header fields except for counts are quoted if they exist.
-#'              Note that genotype data will not be quoted, as they are
-#'              numeric values.  Data in the extra columns will be quoted,
-#'              unless some have been made numeric since being read.  If
-#'              \code{FALSE}, nothing is quoted.
+#' all character data are surrounded by double quotes, and all header fields
+#' except for counts are quoted if they exist.  Note that genotype data will
+#' not be quoted, as they are' numeric values.  Data in the extra columns 
+#' will be quoted, unless some have been made numeric since being read.  If
+#' \code{FALSE}, nothing is quoted.
 #'
 #' @param sep   Column separator for output (defaults to \code{"\t"}).
 #'
 #' @param eol   End-of-line character used for output (defaults to \code{"\n"}).
 #'
 #' @param na    The string to use when writing missing values in genotype
-#'              data.  Defaults to \code{"0"}.
+#' data.  Defaults to \code{"0"}.
 #'
 #' @param na.character The string to use when writing missing values in
-#'              character data.  Defaults to \code{""}.
+#' character data.  Defaults to \code{""}.
+#'
+#' @param check.annotation  If \code{TRUE}, the annotations for the dataset
+#' are checked using \code{"is.genalex(x, force = TRUE, skip.strings = TRUE)"}.
+#' If that returns \code{FALSE}, nothing is written and an error is generated.
 #'
 #' @return No value is returned.
 #'
@@ -457,25 +465,177 @@ readGenalexExcel <- function(file, worksheet, ploidy = 2) {
 #' @export
 #'
 writeGenalex <- function(x, file, quote = FALSE, sep = "\t", eol = "\n",
-                         na = "0", na.character = "") {
+                         na = "0", na.character = "", 
+                         check.annotation = TRUE) {
     DNAME <- deparse(substitute(x))
     if (! is.genalex(x))
         stop(DNAME, " must be class 'genalex'")
+    if (check.annotation && ! is.genalex(x, force = TRUE, skip.strings = TRUE))
+        stop(DNAME, " class 'genalex' annotations are inconsistent, not writing")
     if (file == "")
         file <- stdout()
     else if (is.character(file)) {
         file <- file(description = file, open = "wt")
         on.exit(close(file))
-    }
-    else if (! isOpen(file, "w")) {
+    } else if (! isOpen(file, "w")) {
         open(file, "w")
         on.exit(close(file))
     }
     if (! inherits(file, "connection"))
         stop("'file' must be a character string or connection")
+    # convert data in header
+    header <- .genalexHeaderToCharacter(x, quote)
+    cat(file = file, sep = "", paste(collapse = sep, header[[1]]), eol)
+    cat(file = file, sep = "", paste(collapse = sep, header[[2]]), eol)
+    cat(file = file, sep = "", paste(collapse = sep, header[[3]]), eol)
+    # convert data
+    dat <- .genalexDataToCharacter(x, quote = quote, na = na, 
+                                   na.character = na.character)
+    # data plus extra columns
+    for (i in 1:nrow(dat)) {
+        cat(file = file, sep = "", paste(collapse = sep, dat[i, ]), eol)
+    }
+}
+
+
+
+#' Write GenAlEx-format genotypes to an Excel worksheet
+#'
+#' Writes genotype data file in GenAlEx format from an annotated data frame
+#' of class \code{'genalex'} to an Excel worksheet.  Both \code{.xls} and
+#' \code{.xlsx} formats may be written.  This function uses the function 
+#' \code{\link[XLConnect]{writeWorksheet}} and others from the 
+#' \href{http://cran.r-project.org/web/packages/XLConnect/index.html}{XLConnect}
+#' package to write the Excel file.  Strings representing \code{NA} values are
+#' strictly those allowed by GenAlEx itself, 0 and -1.  The worksheet is
+#' written using the default formatting of the \code{XLConnect} package.
+#'
+#' Only the first column for each locus is given a heading, specifically the
+#' locus name.  The other columns representing further alleles for the locus
+#' are left blank.
+#'
+#' Any extra columns of data, if present in the object of class 
+#' \code{'genalex'}, are written immediately to the right of the genotype
+#' columns.
+#'
+#' For further information and cautions, see \code{\link{writeGenalex}}.
+#'
+#' @param x          Annotated data frame of class \code{'genalex'}
+#'
+#' @param file       Excel workbook file to which to write the worksheet
+#'
+#' @param worksheet  Worksheet name in a format valid for Excel, see
+#' \code{\link[XLConnect]{createSheet}}
+#'
+#' @param na    The string to use when writing missing values in genotype
+#' data.  Defaults to \code{"0"}, and must be one of \code{"0"} or 
+#' \code{"-1"}, as allowed by GenAlEx.
+#'
+#' @param na.character The string to use when writing missing values in
+#' character data.  Defaults to \code{""}.
+#'
+#' @param check.annotation  If \code{TRUE}, the annotations for the dataset
+#' are checked using \code{"is.genalex(x, force = TRUE, skip.strings = TRUE)"}.
+#' If that returns \code{FALSE}, nothing is written and an error is generated.
+#'
+#' @param overwrite  If \code{FALSE}, an existing sheet with the same name as
+#' \code{worksheet} will not be overwritten, if \code{TRUE} it will be.
+#'
+#' @return No value is returned.
+#'
+#' @author Douglas G. Scofield
+#'
+#' @seealso \code{\link{readGenalexExcel}}, \code{\link{writeGenalex}}, \code{\link[XLConnect]{writeWorksheet}} \code{\link[XLConnect]{createSheet}}
+#'
+#' @references Peakall, R. and Smouse P.E. (2012) GenAlEx 6.5: genetic analysis
+#' in Excel. Population genetic software for teaching and research-an update.
+#' \emph{Bioinformatics} 28, 2537-2539.
+#'
+#' Peakall, R. and Smouse P.E. (2006) GENALEX 6: genetic analysis in Excel.
+#' Population genetic software for teaching and research. \emph{Molecular
+#' Ecology Notes} 6, 288-295.
+#'
+#' @keywords file manip attribute
+#'
+#' @examples
+#'
+#' data(Qagr_adult_genotypes)
+#' d <- head(Qagr_adult_genotypes)
+#' ## recalculate class attributes
+#' d <- as.genalex(d, force = TRUE)
+#' ## create Excel worksheet, will not overwrite existing
+#' writeGenalexExcel(d, "test.xlsx", "test")
+#'
+#' @export
+#'
+writeGenalexExcel <- function(x, file, worksheet, na = c("0", "-1"),
+                              na.character = "", check.annotation = TRUE,
+                              overwrite = FALSE) {
+    DNAME <- deparse(substitute(x))
+    if (! is.genalex(x))
+        stop(DNAME, " must be class 'genalex'")
+    if (check.annotation && ! is.genalex(x, force = TRUE, skip.strings = TRUE))
+        stop(DNAME, " class 'genalex' annotations are inconsistent, not writing")
+    if (length(worksheet) > 1)
+        stop("must provide a single worksheet name")
+    na <- match.arg(na)
+    wb <- XLConnect::loadWorkbook(file, create = TRUE)
+    if (! XLConnect::existsSheet(wb, worksheet))
+        XLConnect::createSheet(wb, worksheet)
+    else if (! overwrite)
+        stop("worksheet ", worksheet, " already exists in workbook ", file, 
+             ", will not overwrite")
+    header <- .genalexHeaderToCharacter(x, quote = FALSE)
+    for (i in seq(along=header)) {
+        h <- header[[i]]
+        dim(h) <- c(1, length(h))
+        h <- as.data.frame(h)
+        XLConnect::writeWorksheet(wb, data = h, sheet = worksheet,
+                                  startRow = i, header = FALSE)
+    }
+    dat <- .genalexDataToCharacter(x, quote = FALSE, na = na,
+                                   na.character = na.character)
+    for (i in 3:ncol(dat))
+        dat[, i] <- as.numeric(dat[, i])
+    XLConnect::writeWorksheet(wb, data = dat, sheet = worksheet,
+                              startRow = 4, header = FALSE)
+    XLConnect::saveWorkbook(wb)
+}
+
+
+
+.genalexHeaderToCharacter <- function(x, quote) {
+    # create a 3-element list filled with character vectors
+    if (! is.genalex(x))
+        stop("must be class 'genalex'")
     a <- attributes(x)
     # quote function
     qu <- function(x) if (quote) paste(sep="", "\"", x, "\"") else x
+    header <- list()
+    header[[1]] <- c(a$n.loci, a$n.samples, a$n.pops, a$pop.sizes)
+    header[[2]] <-  c(qu(a$dataset.title), "", "", qu(a$pop.labels))
+    # header line with column names
+    y <- c(qu(a$sample.title), qu(a$pop.title))
+    for (i in seq(along = a$locus.names))
+        y <- c(y, qu(a$locus.names[i]), rep("", a$ploidy - 1))
+    if (! is.null(extra <- a$extra.columns))
+        y <- c(y, qu(names(extra)))
+    header[[3]] <- y
+    header <- lapply(header, unname)
+    return(header)
+}
+
+
+
+.genalexDataToCharacter <- function(x, quote, na, na.character) {
+    # create a plain character-filled data frame
+    if (! is.genalex(x))
+        stop("must be class 'genalex'")
+    a <- attributes(x)
+    # quote function
+    qu <- function(x) if (quote) paste(sep="", "\"", x, "\"") else x
+    # make plain data frame, attributes still held in a
+    x <- as.data.frame(x, complete = TRUE, stringsAsFactors = FALSE)
     # coerce two left columns to character, and apply na.character
     x[, 1] <- as.character(x[, 1])
     x[, 2] <- as.character(x[, 2])
@@ -485,6 +645,7 @@ writeGenalex <- function(x, file, quote = FALSE, sep = "\t", eol = "\n",
     # now genotype columns
     x[, 3:ncol(x)][is.na(x[, 3:ncol(x)])] <- na
     # ... and extra columns, by type
+    # note here we create extra
     if (! is.null(extra <- a$extra.columns)) {
         for (i in 1:ncol(extra)) {
             if (is.numeric(extra[, i])) {
@@ -495,29 +656,9 @@ writeGenalex <- function(x, file, quote = FALSE, sep = "\t", eol = "\n",
                 extra[, i] <- qu(extra[, i])
             }
         }
+        x <- cbind(x, extra)
     }
-    # header line 1
-    cat(file = file, sep = sep, a$n.loci, a$n.samples, a$n.pops, a$pop.sizes)
-    cat(file = file, eol)
-    # header line 2
-    cat(file = file, sep = sep, qu(a$dataset.title), "", "", qu(a$pop.labels))
-    cat(file = file, eol)
-    # header line 3, allele columns other than the first for each locus have a
-    # blank header
-    cat(file = file, sep = sep, qu(a$sample.title), qu(a$pop.title),
-        paste(collapse = paste(collapse = "", rep(sep, a$ploidy)),
-              qu(a$locus.names)),
-        rep("", a$ploidy - 1))  # all but first locus column have blank names
-    # if extra columns, add headers for those
-    if (! is.null(extra))
-        cat(file = file, sep = sep, qu(names(extra)))
-    cat(file = file, eol)
-    # data plus extra columns
-    for (i in 1:nrow(x)) {
-        cat(file = file, paste(collapse = sep, x[i, ]))
-        if (! is.null(extra))
-            cat(file = file, paste(collapse = sep, extra[i, ]))
-        cat(file = file, eol)
-    }
+    # a plain character data frame
+    return(x)
 }
 
