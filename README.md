@@ -103,16 +103,19 @@ $n.pops
 ...
 ~~~~
 
-GenAlEx is an Excel plugin, and this package attempts to deal with various
-issues that may arise when exporting text files from Excel.  `readGenalex` only
-reads the number of samples specified by the GenAlEX header, and only treats as
+`readGenalex` reads GenAlEx-format data from a text file, and
+`readGenalexExcel` reads data from a specified worksheet of an Excel workbook
+of `.xls` or `.xlsx` format using the `XLConnect` package.  Both functions read
+only the number of samples specified by the GenAlEX header, and only treat as
 genotypes the number of genotype columns implied by the GenAlEx header in
 concert with the stated ploidy level.
 
-`readGenalex` also tries to ignore extra tab characters that tools such as
-Excel can insert when exporting tab-delimited text, otherwise these could imply
-both additional columns and additional rows.  Hopefully the latter is avoided
-by only reading the number of samples specified by the header.
+Because GenAlEx is an Excel plugin, `readGenalex` attempts to deal with various
+issues that may arise when exporting text files from Excel.  `readGenalex` also
+tries to ignore extra tab characters that tools such as Excel can insert when
+exporting tab-delimited text, otherwise these could imply both additional
+columns and additional rows.  Hopefully the latter is avoided by only reading
+the number of samples specified by the header.
 
 If there are additional **named** columns to the right of the genotypes, these
 are read and stored in a data frame attached to the attribute `extra.columns`.

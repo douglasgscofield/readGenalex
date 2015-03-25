@@ -3,10 +3,10 @@
 TODO
 ----
 
-- read from and write to Excel files
+- write to Excel files
 - `cbind.genalex`?  `insertLocus`?
 - Add used papers to the data description?
-- Functions for converting from/to some other genetic formats, attaching them to `as.genalex`
+- Functions for converting from/to some other genetic formats, attaching them to `as.genalex`, add them to Enhances
 - If I am converting from those other formats, do I need to have the specific packages loaded?
 - check on any implicit version dependencies and document them
 - Initial `dispersalDiversity` package should use readGenalex 1.0
@@ -15,7 +15,7 @@ TODO
 ### R Extension rules for using types from other packages
 
 <blockquote>
-(*Regarding the DESCRIPTION file*) Finally, the ‘Enhances’ field lists packages “enhanced” by the package at hand, e.g., by providing methods for classes from these packages, or ways to handle objects from these packages (so several packages have ‘Enhances: chron’ because they can handle datetime objects from chron even though they prefer R’s native datetime functions). Version requirements can be specified, but are currently not used. Such packages cannot be required to check the package: any tests which use them must be conditional on the presence of the package. (If your tests use e.g. a dataset from another package it should be in ‘Suggests’ and not ‘Enhances’.)
+*Regarding the DESCRIPTION file* Finally, the ‘Enhances’ field lists packages “enhanced” by the package at hand, e.g., by providing methods for classes from these packages, or ways to handle objects from these packages (so several packages have ‘Enhances: chron’ because they can handle datetime objects from chron even though they prefer R’s native datetime functions). Version requirements can be specified, but are currently not used. Such packages cannot be required to check the package: any tests which use them must be conditional on the presence of the package. (If your tests use e.g. a dataset from another package it should be in ‘Suggests’ and not ‘Enhances’.)
 </blockquote>
 
 
@@ -34,6 +34,7 @@ TODO
 Completed
 ---------
 
+* `readGenalexExcel()` will read from an Excel file in `.xls` or `.xlsx` format, using the `XLConnect` package.
 * In most cases, both `as.genalex(as.data.frame(x1))` and `as.genalex(as.data.frame(x1, complete = TRUE))` will result in identical class `'genalex'` objects, except for the `"data.file.name"` attribute.  If the column names are not well-formed so that it is difficult to tell the ploidy *de novo*, then perhaps there may be some issues.
 * `is.genalex(...)` is a shallow `inherits()` check
 * `is.genalex(..., force=TRUE)` is a deeper comparison that rederives attributes from the data and compares the ones safe to compare, returning `FALSE` if the attributes are not consistent
