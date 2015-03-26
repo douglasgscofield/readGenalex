@@ -536,9 +536,9 @@ rbind.genalex <- function(..., names, deparse.level = 1) {
 # x <- rbind(x1, x2)
 # x
 # attributes(x)
-#'
-#' @export
-#'
+#
+# @export
+#
 cbind.genalex <- function(..., names, deparse.level = 1) {
     # dummy up a call for data.file.name
     this.call <- sys.call()
