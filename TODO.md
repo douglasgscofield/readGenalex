@@ -3,7 +3,9 @@
 TODO
 ----
 
-- write to Excel files
+- continue on `cbind.genalex` and add it to README etc.
+- add locus.names as names to locus.columns attributes
+- `anyDuplicated` for sample names wherever appropriate
 - `cbind.genalex`?  `insertLocus`?
 - Add used papers to the data description?
 - Functions for converting from/to some other genetic formats, attaching them to `as.genalex`, add them to Enhances
@@ -18,10 +20,6 @@ TODO
 *Regarding the DESCRIPTION file* Finally, the ‘Enhances’ field lists packages “enhanced” by the package at hand, e.g., by providing methods for classes from these packages, or ways to handle objects from these packages (so several packages have ‘Enhances: chron’ because they can handle datetime objects from chron even though they prefer R’s native datetime functions). Version requirements can be specified, but are currently not used. Such packages cannot be required to check the package: any tests which use them must be conditional on the presence of the package. (If your tests use e.g. a dataset from another package it should be in ‘Suggests’ and not ‘Enhances’.)
 </blockquote>
 
-
-### internal for reading Excel files
-
-* what is the current state of the art?
 
 ### internal for force=TRUE stuff
 

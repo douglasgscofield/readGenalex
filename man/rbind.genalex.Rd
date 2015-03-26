@@ -2,19 +2,20 @@
 % Please edit documentation in R/readGenalex.R
 \name{rbind.genalex}
 \alias{rbind.genalex}
-\title{Combine class \code{genalex} data sets}
+\title{Combine class \code{'genalex'} data sets by adding rows}
 \usage{
 rbind.genalex(..., names, deparse.level = 1)
 }
 \arguments{
-\item{names}{List of names: \code{title} for data set title,
-               \code{sample} for sample column header, and
-               \code{pop} for population column header}
+\item{names}{List containing names: \code{title} for data set title,
+\code{sample} for sample column header, and \code{pop} for population
+column header.  If \code{names} or any of its fields are not provided,
+the names of the first argument to \code{\dots} are used.}
 
 \item{deparse.level}{Not used (yet)}
 
-\item{\dots}{Class \code{genalex} data sets.  If only one data set
-               is supplied, it is returned unmodified.}
+\item{\dots}{Class \code{'genalex'} data sets.  If only one data set
+is supplied, it is returned unmodified.}
 }
 \value{
 Annotated data frame of class \code{'genalex'}.  If \code{names}
@@ -23,26 +24,29 @@ are used.  The \code{data.file.name} attribute is a character
 representation of the call to \code{rbind}.
 }
 \description{
-Combine class \code{genalex} data sets onto one larger class \code{genalex}
-data set.  Population names and sizes are adjusted accordingly.  The
-data sets must have the same locus names and ploidy; the order of the loci
-may differ, and the final data set will have the locus order of the first.
-Sample names must be unique across all data sets.  Data set title and
-sample and population column headers are taken from the first data set
-unless supplied in the \code{names} argument.  If one data set contains
-extra columns, all must contain extra columns, and these are combined along
-with the rest of the data.
+Combine class \code{'genalex'} data sets onto one larger class
+\code{'genalex'}data set.  Population names and sizes are adjusted
+accordingly.  The data sets must have the same locus names and ploidy, but
+the order of the loci may differ, and the final data set will have the
+locus order of the first.  Sample names must be unique across all data
+sets.  Data set title and sample and population column headers are taken
+from the first data set unless supplied in the \code{names} argument.  If
+one data set contains extra columns, all must contain extra columns, and
+these are combined along with the rest of the data.
 }
 \note{
 If one of the arguments is class \code{'data.frame'}, then this
 function will \emph{not} be called, instead the \code{rbind.data.frame}
 method of base R will be called silently and will return an object of
-class \code{'data.frame'}.  This occurs because objects of class
-\code{'genalex'} also have class \code{'data.frame'}.  This occurs
-during method dispatch for \code{rbind}, so it is not a condition that
-can be checked by this function.  Assure that data frames have been
-converted to class \code{'genalex'} prior to calling this function
-by using \code{as.genalex}.
+class \code{'data.frame'}.  Objects of class \code{'genalex'} also have
+class \code{'data.frame'}.  The selection of which method to use, in
+this case \code{rbind.data.frame}, occurs during method dispatch for
+\code{rbind}, so it is not a condition that can be checked by this
+function.  Assure that data frames have been converted to class
+\code{'genalex'} prior to calling this function by using
+\code{as.genalex}, and if there are doubts as to the class of any of
+the \code{\dots} arguments, use \code{is.genalex} to check the class
+of the returned value.
 }
 \examples{
 gt1 <- data.frame(a = 11:13, a.2 = 14:16, b = 101:103, b.2 = 104:106)
@@ -57,6 +61,6 @@ attributes(x)
 Douglas G. Scofield
 }
 \seealso{
-\code{\link{genalex}}, \code{\link{rbind}}, \code{\link{as.genalex}}
+\code{\link{genalex}}, \code{\link{rbind}}, \code{\link{as.genalex}}, \code{\link{is.genalex}}, \code{\link{cbind.genalex}}
 }
 

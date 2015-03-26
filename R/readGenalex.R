@@ -360,24 +360,25 @@ as.data.frame.genalex <- function(x, ..., complete = FALSE,
 
 
 
-#' Combine class \code{genalex} data sets
-#'
-#' Combine class \code{genalex} data sets onto one larger class \code{genalex}
-#' data set.  Population names and sizes are adjusted accordingly.  The
-#' data sets must have the same locus names and ploidy; the order of the loci
-#' may differ, and the final data set will have the locus order of the first.
-#' Sample names must be unique across all data sets.  Data set title and
-#' sample and population column headers are taken from the first data set
-#' unless supplied in the \code{names} argument.  If one data set contains
-#' extra columns, all must contain extra columns, and these are combined along
-#' with the rest of the data.
+#' Combine class \code{'genalex'} data sets by adding rows
 #' 
-#' @param \dots   Class \code{genalex} data sets.  If only one data set
-#'                is supplied, it is returned unmodified.
+#' Combine class \code{'genalex'} data sets onto one larger class
+#' \code{'genalex'}data set.  Population names and sizes are adjusted
+#' accordingly.  The data sets must have the same locus names and ploidy, but
+#' the order of the loci may differ, and the final data set will have the
+#' locus order of the first.  Sample names must be unique across all data
+#' sets.  Data set title and sample and population column headers are taken
+#' from the first data set unless supplied in the \code{names} argument.  If
+#' one data set contains extra columns, all must contain extra columns, and
+#' these are combined along with the rest of the data.
+#' 
+#' @param \dots   Class \code{'genalex'} data sets.  If only one data set
+#' is supplied, it is returned unmodified.
 #'
-#' @param names   List of names: \code{title} for data set title,
-#'                \code{sample} for sample column header, and
-#'                \code{pop} for population column header
+#' @param names   List containing names: \code{title} for data set title,
+#' \code{sample} for sample column header, and \code{pop} for population 
+#' column header.  If \code{names} or any of its fields are not provided,
+#' the names of the first argument to \code{\dots} are used.
 #'
 #' @param deparse.level Not used (yet)
 #'
@@ -389,16 +390,19 @@ as.data.frame.genalex <- function(x, ..., complete = FALSE,
 #' @note If one of the arguments is class \code{'data.frame'}, then this
 #' function will \emph{not} be called, instead the \code{rbind.data.frame}
 #' method of base R will be called silently and will return an object of
-#' class \code{'data.frame'}.  This occurs because objects of class
-#' \code{'genalex'} also have class \code{'data.frame'}.  This occurs
-#' during method dispatch for \code{rbind}, so it is not a condition that
-#' can be checked by this function.  Assure that data frames have been
-#' converted to class \code{'genalex'} prior to calling this function
-#' by using \code{as.genalex}.
+#' class \code{'data.frame'}.  Objects of class \code{'genalex'} also have 
+#' class \code{'data.frame'}.  The selection of which method to use, in
+#' this case \code{rbind.data.frame}, occurs during method dispatch for 
+#' \code{rbind}, so it is not a condition that can be checked by this 
+#' function.  Assure that data frames have been converted to class 
+#' \code{'genalex'} prior to calling this function by using 
+#' \code{as.genalex}, and if there are doubts as to the class of any of
+#' the \code{\dots} arguments, use \code{is.genalex} to check the class
+#' of the returned value.
 #'
 #' @author Douglas G. Scofield
 #'
-#' @seealso \code{\link{genalex}}, \code{\link{rbind}}, \code{\link{as.genalex}}
+#' @seealso \code{\link{genalex}}, \code{\link{rbind}}, \code{\link{as.genalex}}, \code{\link{is.genalex}}, \code{\link{cbind.genalex}}
 #'
 #' @examples
 #'
@@ -430,8 +434,7 @@ rbind.genalex <- function(..., names, deparse.level = 1) {
         stop("all arguments must be class 'genalex'")
     if (length(dots) == 1)
         return(dots[[1]])
-    dat.1 <- dots[[1]]
-    att.1 <- attributes(dat.1)
+    att.1 <- attributes(dots[[1]])
     if (! all(sapply(dots, function(x) {
                                is.null(attr(x, "extra.columns")) == 
                                is.null(att.1$extra.columns)})))
@@ -456,6 +459,150 @@ rbind.genalex <- function(..., names, deparse.level = 1) {
         else do.call(rbind, lapply(extra.columns, as.data.frame))
     x <- genalex(alldat[, 1], alldat[, 2], alldat[, 3:ncol(alldat)],
                  ploidy = att.1$ploidy, extra.columns = allextra)
+    attr(x, "dataset.title") <- if (missing(names) || is.null(names$title))
+        att.1$dataset.title else names$title
+    attr(x, "sample.title") <- if (missing(names) || is.null(names$sample))
+        att.1$sample.title else names$sample
+    attr(x, "pop.title") <- if (missing(names) || is.null(names$pop))
+        att.1$pop.title else names$pop
+    attr(x, "data.file.name") <- this.call  # note different from genalex()
+    return(x)
+}
+
+
+
+#' Combine loci from class \code{'genalex'} data sets
+#'
+#' Combine loci from class \code{'genalex'} data sets into one larger class 
+#' \code{'genalex'} data set by adding loci.  Locus counts are adjusted 
+#' accordingly.  The data sets must have the same ploidy, sample names
+#' and sample membership in populations.  The order of the samples may
+#' differ, and the final data set will have the sample order of the first.
+#' Locus names must be unique across all data sets; if any locus names are
+#' duplicated, the genotypes are checked to assure they contain the exact
+#' same data and if so, the duplicate locus columns are ignored.  Data set
+#' title and sample and population column headers are taken from the first
+#' data set unless supplied in the \code{names} argument.  Extra columns are
+#' taken from the first data set; if additional data sets have extra columns,
+#' their contents must match for columns with the same name, and columns
+#' with different names are added to the extra columns of the returned
+#' data set.
+#'
+#' Data sets must have the same number of rows, this is a necessary
+#' consequence of containing the same samples.  Unlike the default 
+#' \code{cbind} method, values will not be recycled to create matching 
+#' row counts.
+#'
+#' @param \dots   All arguments must be class \code{'genalex'} data sets.
+#' If only one data set is supplied, it is returned unmodified.
+#'
+#' @param names   List of names: \code{title} for data set title,
+#' \code{sample} for sample column header, and \code{pop} for population
+#' column header.  If \code{names} or any of its fields are not provided,
+#' the names of the first argument to \code{\dots} are used.
+#'
+#' @param deparse.level Not used (yet)
+#'
+#' @return Annotated data frame of class \code{'genalex'}.  If \code{names}
+#' or any of its fields are not provided, the names of the first argument
+#' are used.  The \code{data.file.name} attribute is a character
+#' representation of the call to \code{cbind}.
+#'
+#' @note If one of the arguments is class \code{'data.frame'}, then this
+#' function will \emph{not} be called, instead the \code{cbind.data.frame}
+#' method of base R will be called silently and will return an object of
+#' class \code{'data.frame'}.  If this happens, none of the special
+#' processing that selects just locus columns and combines extra columns
+#' from class \code{'genalex'} objects occurs, so if you have mixed class
+#' \code{'genalex'} objects with data frames the return value is probably 
+#' not what you intended.  This call to \code{cbind.data.frame} occurs 
+#' because objects of class \code{'genalex'} also have class
+#' \code{'data.frame'}, and selection of \code{cbind.data.frame} occurs 
+#' during method dispatch for \code{rbind} and cannot be checked by this
+#' function.  If there is a chance you have mixed objects of different
+#' classes while calling this function, assure that the return value is
+#' class \code{'genalex'} by using \code{is.genalex}.
+#'
+#' @author Douglas G. Scofield
+#'
+#' @seealso \code{\link{genalex}}, \code{\link{cbind}}, \code{\link{cbind.genalex}}
+#'
+# @examples
+#
+# gt1 <- data.frame(a = 11:13, a.2 = 14:16, b = 101:103, b.2 = 104:106)
+# x1 <- genalex(1:3, "snurf", gt1)
+# gt2 <- data.frame(a = 21:23, a.2 = 24:26, b = 201:203, b.2 = 204:206)
+# x2 <- genalex(4:6, "snirf", gt2)
+# x <- rbind(x1, x2)
+# x
+# attributes(x)
+#'
+#' @export
+#'
+cbind.genalex <- function(..., names, deparse.level = 1) {
+    # dummy up a call for data.file.name
+    this.call <- sys.call()
+    a <- paste(collapse = ", ",
+               unlist(lapply(as.list(substitute(list(...)))[-1L],
+                             as.character)))
+    if (! missing(names))
+        a <- paste(sep = ", ", a, 
+                   paste("names =", deparse(substitute(names))))
+    this.call <- paste(sep="", as.character(this.call[[1]]), "(", a, ")")
+    # verify args
+    if (deparse.level != 1)
+        .NotYetUsed("deparse.level")
+    dots <- list(...)
+    if (! all(sapply(dots, is.genalex)))
+        stop("all arguments must be class 'genalex'")
+    if (length(dots) == 1)
+        return(dots[[1]])
+    dot.1 <- dots[[1]]
+    att.1 <- attributes(dot.1)
+    loc.1 <- setNames(att.1$locus.columns, att.1$locus.names)
+    # check number of rows
+    for (i in 2:length(dots))
+        if (nrow(dots[[i]]) != nrow(dot.1))
+            stop("number of rows in the ", i, "-th data set ",
+                 nrow(dots[[i]]), " does not match the ", nrow(dot.1),
+                 " rows in the first")
+    # check sample names
+    equal.but.order <- function(a, b) all(a %in% b) && all(b %in% a)
+    samp.1 <- dot.1[, 1]
+    if (anyDuplicated(samp.1))
+        stop("duplicate sample names found in first argument")
+    for (i in 2:length(dots)) {
+        if (anyDuplicated(dots[[i]][, 1]))
+            stop("duplicate sample names found in argument ", i)
+        if (! equal.but.order(samp.1, dots[[i]][, 1]))
+            stop("all arguments must contain the same samples")
+        m <- match(samp.1, dots[[i]][, 1])
+        # reorder rows
+        dots[[i]] <- dots[[i]][m, ]
+        # check sample membership in populations
+        if (! all(dot.1[, 2] == dots[[i]][, 2]))
+            stop("population membership for samples in argument ", i, 
+                 " do not match those in the first argument")
+        # check for locus name matches
+        att.i <- attributes(dot[[i]])
+        loc.i <- setNames(att.i$locus.columns, att.i$locus.names)
+        m <- match(names(loc.1), names(loc.i))
+        for (n in m[! is.na(m)]) {
+            # each is a repeated locus name
+            # extract each repeated locus from 1 and i and make sure
+            #     they match exactly
+        }
+        # remove all repeated loci from dot[[i]]
+        # remove sample and population columns from dot[[i]]
+        # 
+        # work with extra columns
+    }
+    alldat <- do.call(cbind, lapply(dots, as.data.frame))
+
+    # update data attributes attributes
+    x <- genalex(alldat[, 1], alldat[, 2], alldat[, 3:ncol(alldat)],
+                 ploidy = att.1$ploidy, extra.columns = allextra)
+    # update names()-related fields
     attr(x, "dataset.title") <- if (missing(names) || is.null(names$title))
         att.1$dataset.title else names$title
     attr(x, "sample.title") <- if (missing(names) || is.null(names$sample))
@@ -760,7 +907,8 @@ reorderLoci.genalex <- function(x, loci, ...) {
         stop("loci must appear only once")
     newdata <- x[,1:2]
     for (locus in loci) {
-        newdata <- cbind(newdata, getLocus(x, locus))
+        # must use cbind.data.frame here
+        newdata <- cbind.data.frame(newdata, getLocus(x, locus))
     }
     names.newdata <- names(newdata)
     attributes(newdata) <- attributes(x)
