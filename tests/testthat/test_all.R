@@ -561,3 +561,6 @@ test_that("rbind.genalex correctly applies names", {
     expect_equal(attr(rb.n, "data.file.name"), "rbind(x1, x2, names = nnn)")
 })
 
+# remove file for readGenalexExcel and writeGenalexExcel
+
+unlink(xlfile)

@@ -540,6 +540,7 @@ rbind.genalex <- function(..., names, deparse.level = 1) {
 # @export
 #
 cbind.genalex <- function(..., names, deparse.level = 1) {
+    stop("cbind.genalex not ready yet")
     # dummy up a call for data.file.name
     this.call <- sys.call()
     a <- paste(collapse = ", ",
@@ -584,7 +585,7 @@ cbind.genalex <- function(..., names, deparse.level = 1) {
             stop("population membership for samples in argument ", i, 
                  " do not match those in the first argument")
         # check for locus name matches
-        att.i <- attributes(dot[[i]])
+        att.i <- attributes(dots[[i]])
         loc.i <- setNames(att.i$locus.columns, att.i$locus.names)
         m <- match(names(loc.1), names(loc.i))
         for (n in m[! is.na(m)]) {
@@ -592,16 +593,18 @@ cbind.genalex <- function(..., names, deparse.level = 1) {
             # extract each repeated locus from 1 and i and make sure
             #     they match exactly
         }
-        # remove all repeated loci from dot[[i]]
-        # remove sample and population columns from dot[[i]]
+        # remove all repeated loci from dots[[i]]
+        # remove sample and population columns from dots[[i]]
         # 
-        # work with extra columns
+        # work with extra columns, from rbind:
+        #allextra <- if (is.null(extra.columns)) NULL 
+        #    else do.call(rbind, lapply(extra.columns, as.data.frame))
+        #x <- genalex(alldat[, 1], alldat[, 2], alldat[, 3:ncol(alldat)],
+        #             ploidy = att.1$ploidy, extra.columns = allextra)
     }
     alldat <- do.call(cbind, lapply(dots, as.data.frame))
 
     # update data attributes attributes
-    x <- genalex(alldat[, 1], alldat[, 2], alldat[, 3:ncol(alldat)],
-                 ploidy = att.1$ploidy, extra.columns = allextra)
     # update names()-related fields
     attr(x, "dataset.title") <- if (missing(names) || is.null(names$title))
         att.1$dataset.title else names$title

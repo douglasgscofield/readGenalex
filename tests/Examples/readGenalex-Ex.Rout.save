@@ -286,7 +286,7 @@ x and inferred attributes for x attributes do not match : n.loci
 > flush(stderr()); flush(stdout())
 > 
 > ### Name: rbind.genalex
-> ### Title: Combine class 'genalex' data sets
+> ### Title: Combine class 'genalex' data sets by adding rows
 > ### Aliases: rbind.genalex
 > 
 > ### ** Examples

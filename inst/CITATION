@@ -12,7 +12,7 @@ citEntry(entry  = "Manual",
          author = personList(as.person("Douglas G. Scofield")),
          year   = year,
          note   = vers,
-         textVersion = paste0("Douglas G. Scofield (", year, "). ", pkgname, 
+         textVersion = paste0("Scofield, Douglas G. (", year, "). ", pkgname, 
                               ": ", pkgtitle, ". ", vers, "."),
          url    = paste0("http://CRAN.R-project.org/package=", pkgname))
 
