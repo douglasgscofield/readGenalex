@@ -72,7 +72,7 @@ NEWS: NEWS.md
 data: data/Qagr_adult_genotypes.RData data/Qagr_pericarp_genotypes.RData
 
 data/%.RData: inst/extdata/%.txt
-	R --quiet -e "source('R/readGenalex.R'); $* <- readGenalex('$^'); save($*, file = '$@')"
+	R --quiet -e "devtools::load_all(); $* <- readGenalex('$^'); save($*, file = '$@')"
 
 doc:
 	R --quiet -e 'devtools::document()'

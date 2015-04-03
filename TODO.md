@@ -4,8 +4,7 @@ TODO
 ----
 
 - continue on `cbind.genalex` and add it to README etc.
-- add locus.names as names to locus.columns attributes
-- `anyDuplicated` for sample names wherever appropriate
+- add regression test for names on locus.columns
 - `cbind.genalex`?  `insertLocus`?
 - Add used papers to the data description?
 - Functions for converting from/to some other genetic formats, attaching them to `as.genalex`, add them to Enhances
@@ -23,15 +22,14 @@ TODO
 
 ### internal for force=TRUE stuff
 
-* straighten up names code, too much duplication
-* straighten up implied attributes code, also too much duplication
-* keep calling genalex() to do the lifting, but perhaps there is some additional that can be done there, perhaps splitting genalex() into an internal and external function
 * perhaps makes sense to start on importing/exporting data with another package to see what additional issues may come up
 
 
 Completed
 ---------
 
+* Sample names are checked for duplication more thoroughly
+* The `locus.columns` attribute now has names that match the `locus.names` attribute
 * `writeGenalexExcel()` will write to an Excel file, using the `XLConnect` package
 * `readGenalexExcel()` will read from an Excel file, using the `XLConnect` package
 * In most cases, both `as.genalex(as.data.frame(x1))` and `as.genalex(as.data.frame(x1, complete = TRUE))` will result in identical class `'genalex'` objects, except for the `"data.file.name"` attribute.  If the column names are not well-formed so that it is difficult to tell the ploidy *de novo*, then perhaps there may be some issues.

@@ -78,7 +78,7 @@
 #' \item{pop.title }{Population title}
 #' \item{locus.names }{Names of loci}
 #' \item{locus.columns }{Numeric column position of allele 1 of each locus in
-#'   the data frame}
+#'   the data frame, with names matching the corresponding loci}
 #' \item{extra.columns }{\code{data.frame} containing any extra columns given
 #'   in \code{file} to the right of the genotype columns.  Row order is the
 #'   same as for the genotype data.  Data are given their natural types using
@@ -232,7 +232,8 @@ readGenalexExcel <- function(file, worksheet, ploidy = 2) {
 .readGenalexData <- function(con = NULL, sep, col.names, n.samples, n.loci,
                              ploidy, na.strings, extra.columns = character(0),
                              data.strings,
-                             ...) {
+                             ...)
+{
     classes <- c("character", "character", rep("numeric", n.loci * ploidy))
     scan.col.names = col.names
     extra.columns <- extra.columns[extra.columns != ""]
@@ -330,6 +331,7 @@ readGenalexExcel <- function(file, worksheet, ploidy = 2) {
     header$pop.sizes <- pop.sizes
     header$locus.columns <- .calculateLocusColumns(header$n.loci, ploidy)
     header$locus.names <- dlines[[3]][header$locus.columns]
+    names(header$locus.columns) <- header$locus.names
     header$data.column.names <- .createDataColumnNames(header)
     header
 }
@@ -338,9 +340,13 @@ readGenalexExcel <- function(file, worksheet, ploidy = 2) {
 
 .readGenalexJoinData <- function(header, raw.data) {
     dat <- raw.data$dat
+    if (anyDuplicated(dat[, 1])) {
+        dups <- dat[, 1][duplicated(dat[, 1])]
+        stop("duplicated sample names:", paste(collapse = " ", dups))
+    }
     if (! is.null(raw.data$extra.columns)) {
         # add sample name to extra columns
-        extra.columns <- cbind(dat[,1], raw.data$extra.columns)
+        extra.columns <- cbind(dat[, 1], raw.data$extra.columns)
         names(extra.columns)[1] <- names(dat)[1]
     }
     names(dat) <- .createDataColumnNames(header)
@@ -364,12 +370,12 @@ readGenalexExcel <- function(file, worksheet, ploidy = 2) {
     mism <- pop.sizes.in.data != header$pop.sizes
     if (any(mism)) {
         err1 <- paste(collapse = ",",header$pop.labels[mism])
-        err2 <- paste(paste(sep = " != ", collapse = ", ", pop.sizes.in.data[mism],
-                            header$pop.sizes[mism]))
+        err2 <- paste(paste(sep = " != ", collapse = ", ", 
+                            pop.sizes.in.data[mism], header$pop.sizes[mism]))
         stop("sizes of populations ", err1,
              " do not match in header and data: ", err2)
     }
-    header$data.column.names <- NULL  # duplicates names
+    header$data.column.names <- NULL  # used in creation but duplicates names()
     for (nm in names(header))
         attr(dat, nm) <- header[[nm]]
     if (! is.null(raw.data$extra.columns))

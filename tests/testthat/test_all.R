@@ -76,6 +76,9 @@ if (suppressPackageStartupMessages(require("XLConnect", character.only = TRUE,
         expect_equal(lxp, lgp)
         expect_equal(lxa, lga)
     })
+    test_that("readGenalexExcel() adds names to locus.columns", {
+        expect_equal(attr(xp, "locus.names"), names(attr(xp, "locus.columns")))
+    })
 }
 
 #########################################
@@ -309,7 +312,7 @@ test_that("dropLocus()", {
     expect_equal(names(p1), c("sample", "pop", "b", "b.2"))
     expect_equal(attr(p1, "n.loci"), 1)
     expect_equal(attr(p1, "ploidy"), 2)
-    expect_equal(attr(p1, "locus.columns"), c(3))
+    expect_equal(attr(p1, "locus.columns"), setNames(3, "b"))
 })
 
 
@@ -330,7 +333,7 @@ test_that("reducePloidy()", {
     expect_equal(p1, p1.2)
     expect_equal(names(p1), c("sample", "pop", "a", "b"))
     expect_equal(attr(p1, "ploidy"), 1)
-    expect_equal(attr(p1, "locus.columns"), 3:4)
+    expect_equal(attr(p1, "locus.columns"), setNames(3:4, c("a", "b")))
 })
 
 #########################################
@@ -411,7 +414,7 @@ test_that("as.genalex correctly determines default attributes", {
     expect_equal(attr(gdf1, "n.pops"), 2)
     expect_equal(attr(gdf1, "pop.sizes"), setNames(c(2, 1), c("a", "b")))
     expect_equal(attr(gdf1, "locus.names"), c("a", "b"))
-    expect_equal(attr(gdf1, "locus.columns"), c(3, 5))
+    expect_equal(attr(gdf1, "locus.columns"), setNames(c(3, 5), c("a", "b")))
     expect_equal(attr(gdf1, "ploidy"), 2)
     expect_equal(attr(gdf1, "n.loci"), 2)
     # ploidy = 1
@@ -419,7 +422,7 @@ test_that("as.genalex correctly determines default attributes", {
     expect_equal(attr(gdf1.p1, "n.loci"), 4)
     expect_equal(attr(gdf1, "pop.sizes"), setNames(c(2, 1), c("a", "b")))
     expect_equal(attr(gdf1.p1, "locus.names"), c("a", "a.2", "b", "b.2"))
-    expect_equal(attr(gdf1.p1, "locus.columns"), 3:6)
+    expect_equal(attr(gdf1.p1, "locus.columns"), setNames(3:6, c("a", "a.2", "b", "b.2")))
 
     old <- as.data.frame(gdf1)
     attr(old, "genetic.data.format") <- "genalex"

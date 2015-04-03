@@ -9,20 +9,20 @@ genalex(samples, pops, genotypes, names = NULL, ploidy = 2,
 }
 \arguments{
 \item{samples}{Sample names, must be unique and length must
-                  match the number of rows in \code{genotypes}}
+match the number of rows in \code{genotypes}}
 
 \item{pops}{Population names.  If \code{pops} is shorter than
-                  the number of samples, it will be expanded following
-                  the rules described in \code{\link{data.frame}}.}
+the number of samples, it will be expanded following the rules
+described in \code{\link{data.frame}}.}
 
 \item{genotypes}{Genotype values, must be numeric}
 
 \item{names}{List of names: \code{title} for data set title,
-                  \code{sample} for sample column header,
-                  \code{pop} for population column header, and
-                  \code{loci} for names of loci.  If \code{loci}
-                  is missing, the corresponding \code{genotype}
-                  column names are used.}
+\code{sample} for sample column header, \code{pop} for population
+column header, and \code{loci} for names of loci.  If \code{loci}
+is missing, the corresponding \code{genotype} column names are used.
+If \code{loci} is present but not the same length as the number of
+loci, an error is produces}
 
 \item{ploidy}{Ploidy of \code{genotypes}}
 

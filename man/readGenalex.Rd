@@ -40,7 +40,7 @@ data, with column names determined by line 3 of the input file.  Special
 \item{pop.title }{Population title}
 \item{locus.names }{Names of loci}
 \item{locus.columns }{Numeric column position of allele 1 of each locus in
-  the data frame}
+  the data frame, with names matching the corresponding loci}
 \item{extra.columns }{\code{data.frame} containing any extra columns given
   in \code{file} to the right of the genotype columns.  Row order is the
   same as for the genotype data.  Data are given their natural types using
