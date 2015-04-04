@@ -12,6 +12,12 @@ readGenalex 0.9.9000 (development version)
     replaced by getLocus, putGenalexLocus is replaced by replaceLocus,
     dropGenalexLoci is replaced by dropLocus, and reduceGenalexPloidy is
     replaced by reducePloidy
+-   Extended is.genalex to have shallow (default) or deep (force = TRUE)
+    checking of class 'genalex' consistency. With deep checking,
+    attributes are inferred from the structure of the data frame and
+    compared to the actual attributes. Checking of string attributes
+    (dataset.title, data.file.name) and extra data columns may skipped
+    with options.
 -   New as.genalex generic with as.genalex.genalex and
     as.genalex.data.frame. The latter will convert a pre-class 'genalex'
     data frame to class 'genalex', and is used wherever a data frame is
@@ -26,6 +32,10 @@ readGenalex 0.9.9000 (development version)
     attributes
 -   New genalex function to create a class 'genalex' object from
     constituent data
+-   New rbind method to combine samples from multiple class 'genalex'
+    objects
+-   New cbind method to combine loci and extra data columns from
+    multiple class 'genalex' objects
 -   New extra and extra<- methods to get and set the extra columns of a
     class 'genalex' object. The latter coerces its value object to a
     data frame, if it is not already, does a bit of error checking, and
