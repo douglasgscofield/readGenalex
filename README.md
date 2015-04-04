@@ -134,8 +134,6 @@ Function | Description
 `readGenalexExcel()` | Read GenAlEx-format data from a worksheet of an Excel workbook
 `genalex()` | Create a class `'genalex'` object from constituent data
 `as.genalex()` | Generic function which converts a pre-1.0-style `readGenalex` data frame to class `'genalex'`, or converts a suitably-formatted data frame to class `'genalex'`.  Optionally it can determine structure implied by the data and update attributes to reflect that structure.
-`cbind()` | Merge loci and extra data columns from two or more class `'genalex'` objects
-`rbind()` | Merge samples from two or more class `'genalex'` objects
 `writeGenalex()` | Write a GenAlEx-format text file
 `writeGenalexExcel()` | Write a GenAlEx-format worksheet to an Excel workbook
 `summary()` | Prints a summary of the data set, a summary of the genotype data frame, and a summary of the extra columns, if any
@@ -148,13 +146,15 @@ Function | Description
 `computeLocusColumns()` | Return a vector of column numbers for specified loci
 `replaceLocus()` | Replace genotypes of specified locus
 `getLocus()` | Return genotypes of specified locus, optionally only for specific populations
-`rbind()` | Add rows to a class `'genalex'` object and recalculate attributes
+`extra()` | Get or set `extra.columns` attribute
+`cbind()` | Merge loci and extra data columns from two or more class `'genalex'` objects
+`rbind()` | Merge samples from two or more class `'genalex'` objects
 `checkNullAlleles()` | Compare genotypes against a set of reference genotypes to check for potential null (nonamplifying) alleles
 
 
 ## Datasets
 
-The package also provides two data sets as class `'genalex'` objects that can be loaded with `data(*dataset*)`:
+The package also provides two data sets as class `'genalex'` objects that can be loaded with `data`:
 
 * `Qagr_adult_genotypes`: Coast live oak (*Quercus agrifolia*) adult microsatellite genotypes, holding 10-locus diploid microsatellite genotypes of 262 adult coast live oak trees from Sedgwick Reserve, Santa Barbara County, California, USA
 * `Qagr_pericarp_genotypes`: Coast live oak (*Quercus agrifolia*) pericarp microsatellite genotypes, holding 10-locus diploid microsatellite genotypes of 568 pericarps (outer seed coats) from coast live oak acorns collected from 17 acorn woodpecker (*Melanerpes formicivorus*) granaries at Sedgwick Reserve, Santa Barbara County, California, USA
