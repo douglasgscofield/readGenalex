@@ -13,7 +13,7 @@
 \item{locus}{The names of one or more loci found in \code{x}}
 
 \item{pop}{If supplied, return only data for samples from the specified
-             populations}
+populations}
 
 \item{\dots}{Additional arguments, currently ignored}
 }

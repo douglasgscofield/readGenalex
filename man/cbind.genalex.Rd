@@ -4,7 +4,7 @@
 \alias{cbind.genalex}
 \title{Combine loci from class \code{'genalex'} data sets}
 \usage{
-cbind.genalex(..., names, deparse.level = 1)
+cbind.genalex(..., names = NULL, deparse.level = 1)
 }
 \arguments{
 \item{names}{List of names: \code{title} for data set title,
@@ -33,38 +33,52 @@ Locus names must be unique across all data sets; if any locus names are
 duplicated, the genotypes are checked to assure they contain the exact
 same data and if so, the duplicate locus columns are ignored.  Data set
 title and sample and population column headers are taken from the first
-data set unless supplied in the \code{names} argument.  Extra columns are
-taken from the first data set; if additional data sets have extra columns,
-their contents must match for columns with the same name, and columns
-with different names are added to the extra columns of the returned
-data set.
+data set unless supplied in the \code{names} argument.  As subsequent
+data sets are added, they are compared against the aggregate data set
+assembled thus far, so a data set might have duplicate columns versus
+the aggregate that are not duplicates versus the first data set.  See
+Details for how extra columns are handled.
 }
 \details{
+Extra columns are taken from the first data set.  If the first data set
+does not have extra columns but others do, extra columns are assembled
+from data sets that have them.  Columns with the same name in extra
+columns \emph{are dropped without checking contents}.  Columns with
+different names are added with \code{\link{cbind}} to the right of the
+existing set of extra columns.
+
 Data sets must have the same number of rows, this is a necessary
 consequence of containing the same samples.  Unlike the default
 \code{cbind} method, values will not be recycled to create matching
 row counts.
 }
 \note{
-If one of the arguments is class \code{'data.frame'}, then this
-function will \emph{not} be called, instead the \code{cbind.data.frame}
-method of base R will be called silently and will return an object of
-class \code{'data.frame'}.  If this happens, none of the special
-processing that selects just locus columns and combines extra columns
-from class \code{'genalex'} objects occurs, so if you have mixed class
-\code{'genalex'} objects with data frames the return value is probably
-not what you intended.  This call to \code{cbind.data.frame} occurs
-because objects of class \code{'genalex'} also have class
-\code{'data.frame'}, and selection of \code{cbind.data.frame} occurs
-during method dispatch for \code{rbind} and cannot be checked by this
-function.  If there is a chance you have mixed objects of different
+If one of the arguments is not of class \code{'genalex'}, then
+this function will \emph{not} be called, instead \code{cbind.data.frame}
+or perhaps another \code{cbind} method of base R will be called silently
+and will return an object that is not of class \code{'genalex'}.  If
+this occurs, none of the special processing for class \code{'genalex'}
+objects will be applied and the result is probably not what you
+intended.  If there is a chance you have mixed objects of different
 classes while calling this function, assure that the return value is
 class \code{'genalex'} by using \code{is.genalex}.
+
+If you in fact want to add genotype data from a data frame or matrix
+to an object of class \code{'genalex'}, then use \code{addLocus}.
+}
+\examples{
+gt1 <- data.frame(a = 11:13, a.2 = 14:16, b = 101:103, b.2 = 104:106)
+x1 <- genalex(1:3, "snurf", gt1)
+gt2 <- data.frame(c = 21:23, c.2 = 24:26, d = 201:203, d.2 = 204:206)
+x2 <- genalex(1:3, "snurf", gt2)
+x <- cbind(x1, x2)
+x
+attributes(x)
 }
 \author{
 Douglas G. Scofield
 }
 \seealso{
-\code{\link{genalex}}, \code{\link{cbind}}, \code{\link{cbind.genalex}}
+\code{\link{genalex}}, \code{\link{cbind}}, \code{\link{rbind.genalex}}
 }
 

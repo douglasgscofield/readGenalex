@@ -4,7 +4,7 @@
 \alias{rbind.genalex}
 \title{Combine class \code{'genalex'} data sets by adding rows}
 \usage{
-rbind.genalex(..., names, deparse.level = 1)
+rbind.genalex(..., names = NULL, deparse.level = 1)
 }
 \arguments{
 \item{names}{List containing names: \code{title} for data set title,

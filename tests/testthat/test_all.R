@@ -1,5 +1,6 @@
 library(readGenalex)
 
+
 #########################################
 context("Setting up some test data and testing genalex()")
 
@@ -11,9 +12,9 @@ x2 <- genalex(4:6, "snirf", g2)
 g2.reord <- data.frame(b = 201:203, b.2 = 204:206, a = 21:23, a.2 = 24:26) 
 x2.reord <- genalex(4:6, "snirf", g2.reord)
 
-x1.x <- x1; attr(x1.x, "extra.columns") <- as.data.frame(x2, complete = TRUE)
-x2.x <- x2; attr(x2.x, "extra.columns") <- as.data.frame(x1, complete = TRUE)
-x2.reord.x <- x2.reord; attr(x2.reord.x, "extra.columns") <- as.data.frame(x1, complete = TRUE)
+x1.x <- x1; extra(x1.x) <- as.data.frame(x2, complete = TRUE)
+x2.x <- x2; extra(x2.x) <- as.data.frame(x1, complete = TRUE)
+x2.reord.x <- x2.reord; extra(x2.reord.x) <- as.data.frame(x1, complete = TRUE)
 
 test_that("genalex() works", {
     expect_true(nrow(x1) == attr(x1, "n.samples"))
@@ -23,6 +24,30 @@ test_that("genalex() works", {
     expect_true(attr(x2, "pop.labels") == "snirf")
     expect_true(attr(x1, "sample.title") == attr(x2, "sample.title"))
     expect_true(all(x1$sample == 1:3))
+})
+
+
+#########################################
+context("Testing extra.genalex()")
+
+test_that("extra.genalex() works", {
+    expect_true(is.null(extra(x1)))
+    expect_equal(extra(x1), attr(x1, "extra.columns"))
+    expect_true(! is.null(extra(x1.x)))
+    expect_equal(extra(x1.x), attr(x1.x, "extra.columns"))
+})
+
+test_that("extra<-.genalex() works", {
+    xx <- x1; extra(xx) <- as.data.frame(x2, complete = TRUE)
+    expect_true(! is.null(extra(xx)))
+    expect_equal(extra(xx), attr(xx, "extra.columns"))
+    expect_equal(rownames(extra(xx)), xx[, 1])
+    # extra columns should have row names that match corresponding sample names
+    expect_equal(rownames(attr(x1.x, "extra.columns")), x1.x[, 1])
+    expect_equal(rownames(attr(x2.x, "extra.columns")), x2.x[, 1])
+    expect_equal(rownames(attr(x2.reord.x, "extra.columns")), x2.reord.x[, 1])
+    # extra columns should not be converted to factors
+    expect_true(! any(sapply(attr(x1.x, "extra.columns"), is.factor)))
 })
 
 
@@ -55,31 +80,6 @@ test_that("readGenalex() works", {
     expect_match(attr(gp, "data.file.name"), "Qagr_pericarp_genotypes.txt", fixed = TRUE)
 })
 
-
-#########################################
-if (suppressPackageStartupMessages(require("XLConnect", character.only = TRUE, 
-                                           quietly = TRUE, warn.conflicts = FALSE))) {
-    # only of XLConnect package is available
-
-    context("Testing readGenalexExcel()")
-
-    fx <- system.file("extdata/Qagr_genotypes.xlsx", package = "readGenalex")
-    xp <- readGenalexExcel(fx, worksheet = 1)
-    xa <- readGenalexExcel(fx, worksheet = "Qagr_adult_genotypes")
-
-    test_that("readGenalexExcel() works", {
-        expect_match(attr(xp, "data.file.name"), "Qagr_genotypes.xlsx(1)", fixed = TRUE)
-        expect_match(attr(xa, "data.file.name"), "Qagr_genotypes.xlsx(Qagr_adult_genotypes)", fixed = TRUE)
-        lxp <- xp; lxa <- xa; lgp <- gp; lga <- ga
-        attr(lxp, "data.file.name") <- attr(lxa, "data.file.name") <- 
-            attr(lgp, "data.file.name") <- attr(lga, "data.file.name") <- NULL
-        expect_equal(lxp, lgp)
-        expect_equal(lxa, lga)
-    })
-    test_that("readGenalexExcel() adds names to locus.columns", {
-        expect_equal(attr(xp, "locus.names"), names(attr(xp, "locus.columns")))
-    })
-}
 
 #########################################
 context("Testing is.genalex()")
@@ -160,6 +160,27 @@ if (suppressPackageStartupMessages(require("XLConnect", character.only = TRUE,
                                            quietly = TRUE, warn.conflicts = FALSE))) {
     # only of XLConnect package is available
 
+    #####################################
+    context("Testing readGenalexExcel()")
+
+    fx <- system.file("extdata/Qagr_genotypes.xlsx", package = "readGenalex")
+    xp <- readGenalexExcel(fx, worksheet = 1)
+    xa <- readGenalexExcel(fx, worksheet = "Qagr_adult_genotypes")
+
+    test_that("readGenalexExcel() works", {
+        expect_match(attr(xp, "data.file.name"), "Qagr_genotypes.xlsx(1)", fixed = TRUE)
+        expect_match(attr(xa, "data.file.name"), "Qagr_genotypes.xlsx(Qagr_adult_genotypes)", fixed = TRUE)
+        lxp <- xp; lxa <- xa; lgp <- gp; lga <- ga
+        attr(lxp, "data.file.name") <- attr(lxa, "data.file.name") <- 
+            attr(lgp, "data.file.name") <- attr(lga, "data.file.name") <- NULL
+        expect_equal(lxp, lgp)
+        expect_equal(lxa, lga)
+    })
+    test_that("readGenalexExcel() adds names to locus.columns", {
+        expect_equal(attr(xp, "locus.names"), names(attr(xp, "locus.columns")))
+    })
+
+    #####################################
     context("Testing writeGenalexExcel()")
 
     xlfile <- "test.xlsx"
@@ -198,9 +219,9 @@ if (suppressPackageStartupMessages(require("XLConnect", character.only = TRUE,
         expect_equal(x.1, x.2)
     })
 
-    # unlink(xlfile)
 }
 
+unlink(xlfile)
 
 #########################################
 context("Testing summary.genalex()")
@@ -564,6 +585,153 @@ test_that("rbind.genalex correctly applies names", {
     expect_equal(attr(rb.n, "data.file.name"), "rbind(x1, x2, names = nnn)")
 })
 
-# remove file for readGenalexExcel and writeGenalexExcel
+#########################################
+context("Testing cbind.genalex()")
 
-unlink(xlfile)
+test_that("cbind.genalex() generates errors about mismatches", {
+    expect_error(cbind(x1, x2), "all arguments must contain the same samples")
+    x2.2 <- x2; x2.2[,1] <- x1[,1]; x2.2 <- as.genalex(x2.2, force = TRUE)
+    expect_error(cbind(x1, x2.2), "population membership for samples in argument 2 do not match those in the first argument")
+    x2.2[,2] <- x1[,2]; x2.2 <- as.genalex(x2.2, force = TRUE)
+    expect_error(cbind(x1, x2.2), "genotypes for duplicated locus a in argument 2 do not match those in argument 1")
+})
+
+# complete duplicate of x1
+x5 <- x1
+# duplicate one column, first position
+g6 <- data.frame(a = 11:13, a.2 = 14:16, x = 101:103, x.2 = 104:106)
+x6 <- genalex(1:3, "snurf", g6)
+# duplicate one column, second position
+g7 <- data.frame(x = 11:13, x.2 = 14:16, b = 101:103, b.2 = 104:106)
+x7 <- genalex(1:3, "snurf", g7)
+# duplicate one column, second position in x1 but first in x8
+g8 <- data.frame(b = 101:103, b.2 = 104:106, x = 11:13, x.2 = 14:16) 
+x8 <- genalex(1:3, "snurf", g8)
+# duplicate one column, only column in x9
+g9 <- data.frame(b = 101:103, b.2 = 104:106)
+x9 <- genalex(1:3, "snurf", g9)
+attr(x1, "data.file.name") <- attr(x5, "data.file.name") <- attr(x6, "data.file.name") <- attr(x7, "data.file.name") <- attr(x8, "data.file.name") <- attr(x9, "data.file.name") <- "placeholder"
+
+
+# all new columns
+ga <- data.frame(c = 21:23, c.2 = 24:26, d = 201:203, d.2 = 204:206)
+xa <- genalex(1:3, "snurf", ga)
+
+
+test_that("cbind.genalex() assembles values and ignores duplicate columns correctly", {
+    cb <- cbind(x1, x5)
+    attr(cb, "data.file.name") <- "placeholder"
+    expect_equal(x1, cb)
+    expect_equal(x5, cb)
+    cb <- cbind(x1, x6)
+    attr(cb, "data.file.name") <- "placeholder"
+    expect_true(is.genalex(cb, force = TRUE))
+    expect_is(cb, "data.frame")
+    expect_equal(attr(cb, "locus.names"), c("a", "b", "x"))
+    cb <- cbind(x1, x7)
+    attr(cb, "data.file.name") <- "placeholder"
+    expect_true(is.genalex(cb, force = TRUE))
+    expect_is(cb, "data.frame")
+    expect_equal(attr(cb, "locus.names"), c("a", "b", "x"))
+    cb <- cbind(x1, x8)
+    attr(cb, "data.file.name") <- "placeholder"
+    expect_true(is.genalex(cb, force = TRUE))
+    expect_is(cb, "data.frame")
+    expect_equal(attr(cb, "locus.names"), c("a", "b", "x"))
+    cb <- cbind(x1, x9)
+    attr(cb, "data.file.name") <- "placeholder"
+    expect_true(is.genalex(cb, force = TRUE))
+    expect_is(cb, "data.frame")
+    expect_equal(attr(cb, "locus.names"), c("a", "b"))
+    cb <- cbind(x1, xa)
+    attr(cb, "data.file.name") <- "placeholder"
+    expect_true(is.genalex(cb, force = TRUE))
+    expect_is(cb, "data.frame")
+    expect_equal(attr(cb, "locus.names"), c("a", "b", "c", "d"))
+    cb <- cbind(x9, x1, xa, x6)
+    attr(cb, "data.file.name") <- "placeholder"
+    expect_true(is.genalex(cb, force = TRUE))
+    expect_is(cb, "data.frame")
+    expect_equal(attr(cb, "locus.names"), c("b", "a", "c", "d", "x"))
+})
+
+test_that("cbind.genalex() reorders sample rows correctly", {
+    x5 <- x5[c(2,3,1), ]
+    cb <- cbind(x1, x5)
+    attr(cb, "data.file.name") <- "placeholder"
+    expect_equal(x1, cb)
+    xa <- xa[c(3,2,1), ]
+    cb <- cbind(x1, xa)
+    attr(cb, "data.file.name") <- "placeholder"
+    expect_true(is.genalex(cb, force = TRUE))
+    expect_is(cb, "data.frame")
+    expect_equal(attr(cb, "locus.names"), c("a", "b", "c", "d"))
+})
+
+#x1.x <- x1; attr(x1.x, "extra.columns") <- as.data.frame(x2, complete = TRUE)
+#x2.x <- x2; attr(x2.x, "extra.columns") <- as.data.frame(x1, complete = TRUE)
+#x2.reord.x <- x2.reord; attr(x2.reord.x, "extra.columns") <- as.data.frame(x1, complete = TRUE)
+x5.x <- x1.x[c(2,3,1), ]
+extra(x5.x) <- attr(x5.x, "extra.columns")[c(2,3,1), ]
+x8.x <- x8
+extra(x8.x) <- data.frame(s = x8[, 1], xxxx = 1:3 * 1017)
+
+attr(x1.x, "data.file.name") <- attr(x5.x, "data.file.name") <- "placeholder"
+
+test_that("cbind.genalex() handles extra columns correctly", {
+    cb <- cbind(x1.x, x5.x)
+    attr(cb, "data.file.name") <- "placeholder"
+    expect_equal(x1.x, cb)
+    expect_true(is.genalex(cb, force = TRUE))
+    expect_is(cb, "data.frame")
+    expect_equal(attr(cb, "locus.names"), c("a", "b"))
+    # row names of extra columns should match sample names
+    expect_equal(rownames(attr(cb, "extra.columns")), x1.x[, 1])
+
+    cb <- cbind(x5.x, x1.x)
+    attr(cb, "data.file.name") <- "placeholder"
+    expect_equal(x5.x, cb)
+    expect_true(is.genalex(cb, force = TRUE))
+    expect_is(cb, "data.frame")
+    expect_equal(attr(cb, "locus.names"), c("a", "b"))
+    expect_equal(names(attr(cb, "extra.columns")), c("sample", "pop", "a", "a.2", "b", "b.2"))
+    # row names of extra columns should match sample names
+    expect_equal(rownames(attr(cb, "extra.columns")), x5.x[, 1])
+
+    # adds extra columns correctly if second arg doesn't have them
+    cb <- cbind(x1.x, x5)
+    attr(cb, "data.file.name") <- "placeholder"
+    expect_equal(x1.x, cb)
+    expect_true(is.genalex(cb, force = TRUE))
+    expect_is(cb, "data.frame")
+    expect_equal(attr(cb, "locus.names"), c("a", "b"))
+
+    # adds extra columns correctly if first arg doesn't have them
+    cb <- cbind(x5, x1.x)
+    attr(cb, "data.file.name") <- "placeholder"
+    expect_equal(x1.x, cb)
+    expect_true(is.genalex(cb, force = TRUE))
+    expect_is(cb, "data.frame")
+    expect_equal(attr(cb, "locus.names"), c("a", "b"))
+    names(attr(x5.x, "extra.columns"))[1] <- "sampsamp"
+    cb <- cbind(x1.x, x5.x)
+    attr(cb, "data.file.name") <- "placeholder"
+    expect_equal(names(attr(cb, "extra.columns"))[1], "sample")
+    expect_equal(names(extra(cb))[1], "sample")
+    expect_equal(names(extra(cb))[7], "sampsamp")
+    cb <- cbind(x5.x, x1.x)
+    attr(cb, "data.file.name") <- "placeholder"
+    expect_equal(names(attr(cb, "extra.columns"))[1], "sampsamp")
+
+    # drops same-name columns and doesn't inspect contents
+    attr(x5.x, "extra.columns")[, 2] <- "foo"
+    cb <- cbind(x1.x, x5.x)
+    attr(cb, "data.file.name") <- "placeholder"
+    #expect_equal(x1.x, cb)  # not true, rows in different order
+    expect_true(is.genalex(cb, force = TRUE))
+
+    # presents total at end correctly
+    cb <- cbind(x1.x, x8.x)
+    nm <- names(attr(cb, "extra.columns"))
+    expect_equal(nm, c("sample", "pop", "a", "a.2", "b", "b.2", "s", "xxxx"))
+})

@@ -1,3 +1,7 @@
+#' @include readGenalex.R
+# for collation order
+NULL
+
 #' Read GenAlEx-format genotypes file
 #'
 #' Reads genotype data file in GenAlEx format into an annotated data frame of
@@ -41,7 +45,8 @@
 #' immediately to the right of the genotype values.  These data are given
 #' their natural type as if read with
 #' \code{read.table(..., stringsAsFactors = FALSE)}, so that
-#' character values are not converted to factors.
+#' character values are not converted to factors.  Row names are assigned that
+#' are equivalent to the corresponding sample names.
 #'
 #' More information on GenAlEx is available at
 #' \url{http://biology-assets.anu.edu.au/GenAlEx}.  In particular, genotype
@@ -83,7 +88,8 @@
 #'   in \code{file} to the right of the genotype columns.  Row order is the
 #'   same as for the genotype data.  Data are given their natural types using
 #'   \code{type.convert(..., as.is = TRUE)}, so that characters are
-#'   not converted to factors.  If no extra columns were found, this
+#'   not converted to factors.  Row names are assigned equal to the 
+#'   corresponding sample names.  If no extra columns were found, this
 #'   attribute does not exist.}
 #' \item{genetic.data.format }{\code{"genalex"}, not present in package versions >= 1.0}
 #'
@@ -112,8 +118,8 @@
 #' @export
 #'
 readGenalex <- function(file, sep = "\t", ploidy = 2,
-                        na.strings = c("0", "-1", ".", "NA", ""),
-                        ...) {
+    na.strings = c("0", "-1", ".", "NA", ""), ...)
+{
     if (ploidy != 2) warning("ploidy other than 2 poorly tested")
     fcon <- file(description = file, open = "rt")
     header <- .readGenalexHeader(fcon, sep, ploidy)
@@ -125,8 +131,7 @@ readGenalex <- function(file, sep = "\t", ploidy = 2,
     close(fcon)
     x <- .readGenalexJoinData(header, raw.data)
     attr(x, "data.file.name") <- file
-    class(x) <- c('genalex', 'data.frame')
-    return(x)
+    structure(x, class = c('genalex', 'data.frame'))
 }
 
 
@@ -189,7 +194,8 @@ readGenalex <- function(file, sep = "\t", ploidy = 2,
 #'
 #' @export
 #'
-readGenalexExcel <- function(file, worksheet, ploidy = 2) {
+readGenalexExcel <- function(file, worksheet, ploidy = 2)
+{
     if (length(worksheet) > 1)
         stop("must provide a single worksheet name")
     dat <- XLConnect::readWorksheetFromFile(file, sheet = worksheet,
@@ -213,8 +219,7 @@ readGenalexExcel <- function(file, worksheet, ploidy = 2) {
                                  extra.columns = header$extra.columns)
     x <- .readGenalexJoinData(header, raw.data)
     attr(x, "data.file.name") <- paste0(file, "(", worksheet, ")")
-    class(x) <- c('genalex', 'data.frame')
-    return(x)
+    structure(x, class = c('genalex', 'data.frame'))
 }
 
 
@@ -230,9 +235,7 @@ readGenalexExcel <- function(file, worksheet, ploidy = 2) {
 .readGenalexExcel.na.strings <- c("0", "-1")
 
 .readGenalexData <- function(con = NULL, sep, col.names, n.samples, n.loci,
-                             ploidy, na.strings, extra.columns = character(0),
-                             data.strings,
-                             ...)
+    ploidy, na.strings, extra.columns = character(0), data.strings, ...)
 {
     classes <- c("character", "character", rep("numeric", n.loci * ploidy))
     scan.col.names = col.names
@@ -280,13 +283,9 @@ readGenalexExcel <- function(file, worksheet, ploidy = 2) {
 
 
 
-.calculateLocusColumns <- function(n.loci, ploidy) {
-    seq(from = 3, to = (3 + (n.loci - 1) * ploidy), by = ploidy)
-}
-
-
-
-.readGenalexHeader <- function(con, sep, ploidy) {
+# Read just the first three lines of the header, and parse it
+.readGenalexHeader <- function(con, sep, ploidy)
+{
     dlines <- readLines(con = con, n = 3, ok = FALSE)
     dlines <- lapply(dlines, function(x) unlist(strsplit(x, sep, perl = TRUE)))
     .parseGenalexHeader(dlines, ploidy)
@@ -294,20 +293,22 @@ readGenalexExcel <- function(file, worksheet, ploidy = 2) {
 
 
 
-.createDataColumnNames <- function(header) {
+# Create column names including for genotypes: "a", "a.2", "b", "b.2", etc.
+.createDataColumnNames <- function(header)
+{
     f <- function(x) {
         c(x, if (header$ploidy > 1)
                  paste(sep = ".", x, seq(2, header$ploidy, 1))
              else NULL)
     }
-    c(header$sample.title, header$pop.title,
-      unlist(lapply(header$locus.names, f)))
+    c(header$sample.title, header$pop.title, sapply(header$locus.names, f))
 }
 
 
 
 # split this out so we can use it to parse Excel worksheets, too
-.parseGenalexHeader <- function(dlines, ploidy) {
+.parseGenalexHeader <- function(dlines, ploidy)
+{
     dlines[[1]] <- as.numeric(dlines[[1]])
     header <- list(n.loci = dlines[[1]][1],
                    ploidy = ploidy,
@@ -338,16 +339,19 @@ readGenalexExcel <- function(file, worksheet, ploidy = 2) {
 
 
 
-.readGenalexJoinData <- function(header, raw.data) {
+# Join header and raw data and establish attributes for what will be
+# a class 'genalex' object
+.readGenalexJoinData <- function(header, raw.data)
+{
     dat <- raw.data$dat
     if (anyDuplicated(dat[, 1])) {
         dups <- dat[, 1][duplicated(dat[, 1])]
         stop("duplicated sample names:", paste(collapse = " ", dups))
     }
     if (! is.null(raw.data$extra.columns)) {
-        # add sample name to extra columns
-        extra.columns <- cbind(dat[, 1], raw.data$extra.columns)
-        names(extra.columns)[1] <- names(dat)[1]
+        # add sample names as row names to extra columns
+        extra.columns <- raw.data$extra.columns
+        rownames(extra.columns) <- dat[, 1]
     }
     names(dat) <- .createDataColumnNames(header)
     # TODO: handle label in header with size 0 and missing from data?
@@ -410,7 +414,7 @@ readGenalexExcel <- function(file, worksheet, ploidy = 2) {
 #'          class \code{'genalex'}, and are left out of the output of
 #'          \code{writeGenalex}.
 #'    \item Locations of additional data columns beyond the genotype columns,
-#'          which \code{readGenalex} will collect wherever there are named
+#'          which \code{readGenalex} should collect wherever there are named
 #'          columns to the right of the genotype columns, and which
 #'          \code{writeGenalex} will write immediately to the right of the
 #'          genotype columns.  The same column names are used when writing
@@ -471,8 +475,8 @@ readGenalexExcel <- function(file, worksheet, ploidy = 2) {
 #' @export
 #'
 writeGenalex <- function(x, file, quote = FALSE, sep = "\t", eol = "\n",
-                         na = "0", na.character = "", 
-                         check.annotation = TRUE) {
+    na = "0", na.character = "", check.annotation = TRUE)
+{
     DNAME <- deparse(substitute(x))
     if (! is.genalex(x))
         stop(DNAME, " must be class 'genalex'")
@@ -575,8 +579,8 @@ writeGenalex <- function(x, file, quote = FALSE, sep = "\t", eol = "\n",
 #' @export
 #'
 writeGenalexExcel <- function(x, file, worksheet, na = c("0", "-1"),
-                              na.character = "", check.annotation = TRUE,
-                              overwrite = FALSE) {
+    na.character = "", check.annotation = TRUE, overwrite = FALSE)
+{
     DNAME <- deparse(substitute(x))
     if (! is.genalex(x))
         stop(DNAME, " must be class 'genalex'")
@@ -610,7 +614,9 @@ writeGenalexExcel <- function(x, file, worksheet, na = c("0", "-1"),
 
 
 
-.genalexHeaderToCharacter <- function(x, quote) {
+# Turn header into character representation for writing
+.genalexHeaderToCharacter <- function(x, quote)
+{
     # create a 3-element list filled with character vectors
     if (! is.genalex(x))
         stop("must be class 'genalex'")
@@ -627,13 +633,14 @@ writeGenalexExcel <- function(x, file, worksheet, na = c("0", "-1"),
     if (! is.null(extra <- a$extra.columns))
         y <- c(y, qu(names(extra)))
     header[[3]] <- y
-    header <- lapply(header, unname)
-    return(header)
+    lapply(header, unname)
 }
 
 
 
-.genalexDataToCharacter <- function(x, quote, na, na.character) {
+# Turn data into character representation for writing
+.genalexDataToCharacter <- function(x, quote, na, na.character)
+{
     # create a plain character-filled data frame
     if (! is.genalex(x))
         stop("must be class 'genalex'")
@@ -665,6 +672,7 @@ writeGenalexExcel <- function(x, file, worksheet, na = c("0", "-1"),
         x <- cbind(x, extra)
     }
     # a plain character data frame
-    return(x)
+    x
 }
+
 

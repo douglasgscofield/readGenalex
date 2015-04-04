@@ -16,7 +16,7 @@
 }
 \value{
 A vector of column positions occupied by genotype data for loci
-        named in \code{locus}.
+named in \code{locus}.
 }
 \description{
 Determine the numeric column positions occupied by named loci in an

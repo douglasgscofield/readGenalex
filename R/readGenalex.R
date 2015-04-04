@@ -11,6 +11,9 @@
 #' but they can be set to the empty string (\code{""}) to avoid this
 #' check.  Alternatively, the option \code{skip.strings = TRUE} may
 #' be set to not check these specific attributes for consistency.
+#' Extra data columns are checked first for existence, then for contents,
+#' then for matching row names.  The option \code{skip.extra = TRUE}
+#' may be set to not check extra data columns.
 #'
 #' @param x      An object that might be of class \code{'genalex'}
 #'
@@ -21,6 +24,10 @@
 #' @param skip.strings  If \code{TRUE} and \code{force = TRUE},
 #' do not check the attributes \code{"dataset.title"} and
 #' \code{"data.file.name"} for consistency.
+#'
+#' @param skip.extra  If \code{TRUE} and \code{force = TRUE}, do not
+#' check the extra data columns (attribute \code{"extra.columns"} for
+#' consistency.
 #'
 #' @param verbose If \code{TRUE} and \code{force = TRUE}, indicate any
 #' inconsistencies discovered between the data and annotations. if
@@ -45,12 +52,14 @@
 #' @export is.genalex
 #'
 is.genalex <- function(x, force = FALSE, skip.strings = FALSE,
-                       verbose = FALSE) {
+    skip.extra = FALSE, verbose = FALSE)
+{
     if (! inherits(x, 'genalex'))
         return(FALSE)
     if (force == FALSE)
         return(TRUE)
-    msg <- .compareGenalexAttributes(x, skip.strings = skip.strings)
+    msg <- .compareGenalexAttributes(x, skip.strings = skip.strings,
+                                     skip.extra = skip.extra)
     if (msg != "" && verbose)
         cat(msg, "\n")
     return(msg == "")
@@ -62,7 +71,8 @@ is.genalex <- function(x, force = FALSE, skip.strings = FALSE,
 #
 # Internal functions for calculating and comparing attributes
 #
-.calculateGenalexAttributes <- function(x, ploidy = NULL) {
+.calculateGenalexAttributes <- function(x, ploidy = NULL)
+{
     if (! inherits(x, 'genalex') && ! inherits(x, 'data.frame'))
         x <- as.data.frame(x)
     # names: sample pop loc1 ... loc2 ...
@@ -101,10 +111,14 @@ is.genalex <- function(x, force = FALSE, skip.strings = FALSE,
     ans$pop.sizes <- p
     ans$pop.title <- names(x)[2]
 
+    # extra columns, if they exist, get row names equal to sample names
+    if (! is.null(ans$extra.columns))
+        rownames(ans$extra.columns) <- x[, 1]
+
     # remaining attributes, set to empty string
     ans$dataset.title <- ""
     ans$data.file.name <- ""
-    return(ans)
+    ans
 }
 
 .compare.attribute <- function(a, b, n) {
@@ -116,11 +130,13 @@ is.genalex <- function(x, force = FALSE, skip.strings = FALSE,
 .compare.char.attribute <- function(a, b, n, empty.ok = FALSE) {
     if (is.null(a[[n]]) || is.null(b[[n]]) || (a[[n]] != b[[n]] &&
          (! empty.ok || (a[[n]] != "" && b[[n]] != ""))))
-        return(n)
-    else return(character(0))
+        n
+    else character(0)
 }
 
-.compareGenalexAttributes <- function(x, y = NULL, skip.strings = FALSE) {
+.compareGenalexAttributes <- function(x, y = NULL, skip.strings = FALSE,
+                                      skip.extra = skip.extra)
+{
     # don't assume genalex for x or y, but make soft assumptions for both
     xa <- attributes(x)
     x.name <- deparse(substitute(x))
@@ -150,12 +166,24 @@ is.genalex <- function(x, force = FALSE, skip.strings = FALSE,
         msg <- c(msg, .compare.char.attribute(xa, ya, "dataset.title", TRUE))
         msg <- c(msg, .compare.char.attribute(xa, ya, "data.file.name", TRUE))
     }
+    if (! skip.extra) {
+        if ((! is.null(xa$extra.columns) && !is.null(y) &&
+             is.null(ya$extra.columns)) ||
+            (is.null(xa$extra.columns) && ! is.null(ya$extra.columns))) {
+            msg <- c(msg, "extra.columns")
+        } else if (! is.null(xa$extra.columns) && ! is.null(ya$extra.columns)) {
+            if (! all(xa$extra.columns == ya$extra.columns))
+                msg <- c(msg, "extra.columns contents")
+            if (! all(rownames(xa$extra.columns) == rownames(ya$extra.columns)))
+                msg <- c(msg, "extra.columns row names")
+        }
+    }
     if (length(msg))
         msg <- paste(x.name, "and", y.name, "attributes do not match :",
                      paste(collapse=" ", msg))
     else msg <- ""
 
-    return(msg)
+    msg
 }
 
 
@@ -236,17 +264,21 @@ as.genalex <- function(x, ...) UseMethod("as.genalex")
 
 
 
-.reset.attribute <- function(a, b, n) {
-    if (any(a[[n]] != b[[n]]) && all(b[[n]] != ""))
+.reset.attribute <- function(a, b, n)
+{
+    if (! identical(a[[n]], b[[n]]) && all(b[[n]] != ""))
         a[[n]] <- b[[n]]
-    return(a)
+    a
 }
+
+
 
 #' @rdname as.genalex
 #'
 #' @export
 #'
-as.genalex.genalex <- function(x, force = FALSE, ...) {
+as.genalex.genalex <- function(x, force = FALSE, ...)
+{
     if (! force)
         return(x)
     xa <- attributes(x)
@@ -261,7 +293,7 @@ as.genalex.genalex <- function(x, force = FALSE, ...) {
     xa <- .reset.attribute(xa, ya, "pop.sizes")
     xa <- .reset.attribute(xa, ya, "pop.title")
     attributes(x) <- xa
-    return(x)
+    x
 }
 
 
@@ -270,7 +302,8 @@ as.genalex.genalex <- function(x, force = FALSE, ...) {
 #'
 #' @export
 #'
-as.genalex.data.frame <- function(x, names = NULL, ploidy = 2, ...) {
+as.genalex.data.frame <- function(x, names = NULL, ploidy = 2, ...)
+{
     if (! is.null(attr(x, "genetic.data.format")) &&
              attr(x, "genetic.data.format") == "genalex") {
         # convert earlier readGenalex format to class genalex
@@ -300,7 +333,8 @@ as.genalex.data.frame <- function(x, names = NULL, ploidy = 2, ...) {
 #'
 #' @export
 #'
-as.genalex.default <- function(x, ...) {
+as.genalex.default <- function(x, ...)
+{
     stop("'", deparse(substitute(x)), "' cannot be coerced to class 'genalex', perhaps it could be converted to a data.frame?")
 }
 
@@ -348,7 +382,8 @@ as.genalex.default <- function(x, ...) {
 #' @export
 #'
 as.data.frame.genalex <- function(x, ..., complete = FALSE,
-         stringsAsFactors = default.stringsAsFactors()) {
+    stringsAsFactors = default.stringsAsFactors())
+{
     if (is.genalex(x)) {
         if (complete)
             x <- .clearGenalexAttributes(x)
@@ -417,13 +452,14 @@ as.data.frame.genalex <- function(x, ..., complete = FALSE,
 #'
 #' @export
 #'
-rbind.genalex <- function(..., names, deparse.level = 1) {
+rbind.genalex <- function(..., names = NULL, deparse.level = 1)
+{
     # dummy up a call for data.file.name
     this.call <- sys.call()
     a <- paste(collapse = ", ",
                unlist(lapply(as.list(substitute(list(...)))[-1L],
                              as.character)))
-    if (! missing(names))
+    if (! missing(names) && !is.null(names))
         a <- paste(sep = ", ", a,
                    paste("names =", deparse(substitute(names))))
     this.call <- paste(sep="", as.character(this.call[[1]]), "(", a, ")")
@@ -467,7 +503,7 @@ rbind.genalex <- function(..., names, deparse.level = 1) {
     attr(x, "pop.title") <- if (missing(names) || is.null(names$pop))
         att.1$pop.title else names$pop
     attr(x, "data.file.name") <- this.call  # note different from genalex()
-    return(x)
+    x
 }
 
 
@@ -483,11 +519,18 @@ rbind.genalex <- function(..., names, deparse.level = 1) {
 #' duplicated, the genotypes are checked to assure they contain the exact
 #' same data and if so, the duplicate locus columns are ignored.  Data set
 #' title and sample and population column headers are taken from the first
-#' data set unless supplied in the \code{names} argument.  Extra columns are
-#' taken from the first data set; if additional data sets have extra columns,
-#' their contents must match for columns with the same name, and columns
-#' with different names are added to the extra columns of the returned
-#' data set.
+#' data set unless supplied in the \code{names} argument.  As subsequent
+#' data sets are added, they are compared against the aggregate data set
+#' assembled thus far, so a data set might have duplicate columns versus
+#' the aggregate that are not duplicates versus the first data set.  See
+#' Details for how extra columns are handled.
+#'
+#' Extra columns are taken from the first data set.  If the first data set
+#' does not have extra columns but others do, extra columns are assembled
+#' from data sets that have them.  Columns with the same name in extra
+#' columns \emph{are dropped without checking contents}.  Columns with
+#' different names are added with \code{\link{cbind}} to the right of the
+#' existing set of extra columns.
 #'
 #' Data sets must have the same number of rows, this is a necessary
 #' consequence of containing the same samples.  Unlike the default
@@ -509,45 +552,44 @@ rbind.genalex <- function(..., names, deparse.level = 1) {
 #' are used.  The \code{data.file.name} attribute is a character
 #' representation of the call to \code{cbind}.
 #'
-#' @note If one of the arguments is class \code{'data.frame'}, then this
-#' function will \emph{not} be called, instead the \code{cbind.data.frame}
-#' method of base R will be called silently and will return an object of
-#' class \code{'data.frame'}.  If this happens, none of the special
-#' processing that selects just locus columns and combines extra columns
-#' from class \code{'genalex'} objects occurs, so if you have mixed class
-#' \code{'genalex'} objects with data frames the return value is probably
-#' not what you intended.  This call to \code{cbind.data.frame} occurs
-#' because objects of class \code{'genalex'} also have class
-#' \code{'data.frame'}, and selection of \code{cbind.data.frame} occurs
-#' during method dispatch for \code{rbind} and cannot be checked by this
-#' function.  If there is a chance you have mixed objects of different
+#' @note If one of the arguments is not of class \code{'genalex'}, then
+#' this function will \emph{not} be called, instead \code{cbind.data.frame}
+#' or perhaps another \code{cbind} method of base R will be called silently
+#' and will return an object that is not of class \code{'genalex'}.  If
+#' this occurs, none of the special processing for class \code{'genalex'}
+#' objects will be applied and the result is probably not what you
+#' intended.  If there is a chance you have mixed objects of different
 #' classes while calling this function, assure that the return value is
 #' class \code{'genalex'} by using \code{is.genalex}.
 #'
+#' If you in fact want to add genotype data from a data frame or matrix
+#' to an object of class \code{'genalex'}, then use \code{addLocus}.
+#'
 #' @author Douglas G. Scofield
 #'
-#' @seealso \code{\link{genalex}}, \code{\link{cbind}}, \code{\link{cbind.genalex}}
+# @seealso \code{\link{genalex}}, \code{\link{cbind}}, \code{\link{rbind.genalex}}, \code{\link{addLocus.genalex}}
+#' @seealso \code{\link{genalex}}, \code{\link{cbind}}, \code{\link{rbind.genalex}}
 #'
-# @examples
-#
-# gt1 <- data.frame(a = 11:13, a.2 = 14:16, b = 101:103, b.2 = 104:106)
-# x1 <- genalex(1:3, "snurf", gt1)
-# gt2 <- data.frame(a = 21:23, a.2 = 24:26, b = 201:203, b.2 = 204:206)
-# x2 <- genalex(4:6, "snirf", gt2)
-# x <- rbind(x1, x2)
-# x
-# attributes(x)
-#
-# @export
-#
-cbind.genalex <- function(..., names, deparse.level = 1) {
-    stop("cbind.genalex not ready yet")
+#' @examples
+#'
+#' gt1 <- data.frame(a = 11:13, a.2 = 14:16, b = 101:103, b.2 = 104:106)
+#' x1 <- genalex(1:3, "snurf", gt1)
+#' gt2 <- data.frame(c = 21:23, c.2 = 24:26, d = 201:203, d.2 = 204:206)
+#' x2 <- genalex(1:3, "snurf", gt2)
+#' x <- cbind(x1, x2)
+#' x
+#' attributes(x)
+#'
+#' @export
+#'
+cbind.genalex <- function(..., names = NULL, deparse.level = 1)
+{
     # dummy up a call for data.file.name
     this.call <- sys.call()
     a <- paste(collapse = ", ",
                unlist(lapply(as.list(substitute(list(...)))[-1L],
                              as.character)))
-    if (! missing(names))
+    if (! missing(names) && !is.null(names))
         a <- paste(sep = ", ", a,
                    paste("names =", deparse(substitute(names))))
     this.call <- paste(sep="", as.character(this.call[[1]]), "(", a, ")")
@@ -562,6 +604,7 @@ cbind.genalex <- function(..., names, deparse.level = 1) {
     dot.1 <- dots[[1]]
     att.1 <- attributes(dot.1)
     loc.1 <- att.1$locus.columns  # already have names
+    ploidy.1 <- att.1$ploidy
     # check number of rows
     for (i in 2:length(dots))
         if (nrow(dots[[i]]) != nrow(dot.1))
@@ -574,6 +617,9 @@ cbind.genalex <- function(..., names, deparse.level = 1) {
     if (anyDuplicated(samp.1))
         stop("duplicate sample names found in first argument")
     for (i in 2:length(dots)) {
+        att.i <- attributes(dots[[i]])
+        if (ploidy.1 != att.i$ploidy)
+            stop("all arguments must have same ploidy")
         if (anyDuplicated(dots[[i]][, 1]))
             stop("duplicate sample names found in argument ", i)
         if (! equal.but.order(samp.1, dots[[i]][, 1]))
@@ -581,29 +627,55 @@ cbind.genalex <- function(..., names, deparse.level = 1) {
         m <- match(samp.1, dots[[i]][, 1])
         # reorder rows
         dots[[i]] <- dots[[i]][m, ]
+        if (! is.null(att.i$extra.columns))
+            att.i$extra.columns <- att.i$extra.columns[m, ]
         # check sample membership in populations
         if (! all(dot.1[, 2] == dots[[i]][, 2]))
             stop("population membership for samples in argument ", i,
                  " do not match those in the first argument")
         # check for locus name matches
-        att.i <- attributes(dots[[i]])
         loc.i <- att.i$locus.columns  # already have names
-        m <- match(names(loc.1), names(loc.i))
+        m <- match(names(loc.i), names(loc.1))
         for (n in m[! is.na(m)]) {
-            # each is a repeated locus name
-            # extract each repeated locus from 1 and i and make sure
-            #     they match exactly
+            nm <- names(loc.1)[n]
+            g.1 <- dot.1[, getLocusColumns(dot.1, nm)]
+            g.i <- dots[[i]][, getLocusColumns(dots[[i]], nm)]
+            if (! isTRUE(all.equal(g.1, g.i)))
+                stop("genotypes for duplicated locus ", nm, " in argument ",
+                     i, " do not match those in argument 1")
         }
-        # remove all repeated loci from dots[[i]]
-        # remove sample and population columns from dots[[i]]
-        #
-        # work with extra columns, from rbind:
-        #allextra <- if (is.null(extra.columns)) NULL
-        #    else do.call(rbind, lapply(extra.columns, as.data.frame))
-        #x <- genalex(alldat[, 1], alldat[, 2], alldat[, 3:ncol(alldat)],
-        #             ploidy = att.1$ploidy, extra.columns = allextra)
+        if (any(is.na(m))) {  # at least one novel locus
+            new.loci <- if (any(! is.na(m))) # indices of new loci
+                (1:att.i$n.loci)[which(is.na(m))]
+            else 1:att.i$n.loci
+            new.loci.idx <- .calculateSingleLocusColumns(new.loci, att.i$ploidy)
+            # add new loci and recalculate genalex object
+            new.data <- as.data.frame(dots[[i]][, new.loci.idx], complete = TRUE)
+            # don't do cbind, this preserved attributes
+            new.col.idx <- seq(ncol(dot.1) + 1, ncol(dot.1) + ncol(new.data))
+            dot.1[, new.col.idx] <- new.data
+            dot.1 <- as.genalex(dot.1, force = TRUE)  # refresh attributes
+            att.1 <- attributes(dot.1)
+            loc.1 <- att.1$locus.columns
+        }
+
+        # Extra columns: match sample names vs. dot.1, and add any
+        # columns whose names don't match.  Do not verify contents of
+        # duplicated columns match, just drop from.
+        ext.1 <- att.1$extra.columns
+        ext.i <- att.i$extra.columns
+        if (! is.null(ext.i)) {
+            if (! is.null(ext.1)) {
+                # calculate indices of novel columns
+                new.ext.idx <- which(is.na(match(names(ext.i), names(ext.1))))
+                newcols <- ext.i[, new.ext.idx, drop = FALSE]
+                ext.1 <- cbind(ext.1, newcols, stringsAsFactors = FALSE)
+            } else ext.1 <- ext.i
+            extra(dot.1) <- ext.1
+            att.1 <- attributes(dot.1)
+        }
     }
-    alldat <- do.call(cbind, lapply(dots, as.data.frame))
+    x <- dot.1
 
     # update data attributes attributes
     # update names()-related fields
@@ -614,7 +686,29 @@ cbind.genalex <- function(..., names, deparse.level = 1) {
     attr(x, "pop.title") <- if (missing(names) || is.null(names$pop))
         att.1$pop.title else names$pop
     attr(x, "data.file.name") <- this.call  # note different from genalex()
-    return(x)
+    x
+}
+
+
+
+# Calculate columns of all alleles of each locus, by locus
+# index i.locus, for which first locus is 1, second is 2, etc.
+.calculateSingleLocusColumns <- function(i.locus, ploidy)
+{
+    cols <- c()
+    for (l in i.locus) {
+        start <- 3 + (l - 1) * ploidy
+        cols <- c(cols, seq(from = start, to = (start + ploidy - 1)))
+    }
+    cols
+}
+
+
+
+# Calculate columns of first allele of each locus, for all loci
+.calculateLocusColumns <- function(n.loci, ploidy)
+{
+    seq(from = 3, to = (3 + (n.loci - 1) * ploidy), by = ploidy)
 }
 
 
@@ -708,8 +802,7 @@ genalex <- function(samples, pops, genotypes, names = NULL, ploidy = 2,
     x <- .readGenalexJoinData(header, list(dat = dat,
                                            extra.columns = extra.columns))
     attr(x, "data.file.name") <- capture.output(print(this.call))
-    class(x) <- c('genalex', 'data.frame')
-    return(x)
+    structure(x, class = c('genalex', 'data.frame'))
 }
 
 
@@ -737,7 +830,8 @@ genalex <- function(samples, pops, genotypes, names = NULL, ploidy = 2,
 #'
 #' @export
 #'
-summary.genalex <- function(object, ...) {
+summary.genalex <- function(object, ...)
+{
     stopifnot(is.genalex(object))
     a <- attributes(object)
     cat("Dataset title:", a$dataset.title, "\n")
@@ -807,8 +901,8 @@ printGenotype <- function(x, ...) UseMethod("printGenotype")
 #' @export
 #'
 printGenotype.genalex <- function(x, rows = 1:nrow(x), callout.locus = NULL,
-                                  sep = " ", allele.sep = "/", callout.char = "*",
-                                  label = NULL, ...) {
+    sep = " ", allele.sep = "/", callout.char = "*", label = NULL, ...)
+{
     cols <- names(x)
     ploidy <- attr(x, "ploidy")
     for (row in rows) {
@@ -842,7 +936,7 @@ printGenotype.genalex <- function(x, rows = 1:nrow(x), callout.locus = NULL,
 #' @param \dots  Additional arguments, currently ignored
 #'
 #' @return A vector of column positions occupied by genotype data for loci
-#'         named in \code{locus}.
+#' named in \code{locus}.
 #'
 #' @author Douglas G. Scofield
 #'
@@ -863,9 +957,15 @@ getLocusColumns <- function(x, ...) UseMethod("getLocusColumns")
 #'
 #' @export
 #'
-getLocusColumns.genalex <- function(x, locus, ...) {
-    as.vector(sapply(attr(x, "locus.columns")[attr(x, "locus.names") %in% locus],
-                     function(y) y:(y + attr(x, "ploidy") - 1)))
+getLocusColumns.genalex <- function(x, locus, ...)
+{
+    loccol <- attr(x, "locus.columns")
+    ploidy <- attr(x, "ploidy")
+    if (! all(locus %in% names(loccol)))
+        stop(deparse(substitute(locus)), " contains loci not in ",
+             deparse(substitute(x)))
+    as.vector(sapply(loccol[locus],
+                     function(y) y:(y + ploidy - 1)))
 }
 
 
@@ -907,7 +1007,8 @@ reorderLoci <- function(x, ...) UseMethod("reorderLoci")
 #'
 #' @export
 #'
-reorderLoci.genalex <- function(x, loci, ...) {
+reorderLoci.genalex <- function(x, loci, ...)
+{
     existing.loci <- attr(x, "locus.names")
     if (! (all(existing.loci %in% loci) && all(loci %in% existing.loci)))
         stop("reorder list must contain all existing loci")
@@ -923,12 +1024,13 @@ reorderLoci.genalex <- function(x, loci, ...) {
     names(newdata) <- names.newdata
     attr(newdata, "locus.names") <- loci
     names(attr(newdata, "locus.columns")) <- loci
-    return(newdata)
+    newdata
 }
 
 
 
-.clearGenalexAttributes <- function(x) {
+.clearGenalexAttributes <- function(x)
+{
     attr(x, "data.file.name") <- NULL
     attr(x, "ploidy") <- NULL
     attr(x, "n.loci") <- NULL
@@ -942,7 +1044,7 @@ reorderLoci.genalex <- function(x, loci, ...) {
     attr(x, "locus.names") <- NULL
     attr(x, "locus.columns") <- NULL
     attr(x, "extra.columns") <- NULL
-    return(x)
+    x
 }
 
 
@@ -959,7 +1061,7 @@ reorderLoci.genalex <- function(x, loci, ...) {
 #' @param locus The names of one or more loci found in \code{x}
 #'
 #' @param pop   If supplied, return only data for samples from the specified
-#'              populations
+#' populations
 #'
 #' @param \dots  Additional arguments, currently ignored
 #'
@@ -991,15 +1093,15 @@ getLocus <- function(x, ...) UseMethod("getLocus")
 #'
 #' @export
 #'
-getLocus.genalex <- function(x, locus, pop = NULL, ...) {
+getLocus.genalex <- function(x, locus, pop = NULL, ...)
+{
     cols <- getLocusColumns(x, locus)
     if (! is.null(pop)) {
         pop.column <- attr(x, "pop.title")
         x <- subset(x, x[[pop.column]] %in% pop)
     }
     x <- as.data.frame(x[, cols, drop=FALSE])
-    x <- .clearGenalexAttributes(x)
-    return(x)
+    .clearGenalexAttributes(x)
 }
 
 
@@ -1036,7 +1138,9 @@ replaceLocus <- function(x, ...) UseMethod("replaceLocus")
 #'
 #' @export
 #'
-replaceLocus.genalex <- function(x, locus, newdata, ...) {
+replaceLocus.genalex <- function(x, locus, newdata, ...)
+{
+    stopifnot(nrow(x) == nrow(newdata))
     x[, getLocusColumns(x, locus)] <- newdata
     x
 }
@@ -1082,7 +1186,8 @@ dropLocus <- function(x, ...) UseMethod("dropLocus")
 #'
 #' @export
 #'
-dropLocus.genalex <- function(x, drop.locus, quiet = FALSE, ...) {
+dropLocus.genalex <- function(x, drop.locus, quiet = FALSE, ...)
+{
     if (missing(drop.locus) || is.null(drop.locus))
         return(x)
     locus.names <- attr(x, "locus.names")
@@ -1152,7 +1257,8 @@ reducePloidy <- function(x, ...) UseMethod("reducePloidy")
 #'
 #' @export
 #'
-reducePloidy.genalex <- function(x, new.ploidy = 1, ...) {
+reducePloidy.genalex <- function(x, new.ploidy = 1, ...)
+{
     # Would be nice to be more general, e.g., pick other than the first
     # column, or a random allele
     att <- attributes(x)
@@ -1175,3 +1281,82 @@ reducePloidy.genalex <- function(x, new.ploidy = 1, ...) {
     attr(x, "ploidy") <- new.ploidy
     x
 }
+
+
+
+#' Return or set the extra data columns of an object of class \code{'genalex'}
+#'
+#' Return or set the extra data columns of an object of class
+#' \code{'genalex'}.  When getting extra data columns, if there are
+#' none, \code{NULL} is returned.  When setting, this is more than a
+#' shortcut for \code{attr(x, "extra.columns") <- value}.  It checks
+#' that both \code{value} and \code{x} have the same number of rows,
+#' generating an error if not, and it sets the row names of
+#' \code{value} to be equal to the sample names in \code{x} before
+#' assigning \code{value} to the \code{"extra.columns"} attribute.
+#'
+#' @usage
+#' extra(x, ...)
+#' extra(x) <- value
+#'
+#' @param x      An annotated data frame of class \code{'genalex'}
+#'
+#' @param value  When setting extra columns, a data frame or object
+#' that can be coerced to a data frame.  This is done using
+#' \code{stringsAsFactors = FALSE}.  \code{value} must have the
+#' same number of rows as \code{x}.
+#'
+#' @param \dots  Additional arguments, currently ignored
+#'
+#' @return A data frame containing extra columns from \code{x}, or
+#' \code{NULL} if extra columns do not exist.  If setting, an object
+#' of class \code{'genalex'} with its \code{"extra.columns"} attribute
+#' set to \code{value}, after its rownames are adjusted as described
+#' above.
+#'
+#' @author Douglas G. Scofield
+#'
+#' @examples
+#'
+#' data(Qagr_adult_genotypes)
+#' x1 <- attr(Qagr_adult_genotypes, "extra.columns")
+#' x2 <- extra(Qagr_adult_genotypes)
+#' ## there are no extra columns, so both should be NULL
+#' if (! isTRUE(all.equal(x1, x2)) || ! is.null(x1) || ! is.null(x2))
+#'     cat("something went wrong")
+#'
+#' @export
+#'
+#' @name extra
+#' @aliases extra<- extra<-.genalex
+#'
+NULL
+
+extra <- function(x, ...) UseMethod("extra")
+
+#' @export
+#'
+`extra<-` <- function(x, value) UseMethod("extra<-")
+
+
+#' @export
+#'
+extra.genalex <- function(x, ...)
+{
+    attr(x, "extra.columns")
+}
+
+
+
+#' @export
+#'
+`extra<-.genalex` <- function(x, value)
+{
+    if (! is.data.frame(value))
+        value <- as.data.frame(value, stringsAsFactors = FALSE)
+    rownames(value) <- x[, 1]
+    attr(x, "extra.columns") <- value
+    x
+}
+
+

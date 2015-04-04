@@ -3,9 +3,10 @@
 TODO
 ----
 
-- continue on `cbind.genalex` and add it to README etc.
-- add regression test for names on locus.columns
-- `cbind.genalex`?  `insertLocus`?
+- check example output and update expectation in `tests/Examples`
+- what actually happens with cbind(genalex, data.frame) and rbind(genalex, data.frame)?  I think I saw cbind.genalex called in the first case, but I thought from studying the second case that this would not happen.
+- do not allow duplicate sample or population and locus column names
+- `addLocus.genalex` to add locus info from a data frame
 - Add used papers to the data description?
 - Functions for converting from/to some other genetic formats, attaching them to `as.genalex`, add them to Enhances
 - If I am converting from those other formats, do I need to have the specific packages loaded?
@@ -28,8 +29,11 @@ TODO
 Completed
 ---------
 
+* Added `cbind.genalex` method to combind class `genalex` objects
+* Added extra columns checks and `skip.extra` option to `is.genalex`
+* Added `extra` as a shortcut for extracting extra columns from a class `genalex` object, and `extra<-` as a shortcut for assigning them.  The latter does a bit of error checking and sets their rownames to be the sample names of the class `genalex` object.
 * Sample names are checked for duplication more thoroughly
-* The `locus.columns` attribute now has names that match the `locus.names` attribute
+* The `locus.columns` attribute now has names that match the `locus.names` attribute, and tests have been added to verify it works as it should
 * `writeGenalexExcel()` will write to an Excel file, using the `XLConnect` package
 * `readGenalexExcel()` will read from an Excel file, using the `XLConnect` package
 * In most cases, both `as.genalex(as.data.frame(x1))` and `as.genalex(as.data.frame(x1, complete = TRUE))` will result in identical class `'genalex'` objects, except for the `"data.file.name"` attribute.  If the column names are not well-formed so that it is difficult to tell the ploidy *de novo*, then perhaps there may be some issues.

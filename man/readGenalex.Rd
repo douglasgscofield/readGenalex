@@ -45,7 +45,8 @@ data, with column names determined by line 3 of the input file.  Special
   in \code{file} to the right of the genotype columns.  Row order is the
   same as for the genotype data.  Data are given their natural types using
   \code{type.convert(..., as.is = TRUE)}, so that characters are
-  not converted to factors.  If no extra columns were found, this
+  not converted to factors.  Row names are assigned equal to the
+  corresponding sample names.  If no extra columns were found, this
   attribute does not exist.}
 \item{genetic.data.format }{\code{"genalex"}, not present in package versions >= 1.0}
 }
@@ -92,7 +93,8 @@ data frame in the \code{extra.columns} attribute and
 immediately to the right of the genotype values.  These data are given
 their natural type as if read with
 \code{read.table(..., stringsAsFactors = FALSE)}, so that
-character values are not converted to factors.
+character values are not converted to factors.  Row names are assigned that
+are equivalent to the corresponding sample names.
 
 More information on GenAlEx is available at
 \url{http://biology-assets.anu.edu.au/GenAlEx}.  In particular, genotype

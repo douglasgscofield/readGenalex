@@ -4,7 +4,8 @@
 \alias{is.genalex}
 \title{Check to see if an object is of class 'genalex'}
 \usage{
-is.genalex(x, force = FALSE, skip.strings = FALSE, verbose = FALSE)
+is.genalex(x, force = FALSE, skip.strings = FALSE, skip.extra = FALSE,
+  verbose = FALSE)
 }
 \arguments{
 \item{x}{An object that might be of class \code{'genalex'}}
@@ -16,6 +17,10 @@ consistent with class \code{'genalex'}}
 \item{skip.strings}{If \code{TRUE} and \code{force = TRUE},
 do not check the attributes \code{"dataset.title"} and
 \code{"data.file.name"} for consistency.}
+
+\item{skip.extra}{If \code{TRUE} and \code{force = TRUE}, do not
+check the extra data columns (attribute \code{"extra.columns"} for
+consistency.}
 
 \item{verbose}{If \code{TRUE} and \code{force = TRUE}, indicate any
 inconsistencies discovered between the data and annotations. if
@@ -37,6 +42,9 @@ cannot be removed from a valid object of class \code{'genalex'},
 but they can be set to the empty string (\code{""}) to avoid this
 check.  Alternatively, the option \code{skip.strings = TRUE} may
 be set to not check these specific attributes for consistency.
+Extra data columns are checked first for existence, then for contents,
+then for matching row names.  The option \code{skip.extra = TRUE}
+may be set to not check extra data columns.
 }
 \examples{
 data(Qagr_adult_genotypes)

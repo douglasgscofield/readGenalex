@@ -24,8 +24,12 @@ readGenalex 0.9.9000 (development version)
 -   New as.data.frame method to convert class 'genalex' to class
     'data.frame', optionally clearing all class 'genalex'-specific
     attributes
--   new genalex function to create a class 'genalex' object from
+-   New genalex function to create a class 'genalex' object from
     constituent data
+-   New extra and extra<- methods to get and set the extra columns of a
+    class 'genalex' object. The latter coerces its value object to a
+    data frame, if it is not already, does a bit of error checking, and
+    sets the row names to be the sample names of the object.
 -   readGenalex now has ... in its argument list, for additional
     arguments to be passed to scan() while reading data
 -   Added na.strings argument to readGenalex, with defaults that reflect

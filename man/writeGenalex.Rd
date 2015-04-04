@@ -62,7 +62,7 @@ areas for which this will likely be true are:
          class \code{'genalex'}, and are left out of the output of
          \code{writeGenalex}.
    \item Locations of additional data columns beyond the genotype columns,
-         which \code{readGenalex} will collect wherever there are named
+         which \code{readGenalex} should collect wherever there are named
          columns to the right of the genotype columns, and which
          \code{writeGenalex} will write immediately to the right of the
          genotype columns.  The same column names are used when writing
