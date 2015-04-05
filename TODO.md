@@ -3,6 +3,9 @@
 TODO
 ----
 
+- Check out adegenet package for translation methods
+- Check out pegas package for translation methods
+- `as.genotype.genalex` and `as.genalex.genotype` methods to convert to/from package `genetics` format
 - do I need a function to extract a specific population?
 - do I need to be more explicit about what happens with columns/extra columns with `cbind.genalex`?  Yes, the `cbind` docs need some help.
 - check example output and update expectation in `tests/Examples`

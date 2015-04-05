@@ -5,6 +5,17 @@
 # user manuals
 GenAlEx*.pdf
 Genepop*.pdf
+genetics*.pdf
+gtx*.pdf
+hypred*.pdf
+pegas*.pdf
+popgen*.pdf
+qgtools*.pdf
+thgenetics*.pdf
+GenABEL*.pdf
+GeneticTools*.pdf
+HWxtest*.pdf
+adegenet*.pdf
 # Example code in package build process
 *-Ex.R
 # directory used by the Makefile for R CMD check
