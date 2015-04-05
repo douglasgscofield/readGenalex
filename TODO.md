@@ -3,6 +3,7 @@
 TODO
 ----
 
+- test and add unit tests for addLocus.genalex
 - do I need to be more explicit about what happens with columns/extra columns with `cbind.genalex`?  Yes, the `cbind` docs need some help.
 - check example output and update expectation in `tests/Examples`
 - what actually happens with cbind(genalex, data.frame) and rbind(genalex, data.frame)?  I think I saw cbind.genalex called in the first case, but I thought from studying the second case that this would not happen.
@@ -53,7 +54,7 @@ Completed
 * Moved data documentation to `R/readGenalex-data.Rd`
 * Switched to full-generic interface, e.g., replaced `reduceGenalexPloidy` with `reducePloidy` generic and `reducePloidy.genalex` method, and deprecated old functions
 * Added `createGenalex()`, for creating a de-novo class `'genalex'` data frame
-* drawing on writeGenalex documentation about differences when writing, be more explicit about what happens with extra columns and with extra column names on input
+* The documentation is more explicit about how extra columns are handled when writing
 * straighten out test for writeGenalex with and without quote=
 * GenAlEx says all genotype data is numeric, so code it as numeric after reading
 * S3 methods for `as.genalex` append to the base method name `as.genalex`, e.g., `as.genalex.genalex`

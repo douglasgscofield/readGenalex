@@ -1106,6 +1106,85 @@ getLocus.genalex <- function(x, locus, pop = NULL, ...)
 
 
 
+#' Add genotype data to an object of class \code{'genalex'}
+#'
+#' Add genotype genotype data for new loci to an object of class
+#' \code{'genalex'}.  \code{newdata} is coerced to a data frame if
+#' it is not already and then added as columns on the right.  The
+#' new genotype data must have the same ploidy and the same number
+#' of samples as that in \code{x}.  It is an error to duplicate
+#' locus names in \code{x}.  If you want safe merging of data sets
+#' with potential overlap in genotypes, use \code{\link{cbind.genalex}}.
+#'
+#' @param x       An annotated data frame of class \code{'genalex'}
+#'
+#' @param newdata The names of one or more loci found in \code{x},
+#' it is coerced to a data frame if it is not one
+#'
+#' @param \dots  Additional arguments, currently ignored
+#'
+#' @return The object of class \code{'genalex'} in \code{x} with
+#' genotype data from \code{newdata} as columns added on the right
+#'
+#' @author Douglas G. Scofield
+#'
+#' @examples
+#'
+#' data(Qagr_pericarp_genotypes)
+#' dat <- head(Qagr_pericarp_genotypes, 6)
+#' ## Dummy up a new locus
+#' newdat <- data.frame(xx = sample(30, 6, TRUE), xx.2 = sample(30, 6, TRUE))
+#' dat <- addLocus(dat, newdat)
+#' dat
+#'
+#' @export
+#'
+#' @name addLocus
+#'
+NULL
+
+# TODO: need to set up unit tests
+
+addLocus <- function(x, ...) UseMethod("addLocus")
+
+#' @rdname addLocus
+#'
+#' @export
+#'
+addLocus.genalex <- function(x, newdata, ...)
+{
+    x.name <- deparse(substitute(x))
+    newdata.name <- deparse(substitute(newdata))
+    if (! is.data.frame(newdata))
+        newdata <- as.data.frame(newdata)
+    if (nrow(newdata) != nrow(x))
+        stop(x.name, " and ", newdata.name,
+             " must have the same number of samples (rows)")
+    if (! all(is.numeric(newdata)))
+        stop(newdata.name, " genotype data must be numeric")
+    ploidy <- attr(x, "ploidy")
+    if (ncol(newdata) %% ploidy)
+        stop(x.name, " and ", newdata.name, " appear not to match ploidy")
+    nd.n.loci <- ncol(newdata) / ploidy
+    nd.loc.col <- seq(1, by = ploidy, length.out = nd.n.loci)
+    loc.names <- names(newdata)[nd.loc.col]
+    loc.ov <- loc.names[loc.names %in% attr(x, "locus.names")]
+    if (length(loc.ov))
+        stop(x.name, " already contains loci: ", paste(collapse = " ", loc.ov))
+    r.col <- seq(ncol(x) + 1, ncol(x) + ncol(newdata))
+    x[, r.col] <- newdata  # adds on right without needing any cbind stuff
+    n.loci <- attr(x, "n.loci") + nd.n.loci
+    locus.names <- c(attr(x, "locus.names"), loc.names)
+    locus.columns <- .calculateLocusColumns(n.loci, ploidy)
+    names(locus.columns) <- locus.names
+    attr(x, "n.loci") <- n.loci
+    attr(x, "locus.names") <- locus.names
+    attr(x, "locus.columns") <- locus.columns
+    x
+}
+
+
+
 #' Replace genotype data in data frame of class \code{'genalex'}
 #'
 #' Replace genotype data for specified loci in a data frame of class
