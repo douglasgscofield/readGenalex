@@ -172,7 +172,7 @@ if (suppressPackageStartupMessages(require("XLConnect", character.only = TRUE,
         expect_match(attr(xa, "data.file.name"), "Qagr_genotypes.xlsx(Qagr_adult_genotypes)", fixed = TRUE)
         lxp <- xp; lxa <- xa; lgp <- gp; lga <- ga
         attr(lxp, "data.file.name") <- attr(lxa, "data.file.name") <- 
-            attr(lgp, "data.file.name") <- attr(lga, "data.file.name") <- NULL
+            attr(lgp, "data.file.name") <- attr(lga, "data.file.name") <- ""
         expect_equal(lxp, lgp)
         expect_equal(lxa, lga)
     })
@@ -314,6 +314,54 @@ test_that("getLocus()", {
 
 
 #########################################
+context("Testing addLocus()")
+
+l1 <- data.frame(y=1001:1003, y.2=104:106)
+l2 <- data.frame(z=1001:1003, z.2=104:106)
+l3 <- data.frame(z=1001:1003, z.2=104:106, z.3=595:597)
+l4 <- data.frame(y=101:103, y.2=c("a","b","c"))
+l5 <- data.frame(y=c("a","b","c"), y.2=101:103)
+l6 <- data.frame(a=1001:1003, a.2=104:106)
+l7 <- data.frame(b=301:303, b.2=404:406)
+
+test_that("addLocus()", {
+    # return is class genalex
+    expect_is(addLocus(x1, l1), "genalex")
+    expect_is(addLocus(x1, l1), "data.frame")
+    expect_true(is.genalex(addLocus(x1, l1)))
+    expect_true(is.genalex(addLocus(x1, l1), force = TRUE))
+    # error if wrong number of rows
+    expect_error(addLocus(x1, l1[1:2, ]), "must have the same number of samples")
+    # error if not numeric
+    expect_error(addLocus(x1, l4), "genotype data must be numeric")
+    expect_error(addLocus(x1, l5), "genotype data must be numeric")
+    # error if ploidy apparently wrong
+    expect_error(addLocus(x1, l3), "appear not to match ploidy")
+    # error if locus already exists
+    expect_error(addLocus(x1, l6), "already contains loci: a")
+    expect_error(addLocus(x1, l7), "already contains loci: b")
+    expect_error(addLocus(x1, cbind(l6, l7)), "already contains loci: a b")
+    # adds one locus
+    a1 <- addLocus(x1, l1)
+    expect_equal(attr(a1, "locus.names"), c("a", "b", "y"))
+    # adds multiple loci
+    a2 <- addLocus(x1, cbind(l1, l2))
+    expect_equal(attr(a2, "locus.names"), c("a", "b", "y", "z"))
+    a3 <- addLocus(x1, l1)
+    a3 <- addLocus(a3, l2)
+    attr(a2, "data.file.name") <- attr(a3, "data.file.name") <- ""
+    expect_equal(a2, a3)
+    # drop and add locus ??
+    expect_error(addLocus(x1, getLocus(x1, "b")), "already contains loci: b")
+    a4 <- x1
+    a4 <- addLocus(dropLocus(x1, "a"), getLocus(x1, "a"))
+    a4 <- addLocus(dropLocus(x1, "b"), getLocus(x1, "b"))
+    attr(a4, "data.file.name") <- attr(x1, "data.file.name") <- ""
+    expect_equal(a4, x1)
+})
+
+
+#########################################
 context("Testing dropLocus()")
 
 
@@ -328,7 +376,7 @@ test_that("dropLocus()", {
         "locus not present")
     expect_is(p1, "genalex")
     p1.2 <- genalex(1:3, "snurf", g1[, 3:4], ploidy = 2)
-    attr(p1, "data.file.name") <- attr(p1.2, "data.file.name") <- NULL
+    attr(p1, "data.file.name") <- attr(p1.2, "data.file.name") <- ""
     expect_equal(p1, p1.2)
     expect_equal(names(p1), c("sample", "pop", "b", "b.2"))
     expect_equal(attr(p1, "n.loci"), 1)
@@ -350,7 +398,7 @@ test_that("reducePloidy()", {
     expect_error(reducePloidy(p1.4, 2),
         "can't currently handle new.ploidy other than 1, existing ploidy other than 2")
     p1.2 <- genalex(1:3, "snurf", g1[, c(1,3)], ploidy = 1)
-    attr(p1, "data.file.name") <- attr(p1.2, "data.file.name") <- NULL
+    attr(p1, "data.file.name") <- attr(p1.2, "data.file.name") <- ""
     expect_equal(p1, p1.2)
     expect_equal(names(p1), c("sample", "pop", "a", "b"))
     expect_equal(attr(p1, "ploidy"), 1)

@@ -10,6 +10,7 @@
 * New `genalex` function to create a class `'genalex'` object from constituent data
 * New `rbind` method to combine samples from multiple class `'genalex'` objects
 * New `cbind` method to combine loci and extra data columns from multiple class `'genalex'` objects
+* New `addLocus` method to directly add genotype data to the right side of an existing class `'genalex'` object
 * New `extra` and `extra<-` methods to get and set the extra columns of a class `'genalex'` object.  The latter coerces its `value` object to a data frame, if it is not already, does a bit of error checking, and sets the row names to be the sample names of the object.
 * `readGenalex` now has `...` in its argument list, for additional arguments to be passed to `scan()` while reading data
 * Added `na.strings` argument to `readGenalex`, with defaults that reflect GenAlEx's own expectations for missing data

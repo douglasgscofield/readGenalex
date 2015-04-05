@@ -3,12 +3,10 @@
 TODO
 ----
 
-- test and add unit tests for addLocus.genalex
 - do I need to be more explicit about what happens with columns/extra columns with `cbind.genalex`?  Yes, the `cbind` docs need some help.
 - check example output and update expectation in `tests/Examples`
 - what actually happens with cbind(genalex, data.frame) and rbind(genalex, data.frame)?  I think I saw cbind.genalex called in the first case, but I thought from studying the second case that this would not happen.
 - do not allow duplicate sample or population and locus column names
-- `addLocus.genalex` to add locus info from a data frame
 - Add used papers to the data description?
 - Functions for converting from/to some other genetic formats, attaching them to `as.genalex`, add them to Enhances
 - If I am converting from those other formats, do I need to have the specific packages loaded?
@@ -31,6 +29,7 @@ TODO
 Completed
 ---------
 
+* Added `addLocus.genalex` for directly adding genotype data
 * Added `cbind.genalex` method to combind class `genalex` objects
 * Added extra columns checks and `skip.extra` option to `is.genalex`
 * Added `extra` as a shortcut for extracting extra columns from a class `genalex` object, and `extra<-` as a shortcut for assigning them.  The latter does a bit of error checking and sets their rownames to be the sample names of the class `genalex` object.

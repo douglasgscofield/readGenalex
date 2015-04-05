@@ -146,6 +146,7 @@ Function | Description
 `computeLocusColumns()` | Return a vector of column numbers for specified loci
 `replaceLocus()` | Replace genotypes of specified locus
 `getLocus()` | Return genotypes of specified locus, optionally only for specific populations
+`addLocus()` | Add genotypes to an object of class `'genalex'`
 `extra()` | Get or set `extra.columns` attribute
 `cbind()` | Merge loci and extra data columns from two or more class `'genalex'` objects
 `rbind()` | Merge samples from two or more class `'genalex'` objects

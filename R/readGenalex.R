@@ -1160,7 +1160,7 @@ addLocus.genalex <- function(x, newdata, ...)
     if (nrow(newdata) != nrow(x))
         stop(x.name, " and ", newdata.name,
              " must have the same number of samples (rows)")
-    if (! all(is.numeric(newdata)))
+    if (! all(sapply(newdata, is.numeric)))
         stop(newdata.name, " genotype data must be numeric")
     ploidy <- attr(x, "ploidy")
     if (ncol(newdata) %% ploidy)
