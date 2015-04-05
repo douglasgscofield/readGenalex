@@ -40,7 +40,7 @@ No value is returned.
 \description{
 Writes genotype data encoded in an annotated data frame of class
 \code{'genalex'} to a GenAlEx-format text file.  Extra data columns are
-included immediately to the right of genotype columns.  GenAlEx and its
+written immediately to the right of genotype columns.  GenAlEx and its
 documentation are available at
 \url{http://biology-assets.anu.edu.au/GenAlEx}.
 }

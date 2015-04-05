@@ -2,8 +2,9 @@
 .RData
 *.Rproj
 .Rproj.user
-# the GenAlEx user manual
+# user manuals
 GenAlEx*.pdf
+Genepop*.pdf
 # Example code in package build process
 *-Ex.R
 # directory used by the Makefile for R CMD check

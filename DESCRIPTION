@@ -27,3 +27,4 @@ Collate:
     'readGenalex-deprecated.R'
     'readGenalex-package.R'
     'readGenalex-readwrite.R'
+    'readGenalex-translate.R'

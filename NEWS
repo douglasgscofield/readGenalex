@@ -53,6 +53,8 @@ readGenalex 0.9.9000 (development version)
     package to read and write to Excel files of both .xls and .xlsx
     formats. These functions verify the consistency of their annotations
     and data prior to writing; this check can be removed on option.
+-   Added writeGenepop to write data in a class 'genalex' object to a
+    Genepop-format text file
 -   Clarified typing of sample, population, genotype, and extra columns.
     Sample and population columns are stored as character (population
     was previously a factor), genotype columns are stored as numeric,

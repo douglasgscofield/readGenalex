@@ -151,6 +151,7 @@ Function | Description
 `cbind()` | Merge loci and extra data columns from two or more class `'genalex'` objects
 `rbind()` | Merge samples from two or more class `'genalex'` objects
 `checkNullAlleles()` | Compare genotypes against a set of reference genotypes to check for potential null (nonamplifying) alleles
+`writeGenepop()`| Write class `'genalex'` object in [Genepop](http://kimura.univ-montp2.fr/~rousset) format
 
 
 ## Datasets

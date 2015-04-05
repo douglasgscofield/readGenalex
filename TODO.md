@@ -3,6 +3,7 @@
 TODO
 ----
 
+- do I need a function to extract a specific population?
 - do I need to be more explicit about what happens with columns/extra columns with `cbind.genalex`?  Yes, the `cbind` docs need some help.
 - check example output and update expectation in `tests/Examples`
 - what actually happens with cbind(genalex, data.frame) and rbind(genalex, data.frame)?  I think I saw cbind.genalex called in the first case, but I thought from studying the second case that this would not happen.
@@ -29,6 +30,7 @@ TODO
 Completed
 ---------
 
+* Added `writeGenepop` to write Genepop-format data files (Rousset 2008 *Molecular Ecology Resources*, <http://kimura.univ-montp2.fr/~rousset>)
 * Added `addLocus.genalex` for directly adding genotype data
 * Added `cbind.genalex` method to combind class `genalex` objects
 * Added extra columns checks and `skip.extra` option to `is.genalex`

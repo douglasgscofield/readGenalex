@@ -8,4 +8,5 @@
 ^NEWS\.md$
 ^TODO\.md$
 ^GenAlEx.*\.pdf$
+^Genepop.*\.pdf$
 ^check_tmp$
