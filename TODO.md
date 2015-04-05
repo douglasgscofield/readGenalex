@@ -3,14 +3,13 @@
 TODO
 ----
 
-- Check out adegenet package for translation methods
-- Check out pegas package for translation methods
+- Check out genetics package for translation methods
+- Check out adegenet package for translation methods; a bit of a mess, see below for pegas as a better way in
+- Check out pegas package for translation methods; see pegas' `as.loci()`
 - `as.genotype.genalex` and `as.genalex.genotype` methods to convert to/from package `genetics` format
 - do I need a function to extract a specific population?
 - do I need to be more explicit about what happens with columns/extra columns with `cbind.genalex`?  Yes, the `cbind` docs need some help.
-- check example output and update expectation in `tests/Examples`
 - what actually happens with cbind(genalex, data.frame) and rbind(genalex, data.frame)?  I think I saw cbind.genalex called in the first case, but I thought from studying the second case that this would not happen.
-- do not allow duplicate sample or population and locus column names
 - Add used papers to the data description?
 - Functions for converting from/to some other genetic formats, attaching them to `as.genalex`, add them to Enhances
 - If I am converting from those other formats, do I need to have the specific packages loaded?
@@ -33,6 +32,7 @@ TODO
 Completed
 ---------
 
+* Check added for duplicate column names involving the loci and the sample and population columns
 * Added `writeGenepop` to write Genepop-format data files (Rousset 2008 *Molecular Ecology Resources*, <http://kimura.univ-montp2.fr/~rousset>)
 * Added `addLocus.genalex` for directly adding genotype data
 * Added `cbind.genalex` method to combind class `genalex` objects

@@ -88,7 +88,7 @@ NULL
 #'   in \code{file} to the right of the genotype columns.  Row order is the
 #'   same as for the genotype data.  Data are given their natural types using
 #'   \code{type.convert(..., as.is = TRUE)}, so that characters are
-#'   not converted to factors.  Row names are assigned equal to the 
+#'   not converted to factors.  Row names are assigned equal to the
 #'   corresponding sample names.  If no extra columns were found, this
 #'   attribute does not exist.}
 #' \item{genetic.data.format }{\code{"genalex"}, not present in package versions >= 1.0}
@@ -301,7 +301,12 @@ readGenalexExcel <- function(file, worksheet, ploidy = 2)
                  paste(sep = ".", x, seq(2, header$ploidy, 1))
              else NULL)
     }
-    c(header$sample.title, header$pop.title, sapply(header$locus.names, f))
+    nms <- c(header$sample.title, header$pop.title,
+             sapply(header$locus.names, f))
+    if (any(duplicated(nms)))
+        stop("data column names duplicated: ",
+             paste(collapse = " ", nms[duplicated(nms)]))
+    nms
 }
 
 
@@ -353,7 +358,9 @@ readGenalexExcel <- function(file, worksheet, ploidy = 2)
         extra.columns <- raw.data$extra.columns
         rownames(extra.columns) <- dat[, 1]
     }
-    names(dat) <- .createDataColumnNames(header)
+    if (! is.null(header$data.column.names))
+        names(dat) <- header$data.column.names
+    else names(dat) <- .createDataColumnNames(header)
     # TODO: handle label in header with size 0 and missing from data?
     pop.labels.header <- sort(header$pop.labels)
     pop.labels.data <- sort(levels(factor(dat[[header$pop.title]])))
@@ -374,7 +381,7 @@ readGenalexExcel <- function(file, worksheet, ploidy = 2)
     mism <- pop.sizes.in.data != header$pop.sizes
     if (any(mism)) {
         err1 <- paste(collapse = ",",header$pop.labels[mism])
-        err2 <- paste(paste(sep = " != ", collapse = ", ", 
+        err2 <- paste(paste(sep = " != ", collapse = ", ",
                             pop.sizes.in.data[mism], header$pop.sizes[mism]))
         stop("sizes of populations ", err1,
              " do not match in header and data: ", err2)
@@ -432,7 +439,7 @@ readGenalexExcel <- function(file, worksheet, ploidy = 2)
 #' @param quote Logical value (\code{TRUE} or \code{FALSE}).  If \code{TRUE},
 #' all character data are surrounded by double quotes, and all header fields
 #' except for counts are quoted if they exist.  Note that genotype data will
-#' not be quoted, as they are' numeric values.  Data in the extra columns 
+#' not be quoted, as they are' numeric values.  Data in the extra columns
 #' will be quoted, unless some have been made numeric since being read.  If
 #' \code{FALSE}, nothing is quoted.
 #'
@@ -499,7 +506,7 @@ writeGenalex <- function(x, file, quote = FALSE, sep = "\t", eol = "\n",
     cat(file = file, sep = "", paste(collapse = sep, header[[2]]), eol)
     cat(file = file, sep = "", paste(collapse = sep, header[[3]]), eol)
     # convert data
-    dat <- .genalexDataToCharacter(x, quote = quote, na = na, 
+    dat <- .genalexDataToCharacter(x, quote = quote, na = na,
                                    na.character = na.character)
     # data plus extra columns
     for (i in 1:nrow(dat)) {
@@ -513,8 +520,8 @@ writeGenalex <- function(x, file, quote = FALSE, sep = "\t", eol = "\n",
 #'
 #' Writes genotype data file in GenAlEx format from an annotated data frame
 #' of class \code{'genalex'} to an Excel worksheet.  Both \code{.xls} and
-#' \code{.xlsx} formats may be written.  This function uses the function 
-#' \code{\link[XLConnect]{writeWorksheet}} and others from the 
+#' \code{.xlsx} formats may be written.  This function uses the function
+#' \code{\link[XLConnect]{writeWorksheet}} and others from the
 #' \href{http://cran.r-project.org/web/packages/XLConnect/index.html}{XLConnect}
 #' package to write the Excel file.  Strings representing \code{NA} values are
 #' strictly those allowed by GenAlEx itself, 0 and -1.  The worksheet is
@@ -524,7 +531,7 @@ writeGenalex <- function(x, file, quote = FALSE, sep = "\t", eol = "\n",
 #' locus name.  The other columns representing further alleles for the locus
 #' are left blank.
 #'
-#' Any extra columns of data, if present in the object of class 
+#' Any extra columns of data, if present in the object of class
 #' \code{'genalex'}, are written immediately to the right of the genotype
 #' columns.
 #'
@@ -538,7 +545,7 @@ writeGenalex <- function(x, file, quote = FALSE, sep = "\t", eol = "\n",
 #' \code{\link[XLConnect]{createSheet}}
 #'
 #' @param na    The string to use when writing missing values in genotype
-#' data.  Defaults to \code{"0"}, and must be one of \code{"0"} or 
+#' data.  Defaults to \code{"0"}, and must be one of \code{"0"} or
 #' \code{"-1"}, as allowed by GenAlEx.
 #'
 #' @param na.character The string to use when writing missing values in
@@ -593,7 +600,7 @@ writeGenalexExcel <- function(x, file, worksheet, na = c("0", "-1"),
     if (! XLConnect::existsSheet(wb, worksheet))
         XLConnect::createSheet(wb, worksheet)
     else if (! overwrite)
-        stop("worksheet ", worksheet, " already exists in workbook ", file, 
+        stop("worksheet ", worksheet, " already exists in workbook ", file,
              ", will not overwrite")
     header <- .genalexHeaderToCharacter(x, quote = FALSE)
     for (i in seq(along=header)) {

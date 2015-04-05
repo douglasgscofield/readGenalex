@@ -10,6 +10,11 @@ x1 <- genalex(1:3, "snurf", g1)
 g2 <- data.frame(a = 21:23, a.2 = 24:26, b = 201:203, b.2 = 204:206)
 x2 <- genalex(4:6, "snirf", g2)
 
+test_that("data set up correctly", {
+    expect_is(x1, "genalex")
+    expect_is(x2, "genalex")
+})
+
 context("Testing writeGenepop()")
 
 test_that("writeGenepop() generates correct errors", {

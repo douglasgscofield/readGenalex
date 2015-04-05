@@ -606,11 +606,14 @@ cbind.genalex <- function(..., names = NULL, deparse.level = 1)
     loc.1 <- att.1$locus.columns  # already have names
     ploidy.1 <- att.1$ploidy
     # check number of rows
-    for (i in 2:length(dots))
+    for (i in 2:length(dots)) {
+        if (! is.genalex(dots[[i]]))
+            stop("the ", i, "-th argument is not of class 'genalex'")
         if (nrow(dots[[i]]) != nrow(dot.1))
             stop("number of rows in the ", i, "-th data set ",
                  nrow(dots[[i]]), " does not match the ", nrow(dot.1),
                  " rows in the first")
+    }
     # check sample names
     equal.but.order <- function(a, b) all(a %in% b) && all(b %in% a)
     samp.1 <- dot.1[, 1]
@@ -1165,6 +1168,9 @@ addLocus.genalex <- function(x, newdata, ...)
     ploidy <- attr(x, "ploidy")
     if (ncol(newdata) %% ploidy)
         stop(x.name, " and ", newdata.name, " appear not to match ploidy")
+    if (any(names(newdata) %in% names(x)[c(1, 2)]))
+        stop(newname.name, " column names conflict with column names in ",
+             x.name)
     nd.n.loci <- ncol(newdata) / ploidy
     nd.loc.col <- seq(1, by = ploidy, length.out = nd.n.loci)
     loc.names <- names(newdata)[nd.loc.col]

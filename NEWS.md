@@ -20,6 +20,7 @@
 * Clarified typing of sample, population, genotype, and extra columns.  Sample and population columns are stored as character (population was previously a factor), genotype columns are stored as numeric, and extra columns are stored as their natural type as determined by `type.convert(..., as.is=TRUE)`, so that character columns are not converted to factors.
 * As a result of the clarified typing, `writeGenalex(..., quote=TRUE)` will only quote names in the GenAlEx header, in the first two columns, and in any character-valued extra columns
 * There is now more thorough checking for duplicate sample names, which should always produce an error
+* There are also checks for duplication among the locus names and the sample and population columns
 * The `locus.columns` attribute now has names which match the corresponding loci
 * Added tests for all functions and found a few bugs along the way
 * Rolled `checkNullAlleles` from my popgen repository into this package
