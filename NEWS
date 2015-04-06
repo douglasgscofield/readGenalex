@@ -66,6 +66,8 @@ readGenalex 0.9.9000 (development version)
     columns, and in any character-valued extra columns
 -   There is now more thorough checking for duplicate sample names,
     which should always produce an error
+-   There are also checks for duplication among the locus names and the
+    sample and population columns
 -   The locus.columns attribute now has names which match the
     corresponding loci
 -   Added tests for all functions and found a few bugs along the way

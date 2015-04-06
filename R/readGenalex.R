@@ -97,8 +97,9 @@ is.genalex <- function(x, force = FALSE, skip.strings = FALSE,
         ans$ploidy <- if (runs$values[1] == TRUE) (runs$lengths[1] + 1) else 1
     }
     if ((ncol(x) - 2) %% ans$ploidy)
-        stop("ploidy ", ans$ploidy, " inconsistent with apparent number of ",
-             "locus columns ", ncol(x) - 2)
+        stop("ploidy ", ans$ploidy, 
+             " inconsistent with apparent number of locus columns ",
+             ncol(x) - 2)
     ans$n.loci <- (ncol(x) - 2) / ans$ploidy
     ans$locus.columns <- seq(3, ncol(x), by = ans$ploidy)
     ans$locus.names <- names(x)[ans$locus.columns]
@@ -335,7 +336,8 @@ as.genalex.data.frame <- function(x, names = NULL, ploidy = 2, ...)
 #'
 as.genalex.default <- function(x, ...)
 {
-    stop("'", deparse(substitute(x)), "' cannot be coerced to class 'genalex', perhaps it could be converted to a data.frame?")
+    stop("'", deparse(substitute(x)), 
+         "' cannot be coerced to class 'genalex', perhaps to a data.frame first?")
 }
 
 
@@ -1353,8 +1355,7 @@ reducePloidy.genalex <- function(x, new.ploidy = 1, ...)
         stop("new ploidy ", new.ploidy, " greater than existing ploidy ",
              att$ploidy)
     else if (new.ploidy != 1 || att$ploidy != 2)
-        stop("can't currently handle new.ploidy other than 1,",
-             " existing ploidy other than 2")
+        stop("can't currently handle new.ploidy other than 1, existing ploidy other than 2")
     new.col <- c(1:(att$locus.columns[1]-1), att$locus.columns)
     x <- x[, new.col]
     for (a in names(att))
