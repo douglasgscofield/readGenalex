@@ -153,6 +153,7 @@ Function | Description
 `checkNullAlleles()` | Compare genotypes against a set of reference genotypes to check for potential null (nonamplifying) alleles
 `writeGenepop()`| Write class `'genalex'` object in [Genepop](http://kimura.univ-montp2.fr/~rousset) format
 `as.genetics()` | Convert class `'genalex'` object to a data frame with genotypes encoded using class `genotype` (unphased) or class `haplotype` (phased) from package `genetics`
+`splitGenotypes()` | Split genotypes encoded as `101/107` into separate columns of a data frame, suitable for further use with `genalex()`
 
 
 ## Datasets

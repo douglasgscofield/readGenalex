@@ -8,6 +8,7 @@
 * There is a `summary` method for class `'genalex'` which prints a few lines describing the data set, followed by a summary of the data frame contents and a summary of the extra columns, if present
 * New `as.data.frame` method to convert class `'genalex'` to class `'data.frame'`, optionally clearing all class `'genalex'`-specific attributes
 * New `as.genetics` method to convert class `'genalex'` to a data frame with genotypes for each locus encoded using class `'genotype'` or class `'haplotype'` from package `genetics`
+* New `splitGenotypes` function to split `genotype`-encoded genotypes into separate columns of a data frame
 * New `genalex` function to create a class `'genalex'` object from constituent data
 * New `rbind` method to combine samples from multiple class `'genalex'` objects
 * New `cbind` method to combine loci and extra data columns from multiple class `'genalex'` objects

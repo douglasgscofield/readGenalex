@@ -33,6 +33,8 @@ readGenalex 0.9.9000 (development version)
 -   New as.genetics method to convert class 'genalex' to a data frame
     with genotypes for each locus encoded using class 'genotype' or
     class 'haplotype' from package genetics
+-   New splitGenotypes function to split genotype-encoded genotypes into
+    separate columns of a data frame
 -   New genalex function to create a class 'genalex' object from
     constituent data
 -   New rbind method to combine samples from multiple class 'genalex'
