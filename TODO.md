@@ -3,7 +3,8 @@
 TODO
 ----
 
-- Check out genetics package for translation methods
+- Add unit tests for `as.genetics.genalex`
+- Why is `sepi=` ignored when used from `as.genetics.genalex`
 - Check out adegenet package for translation methods; a bit of a mess, see below for pegas as a better way in
 - Check out pegas package for translation methods; see pegas' `as.loci()`
 - `as.genotype.genalex` and `as.genalex.genotype` methods to convert to/from package `genetics` format
@@ -32,6 +33,7 @@ TODO
 Completed
 ---------
 
+* Added `as.genetics.genalex` method to convert genotypes to class `genotype` or class `haplotype` from package `genetics`
 * Check added for duplicate column names involving the loci and the sample and population columns
 * Added `writeGenepop` to write Genepop-format data files (Rousset 2008 *Molecular Ecology Resources*, <http://kimura.univ-montp2.fr/~rousset>)
 * Added `addLocus.genalex` for directly adding genotype data

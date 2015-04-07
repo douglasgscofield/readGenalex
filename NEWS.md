@@ -7,6 +7,7 @@
 * New `as.genalex` generic with `as.genalex.genalex` and `as.genalex.data.frame`.  The latter will convert a pre-class `'genalex'` data frame to class `'genalex'`, and is used wherever a data frame is returned so conversion from old to new format happens automatically.  It will also convert a suitably-formatted data frame to class `'genalex'` after determining suitable attributes
 * There is a `summary` method for class `'genalex'` which prints a few lines describing the data set, followed by a summary of the data frame contents and a summary of the extra columns, if present
 * New `as.data.frame` method to convert class `'genalex'` to class `'data.frame'`, optionally clearing all class `'genalex'`-specific attributes
+* New `as.genetics` method to convert class `'genalex'` to a data frame with genotypes for each locus encoded using class `'genotype'` or class `'haplotype'` from package `genetics`
 * New `genalex` function to create a class `'genalex'` object from constituent data
 * New `rbind` method to combine samples from multiple class `'genalex'` objects
 * New `cbind` method to combine loci and extra data columns from multiple class `'genalex'` objects
