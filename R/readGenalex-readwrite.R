@@ -297,16 +297,26 @@ readGenalexExcel <- function(file, worksheet, ploidy = 2)
 
 
 
+# Create ploidy-determined allele column names: from "a", create c("a", "a.2")
+.createAlleleColumnNames <- function(x, ploidy) {
+    c(x, if (ploidy > 1)
+             paste(sep = ".", x, seq(2, ploidy, 1))
+         else NULL)
+}
+
+
+
 # Create column names including for genotypes: "a", "a.2", "b", "b.2", etc.
 .createDataColumnNames <- function(header)
 {
-    f <- function(x) {
-        c(x, if (header$ploidy > 1)
-                 paste(sep = ".", x, seq(2, header$ploidy, 1))
-             else NULL)
-    }
+    #f <- function(x) {
+    #    c(x, if (header$ploidy > 1)
+    #             paste(sep = ".", x, seq(2, header$ploidy, 1))
+    #         else NULL)
+    #}
     nms <- c(header$sample.title, header$pop.title,
-             sapply(header$locus.names, f))
+             sapply(header$locus.names, 
+                    .createAlleleColumnNames, header$ploidy))
     if (any(duplicated(nms)))
         stop("data column names duplicated: ",
              paste(collapse = " ", nms[duplicated(nms)]))

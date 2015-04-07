@@ -23,7 +23,7 @@ data.  Defaults to \code{"0"}, and must be one of \code{"0"} or
 character data.  Defaults to \code{""}.}
 
 \item{check.annotation}{If \code{TRUE}, the annotations for the dataset
-are checked using \code{"is.genalex(x, force = TRUE, skip.strings = TRUE)"}.
+are checked using \code{is.genalex(x, force = TRUE, skip.strings = TRUE)}.
 If that returns \code{FALSE}, nothing is written and an error is generated.}
 
 \item{overwrite}{If \code{FALSE}, an existing sheet with the same name as

@@ -11,15 +11,19 @@
 \arguments{
 \item{x}{Annotated data frame of class \code{'genalex'}}
 
-\item{phased}{Default \code{FALSE}.  If \code{TRUE}, assumes alleles
-in \code{x} are phased and encodes them using class
-\code{\link[genetics]{haplotype}} using
-\code{\link[genetics]{makeHaplotypes}} rather than as class
-\code{\link[genetics]{genotype}} using
-\code{\link[genetics]{makeGenotypes}}.  For class
-\code{\link[genetics]{haplotype}}, a genotype of \code{101/107} is
-different from \code{107/101}, while these are the same for class
-\code{\link[genetics]{genotype}}.}
+\item{phased}{Default \code{FALSE}.  If \code{FALSE}, assumes alleles
+in \code{x} are unphased so that a genotype of \code{101/107} is
+identical to a genotype of \code{107/101}.  This results in the
+application of class \code{\link[genetics]{genotype}} to the
+genotype data, using \code{\link[genetics]{makeGenotypes}}.  Default
+ordering for alleles is applied, which for class
+\code{\link[genetics]{genotype}} is to be sorted by frequency; for
+more information, see \code{\link[genetics]{genotype}}
+If \code{TRUE}, assumes alleles are phased so that a genotype of
+\code{101/107} is different from a genotype of \code{107/101}.
+This results in the application of class \code{\link[genetics]{haplotype}}
+using \code{\link[genetics]{makeHaplotypes}}.  In this case, alleles are
+ordered as they are present in the genotype.}
 
 \item{sep}{\emph{Ignored, package }\code{genetics}\emph{ applies it
 inconsistently so we cannot reliably apply its effects.}  If it were ever
@@ -28,7 +32,7 @@ to \code{\link[genetics]{makeGenotypes}} or
 \code{\link[genetics]{makeHaplotypes}}}
 
 \item{check.annotation}{If \code{TRUE}, the annotations for the dataset
-are checked using \code{"is.genalex(x, force = TRUE, skip.strings = TRUE)"}
+are checked using \code{is.genalex(x, force = TRUE, skip.strings = TRUE)}
 prior to conversion.  If that returns \code{FALSE}, nothing is converted
 and an error is generated.}
 
@@ -39,7 +43,7 @@ and an error is generated.}
 using  class \code{\link[genetics]{genotype}}.  The class
 \code{'genalex'} is removed while many of the attributes are retained:
 
-\item{data.file.name }{Its original value, wrapped with
+\item{data.file.name }{The original value, wrapped with
   \code{"as.genetics(...)"}}
 \item{ploidy }{Retained}
 \item{n.loci }{Retained}
@@ -52,7 +56,7 @@ using  class \code{\link[genetics]{genotype}}.  The class
 \item{pop.title }{Retained}
 \item{locus.names }{Retained}
 \item{locus.columns }{Modified to indicate the change to a single column
-  per locus, if required}
+  per locus}
 \item{extra.columns }{Retained}
 }
 \description{
@@ -62,7 +66,7 @@ encoded with class \code{\link[genetics]{genotype}} as provided by the
 \href{http://cran.r-project.org/web/packages/genetics/index.html}{genetics}
 package.  All class {'genalex'} attributes are retained except for
 class \code{'genalex'} itself; see Details.  Only conversion of diploid
-data are supported, as this is what is supported by the
+data are supported, a inherent limitation of the
 \href{http://cran.r-project.org/web/packages/genetics/index.html}{genetics}
 package.
 }
@@ -74,18 +78,14 @@ of a data frame. For diploid data, the number of columns in the resulting
 data frame will be reduced by the number of loci.  The sample name and
 population columns are retained, as are the names of the loci.
 
-Handling of missing data
-
-Handling of extra columns
-
-Why does 'genotype' reverse the alleles??
+If either allele of a genotype is missing, the entire genotype is treated
+as missing in class \code{\link[genetics]{genotype}}.
 
 This is a specialised wrapper around the functions
 \code{\link[genetics]{makeGenotypes}} (\code{phased = FALSE}) and
-\code{\link[genetics]{makeHaplotypes}} (\code{phased = FALSE}) from the
+\code{\link[genetics]{makeHaplotypes}} (\code{phased = TRUE}) from the
 \href{http://cran.r-project.org/web/packages/genetics/index.html}{genetics}
-package.  It uses option \code{reorder = "no"} to keep the alleles in the
-same order as their appearance in the class \code{'genalex'} object.
+package.
 }
 \examples{
 data(Qagr_pericarp_genotypes)
@@ -96,6 +96,6 @@ as.genetics(dd)
 Douglas G. Scofield
 }
 \seealso{
-class \code{\link[genetics]{genotype}}, \code{\link[genetics]{makeGenotypes}}, \code{\link[genetics]{makeHaplotypes}}
+\code{\link[genetics]{genotype}}, \code{\link[genetics]{haplotype}}, \code{\link[genetics]{makeGenotypes}}, \code{\link[genetics]{makeHaplotypes}}
 }
 

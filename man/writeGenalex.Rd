@@ -31,7 +31,7 @@ data.  Defaults to \code{"0"}.}
 character data.  Defaults to \code{""}.}
 
 \item{check.annotation}{If \code{TRUE}, the annotations for the dataset
-are checked using \code{"is.genalex(x, force = TRUE, skip.strings = TRUE)"}.
+are checked using \code{is.genalex(x, force = TRUE, skip.strings = TRUE)}.
 If that returns \code{FALSE}, nothing is written and an error is generated.}
 }
 \value{

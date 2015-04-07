@@ -1466,3 +1466,50 @@ extra.genalex <- function(x, ...)
 }
 
 
+
+#' Split genotypes encoded like class 'genotype' into separate alleles
+#'
+#' @param  x   A data frame or object that can be coerced to a data frame
+#' which contains genotypes of the form \code{101/107}, where the
+#' \code{"/"} is determined by \code{sep}
+#'
+#' @param  sep Separator between alleles
+#'
+#' @export
+#'
+splitGenotypes <- function(x, sep = "/")
+{
+    if (! is.data.frame(x))
+        x <- as.data.frame(x)
+    do.split <- function(.x, collapse.if.gt.2) {
+        ans <- strsplit(as.character(.x), sep, fixed = TRUE)
+        if (! collapse.if.gt.2 && any(sapply(ans, length)) > 2) {
+            w <- .x[which(sapply(ans, length) > 2)]
+            stop("more than two alleles identified: ",
+                 paste(collapse = " ", w))
+        }
+        ans <- sapply(ans, function(.y) if (length(.y) <= 2) .y
+                      else paste(collapse = sep, .y))
+    }
+    rnm <- rownames(x)
+    cnm <- lapply(names(x), do.split, TRUE)
+    # any that are not length 2, create "a", "a.2"
+    cnm <- unlist(lapply(cnm, function(.y) if (length(.y) == 2) .y
+                         else .createAlleleColumnNames(.y, 2)))
+    # now split genotypes
+    x <- lapply(x, do.split, FALSE)
+    # this will automatically assign NA to any genotypes with missing alleles
+    getcol <- function(.l, .i) lapply(.l, function(.x) .x[.i, ])
+    c.1 <- getcol(x, 1)
+    c.2 <- getcol(x, 2)
+    if (length(c.1) < 1 || length(c.1) != length(c.2))
+        stop("some kind of inconsistency with columns in split alleles")
+    ans <- c()
+    for (i in seq(along = c.1))
+        ans <- cbind(ans, c.1[[i]], c.2[[i]])
+    storage.mode(ans) <- "integer"
+    rownames(ans) <- rnm
+    colnames(ans) <- cnm
+    ans
+}
+#

@@ -122,5 +122,13 @@ if (suppressPackageStartupMessages(require("genetics", character.only = TRUE,
     expect_true(is.na(as.genetics(xx1)[2, 3]))
     xx1 <- x1; xx1[2, 3] <- NA
     expect_true(is.na(as.genetics(xx1)[2, 3]))
+
+    #########################################
+    context("Testing splitGenotypes()")
+
+    xx1 <- as.genetics(x1)[, 3:4]
+    expect_output(splitGenotypes(xx1), "a a.2")
+    expect_output(splitGenotypes(xx1), "b b.2")
+    expect_output(splitGenotypes(xx1), "2 15  12 105 102")
 }
 
