@@ -79,3 +79,15 @@ test_that("writeGenepop() output alignment more-or-less correct", {
 })
 
 
+#########################################
+if (suppressPackageStartupMessages(require("genetics", character.only = TRUE, 
+                                           quietly = TRUE, warn.conflicts = FALSE))) {
+    # only if genetics package is available
+
+    #####################################
+    context("Testing as.genetics.genalex()")
+    # strange that 'genetics' reverses the loci
+    expect_output(as.genetics(x1), "104/101", fixed = TRUE)
+    expect_output(as.genetics(x1), "14/11", fixed = TRUE)
+    expect_match(attr(as.genetics(x1), "data.file.name"), "as.genetics(", fixed = TRUE)
+}
