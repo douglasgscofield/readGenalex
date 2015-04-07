@@ -3,86 +3,16 @@
 # for collation order
 NULL
 
-#' Convert class \code{'genalex'} object to a data frame encoding loci using class \code{'genotype'}
-#'
-#' Converts an object of class \code{'genalex'} to a data frame in which the
-#' genotype columns for each locus have been converted to genotypes
-#' encoded with class \code{\link[genetics]{'genotype'}} as provided by the
-#' \href{http://cran.r-project.org/web/packages/genetics/index.html}{genetics}
-#' package.  Some class {'genalex'} attributes are retained, some are
-#' modified, and some are removed.  Only conversion of haploid and diploid
-#' data are supported, as this is all that is supported by the
-#' \href{http://cran.r-project.org/web/packages/genetics/index.html}{genetics}
-#' package (RIGHT??)
-#'
-#' A class \code{'genotype'} object is a special type of factor, and in
-#' contrast to class \code{'genalex'} a diploid genotype is encoded as a
-#' single level of a factor and thus is in a single column of a data frame.
-#' For diploid data, the number of columns in the resulting data frame will
-#' be reduced by the number of loci.  The sample name and population columns
-#' are retained, as are the names of the loci.
-#'
-#' Handling of missing data
-#'
-#' Handling of haploid data
-#' 
-#' Handling of extra columns
-#'
-#'
-#' @param x       Annotated data frame of class \code{'genalex'}
-#'
-#' @param phased  Default \code{FALSE}.  If \code{TRUE}, assumes alleles
-#' in \code{x} are phased and encodes them using class \code{"haplotype"}
-#' rather than class \code{"genotype"}.  For \code{"haplotype"},
-#' \code{101/107} is different from \code{107/101}, while
-#' these are the same for class \code{"genotype"}.
-#' 
-#' @param check.annotation  If \code{TRUE}, the annotations for the dataset
-#' are checked using \code{"is.genalex(x, force = TRUE, skip.strings = TRUE)"}
-#' prior to conversion.  If that returns \code{FALSE}, nothing is converted
-#' and an error is generated.
-#'
-#' @return \code{x} as a data frame with the transformations described above
-#'
-#' @author Douglas G. Scofield
-#'
-#' @seealso \code{\link[genetics]{makeGenotypes}}, \code{\link[genetics]{makeHaplotypes}}
-#'
-#' @examples
-#'
-#' #data(Qagr_pericarp_genotypes)
-#' ## lots of output to terminal
-#' #dd <- as.genalex(head(Qagr_pericarp_genotypes, 40), force = TRUE)
-#' #writeGenepop(dd, file = "")
-#'
-# @export
-#
-makeGenotypes <- function(x, phased = FALSE, check.annotations = FALSE)
+
+
+# Calculate the number of digits required per allele for Genepop output.
+# At least 2 are required
+.calculateGenepopAlleleDigits <- function(x)
 {
-    DNAME <- deparse(substitute(DNAME))
-    if (! is.genalex(x))
-        stop(DNAME, " must be class 'genalex'")
-    if (ploidy > 2)
-        stop("class 'genotype' can only encode haploid or diploid data")
-    if (check.annotation && ! is.genalex(x, force = TRUE, skip.strings = TRUE))
-        stop(DNAME, " class 'genalex' annotations are inconsistent, not writing")
-    # calculate columns for 'convert' argument
-    # store attibutes
-    # call genetics::makeGenotypes
-    # restore attributes
-    # remove attributes if required
-    # modify attributes that need it
-    structure(x, class = c('data.frame'))
+    gt <- as.data.frame(x)[, 3:ncol(x)]
+    gt[is.na(gt)] <- 0
+    max(max(nchar(sapply(gt, as.character))), 2)
 }
-
-
-makeHaplotypes <- function(x, ...)
-{
-    makeGenotypes(x, phased = TRUE, ...)
-}
-
-
-# also need a genotype -> genalex converter
 
 
 
@@ -254,15 +184,3 @@ writeGenepop <- function(x, file, eol = "\n", check.annotation = TRUE)
         }
     }
 }
-
-
-# Calculate the number of digits required per allele for Genepop output.
-# At least 2 are required
-.calculateGenepopAlleleDigits <- function(x)
-{
-    gt <- as.data.frame(x)[, 3:ncol(x)]
-    gt[is.na(gt)] <- 0
-    max(max(nchar(sapply(gt, as.character))), 2)
-}
-
-

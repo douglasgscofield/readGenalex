@@ -38,7 +38,7 @@ have class \code{'genalex'}.}
 }
 \description{
 Converts object \code{x} to a data frame of class \code{'genalex'}.
-There are five cases:
+There are six cases:
 \itemize{
   \item If \code{x} is of class \code{'genalex'}, it is simply returned.
   \item If \code{x} is of class \code{'genalex'} and \code{force = TRUE},
@@ -56,12 +56,19 @@ There are five cases:
         the \code{readGenalex} package.  If so, it is converted to
         class \code{'genalex'} and returned.  Any other arguments are
         ignored.
+  \item If \code{x} is of class \code{'data.frame'} and all columns from
+        the third to the end are of class \code{\link[genetics]{genotype}},
+        these columns are converted to class \code{'genalex'} genotypes,
+        with one column per allele.  Once the alleles have been split,
+        a call to \code{\link{genalex}} establishes the correct attributes.
   \item If \code{x} is of class \code{'data.frame'} but does not appear to
-        be from an earlier version of \code{readGenalex}, it is converted
-        to class \code{'genalex'} using a call to \code{\link{genalex}}
-        assuming a format identical to class \code{'genalex'}, where the
-        first column holds sample names, the second column holds population
-        names, and the remaining columns hold genotypes.
+        be from an earlier version of \code{readGenalex} and does not
+        have all genotype columns of class \code{\link[genetics]{genotype}},
+        it is converted to class \code{'genalex'} using a call to
+        \code{\link{genalex}} assuming a format identical to class
+        \code{'genalex'}, where the first column holds sample names, the
+        second column holds population names, and the remaining columns
+        hold genotypes.
   \item Any other class is an error.  Further conversions between genetic
         data formats may be added as additional methods.
 }

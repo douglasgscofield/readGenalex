@@ -196,6 +196,10 @@ readGenalex <- function(file, sep = "\t", ploidy = 2,
 #'
 readGenalexExcel <- function(file, worksheet, ploidy = 2)
 {
+    if (! requireNamespace("XLConnect", quietly = TRUE)) {
+        stop("Please install package 'XLConnect' to use this function",
+             call. = FALSE)
+    }
     if (length(worksheet) > 1)
         stop("must provide a single worksheet name")
     dat <- XLConnect::readWorksheetFromFile(file, sheet = worksheet,
@@ -484,11 +488,11 @@ readGenalexExcel <- function(file, worksheet, ploidy = 2)
 writeGenalex <- function(x, file, quote = FALSE, sep = "\t", eol = "\n",
     na = "0", na.character = "", check.annotation = TRUE)
 {
-    DNAME <- deparse(substitute(x))
+    x.name <- deparse(substitute(x))
     if (! is.genalex(x))
-        stop(DNAME, " must be class 'genalex'")
+        stop(x.name, " must be class 'genalex'")
     if (check.annotation && ! is.genalex(x, force = TRUE, skip.strings = TRUE))
-        stop(DNAME, " class 'genalex' annotations are inconsistent, not writing")
+        stop(x.name, " class 'genalex' annotations are inconsistent, not writing")
     if (file == "")
         file <- stdout()
     else if (is.character(file)) {
@@ -588,11 +592,15 @@ writeGenalex <- function(x, file, quote = FALSE, sep = "\t", eol = "\n",
 writeGenalexExcel <- function(x, file, worksheet, na = c("0", "-1"),
     na.character = "", check.annotation = TRUE, overwrite = FALSE)
 {
-    DNAME <- deparse(substitute(x))
+    if (! requireNamespace("XLConnect", quietly = TRUE)) {
+        stop("Please install package 'XLConnect' to use this function",
+             call. = FALSE)
+    }
+    x.name <- deparse(substitute(x))
     if (! is.genalex(x))
-        stop(DNAME, " must be class 'genalex'")
+        stop(x.name, " must be class 'genalex'")
     if (check.annotation && ! is.genalex(x, force = TRUE, skip.strings = TRUE))
-        stop(DNAME, " class 'genalex' annotations are inconsistent, not writing")
+        stop(x.name, " class 'genalex' annotations are inconsistent, not writing")
     if (length(worksheet) > 1)
         stop("must provide a single worksheet name")
     na <- match.arg(na)

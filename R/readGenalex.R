@@ -192,7 +192,7 @@ is.genalex <- function(x, force = FALSE, skip.strings = FALSE,
 #' Convert object to class 'genalex'
 #'
 #' Converts object \code{x} to a data frame of class \code{'genalex'}.
-#' There are five cases:
+#' There are six cases:
 #' \itemize{
 #'   \item If \code{x} is of class \code{'genalex'}, it is simply returned.
 #'   \item If \code{x} is of class \code{'genalex'} and \code{force = TRUE},
@@ -210,12 +210,19 @@ is.genalex <- function(x, force = FALSE, skip.strings = FALSE,
 #'         the \code{readGenalex} package.  If so, it is converted to
 #'         class \code{'genalex'} and returned.  Any other arguments are
 #'         ignored.
+#'   \item If \code{x} is of class \code{'data.frame'} and all columns from
+#'         the third to the end are of class \code{\link[genetics]{genotype}},
+#'         these columns are converted to class \code{'genalex'} genotypes,
+#'         with one column per allele.  Once the alleles have been split,
+#'         a call to \code{\link{genalex}} establishes the correct attributes.
 #'   \item If \code{x} is of class \code{'data.frame'} but does not appear to
-#'         be from an earlier version of \code{readGenalex}, it is converted
-#'         to class \code{'genalex'} using a call to \code{\link{genalex}}
-#'         assuming a format identical to class \code{'genalex'}, where the
-#'         first column holds sample names, the second column holds population
-#'         names, and the remaining columns hold genotypes.
+#'         be from an earlier version of \code{readGenalex} and does not
+#'         have all genotype columns of class \code{\link[genetics]{genotype}},
+#'         it is converted to class \code{'genalex'} using a call to
+#'         \code{\link{genalex}} assuming a format identical to class
+#'         \code{'genalex'}, where the first column holds sample names, the
+#'         second column holds population names, and the remaining columns
+#'         hold genotypes.
 #'   \item Any other class is an error.  Further conversions between genetic
 #'         data formats may be added as additional methods.
 #' }
@@ -312,10 +319,23 @@ as.genalex.data.frame <- function(x, names = NULL, ploidy = 2, ...)
             warning("args ignored, converting pre-1.0 readGenalex data frame")
         attr(x, "genetic.data.format") <- NULL
         return(structure(x, class = c('genalex', 'data.frame')))
+    }
+    this.call <- sys.call()
+    if (ncol(x) <= 2)
+        stop("not enough columns for class 'genalex'")
+    if (all(sapply(x[, 3:ncol(x), drop=FALSE], 
+                   function(.x) inherits(.x, 'genotype')))) {
+        # contains class 'genotype' columns, convert to genalex genotypes
+        stop("class 'genotype' genotypes not yet handled")
+        #z <- .convert_genotype(x)
+
+        # Function to convert basic factor matrix from x[, 3:ncol(x)] to
+        # genalex genotypes.  Export that function for the user, too.
+        # Arguments: ploidy (verified), sep.
+
+        # Bring it all back together.
+
     } else {
-        this.call <- sys.call()
-        if (ncol(x) <= 2)
-            stop("not enough columns for class 'genalex'")
         # call genalex() to coerce data frame
         nm <- names(x)
         if (is.null(names)) names = list()
@@ -323,9 +343,9 @@ as.genalex.data.frame <- function(x, names = NULL, ploidy = 2, ...)
         if (is.null(names$sample)) names$sample <- nm[1]
         if (is.null(names$pop)) names$pop <- nm[2]
         z <- genalex(x[, 1], x[, 2], x[, 3:ncol(x), drop=FALSE], names, ploidy)
-        attr(z, "data.file.name") <- capture.output(print(this.call))
-        return(z)
     }
+    attr(z, "data.file.name") <- capture.output(print(this.call))
+    z
 }
 
 
@@ -1171,7 +1191,7 @@ addLocus.genalex <- function(x, newdata, ...)
     if (ncol(newdata) %% ploidy)
         stop(x.name, " and ", newdata.name, " appear not to match ploidy")
     if (any(names(newdata) %in% names(x)[c(1, 2)]))
-        stop(newname.name, " column names conflict with column names in ",
+        stop(newdata.name, " column names conflict with column names in ",
              x.name)
     nd.n.loci <- ncol(newdata) / ploidy
     nd.loc.col <- seq(1, by = ploidy, length.out = nd.n.loci)
