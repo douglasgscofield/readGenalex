@@ -130,5 +130,11 @@ if (suppressPackageStartupMessages(require("genetics", character.only = TRUE,
     expect_output(splitGenotypes(xx1), "a a.2")
     expect_output(splitGenotypes(xx1), "b b.2")
     expect_output(splitGenotypes(xx1), "2 15  12 105 102")
+    expect_is(splitGenotypes(xx1), "data.frame")
+    xx2 <- as.data.frame(lapply(lapply(xx1, as.character), 
+                                sub, pattern = "/",replacement = "_"))
+    expect_error(splitGenotypes(xx2), "loci not diploid: a b")
+    expect_output(splitGenotypes(xx2, sep = "_"), "a a.2")
+    expect_output(splitGenotypes(xx2, sep = "_"), "2 15  12 105 102")
 }
 
