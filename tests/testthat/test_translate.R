@@ -86,8 +86,41 @@ if (suppressPackageStartupMessages(require("genetics", character.only = TRUE,
 
     #####################################
     context("Testing as.genetics.genalex()")
-    # strange that 'genetics' reverses the loci
     expect_output(as.genetics(x1), "104/101", fixed = TRUE)
     expect_output(as.genetics(x1), "14/11", fixed = TRUE)
-    expect_match(attr(as.genetics(x1), "data.file.name"), "as.genetics(", fixed = TRUE)
+    expect_output(as.genetics(x1, phased = FALSE), "104/101", fixed = TRUE)
+    expect_output(as.genetics(x1, phased = FALSE), "14/11", fixed = TRUE)
+    expect_output(as.genetics(x1, phased = TRUE), "101/104", fixed = TRUE)
+    expect_output(as.genetics(x1, phased = TRUE), "11/14", fixed = TRUE)
+    # attributes updated
+    xx1 <- x1; attr(xx1, "data.file.name") <- "placeholder"
+    expect_match(attr(as.genetics(xx1), "data.file.name"), "^as\\.genetics\\(placeholder\\)$")
+    expect_equal(attr(as.genetics(x1), "ploidy"), 2)
+    expect_equal(attr(as.genetics(x1), "n.loci"), 2)
+    expect_equal(attr(as.genetics(x1), "locus.columns"), setNames(3:4, c("a", "b")))
+    expect_equal(attr(as.genetics(x1), "names"), c("sample", "pop", "a", "b"))
+    # properly ignore sep= option
+    expect_warning(as.genetics(x1, sep = "|"), "'sep' is applied inconsistently by package 'genetics' so is ignored here")
+    expect_output(as.genetics(x1, sep = "/"), "2 snurf 15/12 105/102", fixed = TRUE)
+    expect_output(as.genetics(x1, phased = TRUE, sep = "/"), "2 snurf 12/15 102/105", fixed = TRUE)
+    # correct classes on converted columns
+    expect_is(as.genetics(x1)[["a"]], "genotype")
+    expect_is(as.genetics(x1)[["b"]], "genotype")
+    expect_true(! inherits(as.genetics(x1)[["a"]], "haplotype"))
+    expect_true(! inherits(as.genetics(x1)[["b"]], "haplotype"))
+    expect_is(as.genetics(x1, phased = TRUE)[["a"]], "haplotype")
+    expect_is(as.genetics(x1, phased = TRUE)[["b"]], "haplotype")
+    # errors
+    xx1 <- x1; attr(xx1, "ploidy") <- 4; xx1 <- as.genalex(xx1, force = TRUE)
+    expect_error(as.genetics(xx1), "class 'genotype' can only encode diploid data")
+    xx1 <- x1; attr(xx1, "ploidy") <- 1; xx1 <- as.genalex(xx1, force = TRUE)
+    expect_error(as.genetics(xx1), "class 'genotype' can only encode diploid data")
+    xx1 <- x1; attr(xx1, "locus.names") <- c("x","y")
+    expect_error(as.genetics(xx1), "class 'genalex' annotations are inconsistent, not converting")
+    # missing data
+    xx1 <- x1; xx1[2, 4] <- NA
+    expect_true(is.na(as.genetics(xx1)[2, 3]))
+    xx1 <- x1; xx1[2, 3] <- NA
+    expect_true(is.na(as.genetics(xx1)[2, 3]))
 }
+

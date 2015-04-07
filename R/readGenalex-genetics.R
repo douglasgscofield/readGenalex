@@ -9,11 +9,11 @@ NULL
 #' genotype columns for each locus have been converted to genotypes
 #' encoded with class \code{\link[genetics]{genotype}} as provided by the
 #' \href{http://cran.r-project.org/web/packages/genetics/index.html}{genetics}
-#' package.  All class {'genalex'} attributes are retained except for 
-#' class \code{'genalex'} itself; see Details.  Only conversion of haploid
-#' and diploid data are supported, as this is what is supported by the
+#' package.  All class {'genalex'} attributes are retained except for
+#' class \code{'genalex'} itself; see Details.  Only conversion of diploid
+#' data are supported, a inherent limitation of the
 #' \href{http://cran.r-project.org/web/packages/genetics/index.html}{genetics}
-#' package (RIGHT??)
+#' package.
 #'
 #' A class \code{\link[genetics]{genotype}} object is a special type
 #' of factor, and in contrast to class \code{'genalex'} a diploid genotype
@@ -22,41 +22,39 @@ NULL
 #' data frame will be reduced by the number of loci.  The sample name and
 #' population columns are retained, as are the names of the loci.
 #'
-#' Handling of missing data
+#' If either allele of a genotype is missing, the entire genotype is treated
+#' as missing in class \code{\link[genetics]{genotype}}.
 #'
-#' Handling of haploid data
-#' 
-#' Handling of extra columns
-#'
-#' Why does 'genotype' reverse the alleles??
-#'
-#' sep = "|" is not working!!
-#' 
-#'
-#' This is a specialised wrapper around the functions 
+#' This is a specialised wrapper around the functions
 #' \code{\link[genetics]{makeGenotypes}} (\code{phased = FALSE}) and
-#' \code{\link[genetics]{makeHaplotypes}} (\code{phased = FALSE}) from the
+#' \code{\link[genetics]{makeHaplotypes}} (\code{phased = TRUE}) from the
 #' \href{http://cran.r-project.org/web/packages/genetics/index.html}{genetics}
 #' package.
 #'
 #' @param x       Annotated data frame of class \code{'genalex'}
 #'
-#' @param phased  Default \code{FALSE}.  If \code{TRUE}, assumes alleles
-#' in \code{x} are phased and encodes them using class 
-#' \code{\link[genetics]{haplotype}} using
-#' \code{\link[genetics]{makeHaplotypes}} rather than as class
-#' \code{\link[genetics]{genotype}} using
-#' \code{\link[genetics]{makeGenotypes}}.  For class
-#' \code{\link[genetics]{haplotype}}, a genotype of \code{101/107} is 
-#' different from \code{107/101}, while these are the same for class
-#' \code{\link[genetics]{genotype}}.
+#' @param phased  Default \code{FALSE}.  If \code{FALSE}, assumes alleles
+#' in \code{x} are unphased so that a genotype of \code{101/107} is
+#' identical to a genotype of \code{107/101}.  This results in the
+#' application of class \code{\link[genetics]{genotype}} to the
+#' genotype data, using \code{\link[genetics]{makeGenotypes}}.  Default
+#' ordering for alleles is applied, which for class
+#' \code{\link[genetics]{genotype}} is to be sorted by frequency; for
+#' more information, see \code{\link[genetics]{genotype}}
+#' If \code{TRUE}, assumes alleles are phased so that a genotype of
+#' \code{101/107} is different from a genotype of \code{107/101}.
+#' This results in the application of class \code{\link[genetics]{haplotype}}
+#' using \code{\link[genetics]{makeHaplotypes}}.  In this case, alleles are
+#' ordered as they are present in the genotype.
 #'
-#' @param sep     Character to separate alleles in a locus, passed to
-#' \code{\link[genetics]{makeGenotypes}} or 
+#' @param sep     \emph{Ignored, package }\code{genetics}\emph{ applies it
+#' inconsistently so we cannot reliably apply its effects.}  If it were ever
+#' to work, it would be the haracter to separate alleles in a locus, passed
+#' to \code{\link[genetics]{makeGenotypes}} or
 #' \code{\link[genetics]{makeHaplotypes}}
-#' 
+#'
 #' @param check.annotation  If \code{TRUE}, the annotations for the dataset
-#' are checked using \code{"is.genalex(x, force = TRUE, skip.strings = TRUE)"}
+#' are checked using \code{is.genalex(x, force = TRUE, skip.strings = TRUE)}
 #' prior to conversion.  If that returns \code{FALSE}, nothing is converted
 #' and an error is generated.
 #'
@@ -66,7 +64,7 @@ NULL
 #' using  class \code{\link[genetics]{genotype}}.  The class
 #' \code{'genalex'} is removed while many of the attributes are retained:
 #'
-#' \item{data.file.name }{Its original value, wrapped with
+#' \item{data.file.name }{The original value, wrapped with
 #'   \code{"as.genetics(...)"}}
 #' \item{ploidy }{Retained}
 #' \item{n.loci }{Retained}
@@ -79,12 +77,12 @@ NULL
 #' \item{pop.title }{Retained}
 #' \item{locus.names }{Retained}
 #' \item{locus.columns }{Modified to indicate the change to a single column
-#'   per locus, if required}
+#'   per locus}
 #' \item{extra.columns }{Retained}
 #'
 #' @author Douglas G. Scofield
 #'
-#' @seealso  class \code{\link[genetics]{genotype}}, \code{\link[genetics]{makeGenotypes}}, \code{\link[genetics]{makeHaplotypes}}
+#' @seealso  \code{\link[genetics]{genotype}}, \code{\link[genetics]{haplotype}}, \code{\link[genetics]{makeGenotypes}}, \code{\link[genetics]{makeHaplotypes}}
 #'
 #' @examples
 #'
@@ -108,35 +106,35 @@ as.genetics <- function(x, ...) UseMethod("as.genetics")
 as.genetics.genalex <- function(x, phased = FALSE, sep = "/",
     check.annotation = TRUE, ...)
 {
-    if (! requireNamespace("genetics", quietly = TRUE)) {
-        stop("Please install package 'genetics' to use this function",
-             call. = FALSE)
-    }
+    if (! requireNamespace("genetics", quietly = TRUE))
+        stop("Please install package 'genetics' to use this function")
     #if (! is.genalex(x))  # unnecessary, we are an S3 method now
     #    stop(x.name, " must be class 'genalex'")
+    if (! missing(sep) && sep != "/") {
+        warning("'sep' is applied inconsistently by package 'genetics' so is ignored here")
+        sep <- "/"
+    }
     x.name <- deparse(substitute(x.name))
     ploidy <- attr(x, "ploidy")
     n.loci <- attr(x, "n.loci")
-    if (ploidy > 2)
-        stop("class 'genotype' can only encode haploid or diploid data")
+    if (ploidy != 2)
+        stop("class 'genotype' can only encode diploid data")
     if (check.annotation && ! is.genalex(x, force = TRUE, skip.strings = TRUE))
-        stop(x.name, " class 'genalex' annotations are inconsistent, not writing")
+        stop(x.name, " class 'genalex' annotations are inconsistent, not converting")
     # calculate columns for 'convert' argument
-    lst.convert <- lapply(1:n.loci, function(.x) 
+    lst.convert <- lapply(1:n.loci, function(.x)
                           .calculateSingleLocusColumns(.x, ploidy))
     # store attibutes
     x.attr <- attributes(x)
-    x <- if (phased)
-        genetics::makeHaplotypes(x, convert = lst.convert, sep = sep)
-    else genetics::makeGenotypes(x, convert = lst.convert, sep = sep)
-    # restore locus column names
+    x <- if (phased) genetics::makeHaplotypes(x, convert = lst.convert)
+         else genetics::makeGenotypes(x, convert = lst.convert)
+    # modify names and restore original locus column names
     x.attr$names <- c(x.attr$names[1:2], x.attr$locus.names)
-    # change locus.columns
     x.attr$locus.columns <- setNames(.calculateLocusColumns(n.loci, 1),
                                      x.attr$locus.names)
     x.attr$data.file.name <- paste0("as.genetics(", x.attr$data.file.name, ")")
     x.attr$class <- 'data.frame'
-    attributes(x) <- x.attr  # this resets column names as well
+    attributes(x) <- x.attr  # includes 'names', so resets column names as well
     x
 }
 

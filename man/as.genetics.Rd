@@ -21,8 +21,10 @@ in \code{x} are phased and encodes them using class
 different from \code{107/101}, while these are the same for class
 \code{\link[genetics]{genotype}}.}
 
-\item{sep}{Character to separate alleles in a locus, passed to
-\code{\link[genetics]{makeGenotypes}} or
+\item{sep}{\emph{Ignored, package }\code{genetics}\emph{ applies it
+inconsistently so we cannot reliably apply its effects.}  If it were ever
+to work, it would be the haracter to separate alleles in a locus, passed
+to \code{\link[genetics]{makeGenotypes}} or
 \code{\link[genetics]{makeHaplotypes}}}
 
 \item{check.annotation}{If \code{TRUE}, the annotations for the dataset
@@ -59,10 +61,10 @@ genotype columns for each locus have been converted to genotypes
 encoded with class \code{\link[genetics]{genotype}} as provided by the
 \href{http://cran.r-project.org/web/packages/genetics/index.html}{genetics}
 package.  All class {'genalex'} attributes are retained except for
-class \code{'genalex'} itself; see Details.  Only conversion of haploid
-and diploid data are supported, as this is what is supported by the
+class \code{'genalex'} itself; see Details.  Only conversion of diploid
+data are supported, as this is what is supported by the
 \href{http://cran.r-project.org/web/packages/genetics/index.html}{genetics}
-package (RIGHT??)
+package.
 }
 \details{
 A class \code{\link[genetics]{genotype}} object is a special type
@@ -74,19 +76,16 @@ population columns are retained, as are the names of the loci.
 
 Handling of missing data
 
-Handling of haploid data
-
 Handling of extra columns
 
 Why does 'genotype' reverse the alleles??
-
-sep = "|" is not working!!
 
 This is a specialised wrapper around the functions
 \code{\link[genetics]{makeGenotypes}} (\code{phased = FALSE}) and
 \code{\link[genetics]{makeHaplotypes}} (\code{phased = FALSE}) from the
 \href{http://cran.r-project.org/web/packages/genetics/index.html}{genetics}
-package.
+package.  It uses option \code{reorder = "no"} to keep the alleles in the
+same order as their appearance in the class \code{'genalex'} object.
 }
 \examples{
 data(Qagr_pericarp_genotypes)

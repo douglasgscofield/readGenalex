@@ -3,8 +3,6 @@
 TODO
 ----
 
-- Add unit tests for `as.genetics.genalex`
-- Why is `sepi=` ignored when used from `as.genetics.genalex`
 - Check out adegenet package for translation methods; a bit of a mess, see below for pegas as a better way in
 - Check out pegas package for translation methods; see pegas' `as.loci()`
 - `as.genotype.genalex` and `as.genalex.genotype` methods to convert to/from package `genetics` format
@@ -33,7 +31,7 @@ TODO
 Completed
 ---------
 
-* Added `as.genetics.genalex` method to convert genotypes to class `genotype` or class `haplotype` from package `genetics`
+* Added `as.genetics.genalex` method to convert a (diploid-only) class `genalex` object to a data frame with allele columns for each locus converted to single-column genotypes of class `genotype` or class `haplotype`, as defined by package `genetics`.  We accept but ignore with warning a `sep =` argument for specifying the separation of the alleles within the resulting genotype.  This is inconsistently applied by package `genetics`, e.g., `makeGenotypes` uses it for column names but always uses `"/"` for genotypes and haplotypes, so we cannot reliably apply it ourselves.
 * Check added for duplicate column names involving the loci and the sample and population columns
 * Added `writeGenepop` to write Genepop-format data files (Rousset 2008 *Molecular Ecology Resources*, <http://kimura.univ-montp2.fr/~rousset>)
 * Added `addLocus.genalex` for directly adding genotype data
