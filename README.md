@@ -156,6 +156,7 @@ Function | Description
 `splitGenotypes()` | Split genotypes encoded as `101/107` into separate columns of a data frame, suitable for further use with `genalex()`
 `joinGenotypes()` | Join class `'genalex'` (or other class) genotypes into a single column
 `as.loci.genalex` | Extends the `as.loci` generic from the `pegas` package to convert class `'genalex'` to class `'loci'`
+`as.genalex.loci` | Converts an object of class `'loci'` from the `pegas` package to class `'genalex'`
 
 
 ## Datasets

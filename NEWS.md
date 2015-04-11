@@ -10,7 +10,7 @@
 * New `as.genetics` method to convert class `'genalex'` to a data frame with genotypes for each locus encoded using class `'genotype'` or class `'haplotype'` from package `genetics`
 * New `splitGenotypes` function to split `genotype`-encoded genotypes into separate columns of a data frame
 * New `joinGenotypes` function to join class `'genalex'`-style allele columns into a single column per locus
-* New `as.loci.genalex` method for the `as.loci` generic from package `pegas` to convert a class `'genalex'` object to class `'loci'`
+* New `as.loci.genalex` method for the `as.loci` generic from package `pegas` to convert a class `'genalex'` object to class `'loci'`, and `as.genalex.loci` for the reverse conversion
 * New `genalex` function to create a class `'genalex'` object from constituent data
 * New `rbind` method to combine samples from multiple class `'genalex'` objects
 * New `cbind` method to combine loci and extra data columns from multiple class `'genalex'` objects

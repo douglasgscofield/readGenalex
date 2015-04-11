@@ -3,7 +3,6 @@
 TODO
 ----
 
-- `as.genalex.loci` to convert loci to genalex
 - do I need a function to extract a specific population?
 - what actually happens with `cbind(genalex, data.frame)` and `rbind(genalex, data.frame)`?  I think I saw `cbind.genalex` called in the first case, but I thought from studying the second case that this would not happen.
 - Add used papers to the data description?
@@ -13,6 +12,7 @@ TODO
 Completed
 ---------
 
+* Added `as.genalex.loci` to convert class `'loci'` to class `'genalex'`
 * Added `joinGenotypes` to join `101` `107` to `101/107`, and a phased version, and added several tests
 * Added `splitGenotypes` to split `101/107` into separate columns of a data frame, and added several tests for it
 * Added `as.genetics.genalex` method to convert a (diploid-only) class `genalex` object to a data frame with allele columns for each locus converted to single-column genotypes of class `genotype` or class `haplotype`, as defined by package `genetics`.  We accept but ignore with warning a `sep =` argument for specifying the separation of the alleles within the resulting genotype.  This is inconsistently applied by package `genetics`, e.g., `makeGenotypes` uses it for column names but always uses `"/"` for genotypes and haplotypes, so we cannot reliably apply it ourselves.
