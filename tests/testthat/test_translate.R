@@ -138,3 +138,53 @@ if (suppressPackageStartupMessages(require("genetics", character.only = TRUE,
     expect_output(splitGenotypes(xx2, sep = "_"), "2 15  12 105 102")
 }
 
+
+#########################################
+if (suppressPackageStartupMessages(require("pegas", character.only = TRUE, 
+                                           quietly = TRUE, warn.conflicts = FALSE))) {
+    # only if pegas package is available
+
+    #########################################
+    context("Testing joinGenotypes()")
+
+    expect_output(joinGenotypes(x1), "11/14 101/104")
+    expect_output(joinGenotypes(x1, sep = "_"), "11_14 101_104")
+    expect_is(joinGenotypes(x1), "data.frame")
+    expect_true(! inherits(joinGenotypes(x1), "genalex"))
+
+    expect_error(joinGenotypes(as.data.frame(x1)), "both 'loci' and 'ploidy' must be supplied")
+    expect_error(joinGenotypes(as.data.frame(x1), ploidy = 2), "both 'loci' and 'ploidy' must be supplied")
+    expect_error(joinGenotypes(as.data.frame(x1), loci = 2), "both 'loci' and 'ploidy' must be supplied")
+    expect_output(joinGenotypes(as.data.frame(x1), loci = c(3,5), ploidy = 2), "11/14 101/104")
+    expect_output(joinGenotypes(as.data.frame(x1), loci = c(3,5), ploidy = 2, sep = "_"), "11_14 101_104")
+    expect_is(joinGenotypes(as.data.frame(x1), loci = c(3,5), ploidy = 2), "data.frame")
+    expect_true(! inherits(joinGenotypes(as.data.frame(x1), loci = c(3,5), ploidy = 2), "genalex"))
+
+    #########################################
+    context("Testing as.loci.genalex()")
+
+    expect_output(as.loci(x1), "Allelic data frame: 3 individuals")
+    expect_output(as.loci(x1), "2 loci")  # a and b
+    expect_output(as.loci(x1), "1 additional variable")  # population
+    expect_equal(rownames(as.loci(x1)), x1[, 1])  # sample names now rownames
+    expect_equal(ncol(as.loci(x1)), 3)  # sample dropped
+    expect_equal(names(as.loci(x1))[1], "population")  # sample dropped
+    # pop column from character to factor and renamed population
+    expect_match(paste(collapse = " ", names(x1)), " pop ")
+    expect_is(x1[, 2], "character")
+    expect_is(as.loci(x1)[, 1], "factor")
+    expect_output(as.loci(x1)[1], "population")
+    expect_match(paste(collapse = " ", names(as.loci(x1))), "population ")
+    expect_match(attr(as.loci(x1), "pop.title"), "pop")
+    # additional attribute for class 'loci' and updated data.file.name
+    expect_equal(unname(attr(as.loci(x1), "locicol")), 2:3)
+    expect_equal(attr(as.loci(x1), "locus.columns"), attr(as.loci(x1), "locicol"))
+    xx1 <- x1; attr(xx1, "data.file.name") <- "placeholder"
+    expect_match(attr(as.loci(xx1), "data.file.name"), "^as\\.loci\\(placeholder\\)$")
+    # genotype columns are factors
+    expect_is(as.loci(x1)[,2], "factor")
+    expect_true(all(levels(as.loci(x1)[,2]) == c("11/14", "12/15", "13/16")))
+    expect_is(as.loci(x1)[,3], "factor")
+    expect_true(all(levels(as.loci(x1)[,3]) == c("101/104", "102/105", "103/106")))
+}
+

@@ -35,6 +35,10 @@ readGenalex 0.9.9000 (development version)
     class 'haplotype' from package genetics
 -   New splitGenotypes function to split genotype-encoded genotypes into
     separate columns of a data frame
+-   New joinGenotypes function to join class 'genalex'-style allele
+    columns into a single column per locus
+-   New as.loci.genalex method for the as.loci generic from package
+    pegas to convert a class 'genalex' object to class 'loci'
 -   New genalex function to create a class 'genalex' object from
     constituent data
 -   New rbind method to combine samples from multiple class 'genalex'

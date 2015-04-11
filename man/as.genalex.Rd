@@ -5,11 +5,14 @@
 \alias{as.genalex.data.frame}
 \alias{as.genalex.default}
 \alias{as.genalex.genalex}
+\alias{as.genalex.loci}
 \title{Convert object to class 'genalex'}
 \usage{
 \method{as.genalex}{genalex}(x, force = FALSE, ...)
 
 \method{as.genalex}{data.frame}(x, names = NULL, ploidy = 2, ...)
+
+\method{as.genalex}{loci}(x, sep = "/", pop, ...)
 
 \method{as.genalex}{default}(x, ...)
 }
@@ -31,14 +34,21 @@ does not have class \code{'genalex'}.}
 (\code{x[, 3:ncol(x)]}).  This option is only used if \code{x} does not
 have class \code{'genalex'}.}
 
-\item{\dots}{Additional arguments, currently ignored}
+\item{sep}{Character separating joined alleles, if converting from
+object of class \code{'loci'}}
+
+\item{pop}{Populations to assign to samples if there is no
+\code{population} column in the data}
+
+\item{\dots}{Additional arguments, ignored unless \code{x} is of class
+\code{'loci'} and if so passed to \code{\link{genalex}}}
 }
 \value{
 \code{x} converted to a class \code{'genalex'} object
 }
 \description{
 Converts object \code{x} to a data frame of class \code{'genalex'}.
-There are six cases:
+There are seven cases:
 \itemize{
   \item If \code{x} is of class \code{'genalex'}, it is simply returned.
   \item If \code{x} is of class \code{'genalex'} and \code{force = TRUE},
@@ -69,6 +79,15 @@ There are six cases:
         \code{'genalex'}, where the first column holds sample names, the
         second column holds population names, and the remaining columns
         hold genotypes.
+  \item If \code{x} is of class \code{'loci'}, it is converted using
+        \code{\link{splitGenotypes}} and \code{\link{genalex}}.  Sample
+        names are taken from the row names.  If there
+        is no column in \code{x} named \code{"population"}, then the
+        \code{pop} argument must be supplied as a substitute.  Additional
+        non-genotype columns will likely result in an error.  No attempt
+        is currently made to use the \code{"locicol"} attribute to narrow
+        the conversion to only locus columns.  Furthermore, only diploid
+        genotypes are currently handled.
   \item Any other class is an error.  Further conversions between genetic
         data formats may be added as additional methods.
 }
@@ -86,6 +105,6 @@ cat(attr(gt.2, "data.file.name"), "\\n")
 Douglas G. Scofield
 }
 \seealso{
-\code{\link{is.genalex}}, \code{\link{genalex}}
+\code{\link{is.genalex}}, \code{\link{genalex}}, \code{\link{splitGenotypes}}
 }
 

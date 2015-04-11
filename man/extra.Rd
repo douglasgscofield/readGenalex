@@ -10,7 +10,9 @@ extra(x, ...)
 extra(x) <- value
 }
 \arguments{
-\item{x}{An annotated data frame of class \code{'genalex'}}
+\item{x}{An annotated data frame of class \code{'genalex'}
+or of class \code{'loci'} converted from class \code{'genalex'}
+with \code{\link{as.loci}}}
 
 \item{value}{When setting extra columns, a data frame or object
 that can be coerced to a data frame.  This is done using

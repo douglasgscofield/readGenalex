@@ -3,34 +3,17 @@
 TODO
 ----
 
-- Check out adegenet package for translation methods; a bit of a mess, see below for pegas as a better way in
-- Check out pegas package for translation methods; see pegas' `as.loci()`
-- `as.genotype.genalex` and `as.genalex.genotype` methods to convert to/from package `genetics` format
+- `as.genalex.loci` to convert loci to genalex
 - do I need a function to extract a specific population?
-- do I need to be more explicit about what happens with columns/extra columns with `cbind.genalex`?  Yes, the `cbind` docs need some help.
-- what actually happens with cbind(genalex, data.frame) and rbind(genalex, data.frame)?  I think I saw cbind.genalex called in the first case, but I thought from studying the second case that this would not happen.
+- what actually happens with `cbind(genalex, data.frame)` and `rbind(genalex, data.frame)`?  I think I saw `cbind.genalex` called in the first case, but I thought from studying the second case that this would not happen.
 - Add used papers to the data description?
-- Functions for converting from/to some other genetic formats, attaching them to `as.genalex`, add them to Enhances
-- If I am converting from those other formats, do I need to have the specific packages loaded?
-- check on any implicit version dependencies and document them
 - Initial `dispersalDiversity` package should use readGenalex 1.0
-
-
-### R Extension rules for using types from other packages
-
-<blockquote>
-*Regarding the DESCRIPTION file* Finally, the ‘Enhances’ field lists packages “enhanced” by the package at hand, e.g., by providing methods for classes from these packages, or ways to handle objects from these packages (so several packages have ‘Enhances: chron’ because they can handle datetime objects from chron even though they prefer R’s native datetime functions). Version requirements can be specified, but are currently not used. Such packages cannot be required to check the package: any tests which use them must be conditional on the presence of the package. (If your tests use e.g. a dataset from another package it should be in ‘Suggests’ and not ‘Enhances’.)
-</blockquote>
-
-
-### internal for force=TRUE stuff
-
-* perhaps makes sense to start on importing/exporting data with another package to see what additional issues may come up
 
 
 Completed
 ---------
 
+* Added `joinGenotypes` to join `101` `107` to `101/107`, and a phased version, and added several tests
 * Added `splitGenotypes` to split `101/107` into separate columns of a data frame, and added several tests for it
 * Added `as.genetics.genalex` method to convert a (diploid-only) class `genalex` object to a data frame with allele columns for each locus converted to single-column genotypes of class `genotype` or class `haplotype`, as defined by package `genetics`.  We accept but ignore with warning a `sep =` argument for specifying the separation of the alleles within the resulting genotype.  This is inconsistently applied by package `genetics`, e.g., `makeGenotypes` uses it for column names but always uses `"/"` for genotypes and haplotypes, so we cannot reliably apply it ourselves.
 * Check added for duplicate column names involving the loci and the sample and population columns

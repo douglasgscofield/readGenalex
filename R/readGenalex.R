@@ -192,7 +192,7 @@ is.genalex <- function(x, force = FALSE, skip.strings = FALSE,
 #' Convert object to class 'genalex'
 #'
 #' Converts object \code{x} to a data frame of class \code{'genalex'}.
-#' There are six cases:
+#' There are seven cases:
 #' \itemize{
 #'   \item If \code{x} is of class \code{'genalex'}, it is simply returned.
 #'   \item If \code{x} is of class \code{'genalex'} and \code{force = TRUE},
@@ -223,6 +223,15 @@ is.genalex <- function(x, force = FALSE, skip.strings = FALSE,
 #'         \code{'genalex'}, where the first column holds sample names, the
 #'         second column holds population names, and the remaining columns
 #'         hold genotypes.
+#'   \item If \code{x} is of class \code{'loci'}, it is converted using
+#'         \code{\link{splitGenotypes}} and \code{\link{genalex}}.  Sample
+#'         names are taken from the row names.  If there
+#'         is no column in \code{x} named \code{"population"}, then the
+#'         \code{pop} argument must be supplied as a substitute.  Additional
+#'         non-genotype columns will likely result in an error.  No attempt
+#'         is currently made to use the \code{"locicol"} attribute to narrow
+#'         the conversion to only locus columns.  Furthermore, only diploid
+#'         genotypes are currently handled.
 #'   \item Any other class is an error.  Further conversions between genetic
 #'         data formats may be added as additional methods.
 #' }
@@ -232,10 +241,11 @@ is.genalex <- function(x, force = FALSE, skip.strings = FALSE,
 #' @param x      An object of class \code{'genalex'} or class
 #' \code{'data.frame'}
 #'
-#' @param force  If \code{TRUE}, check for consistency between data and
-#' annotations in \code{x} and recalculate and reset any inconsistent
-#' attributes.  This option is only used if \code{x} has class
-#' \code{'genalex'}, and is \code{FALSE} by default.
+#' @param sep  Character separating joined alleles, if converting from
+#' object of class \code{'loci'}
+#'
+#' @param pop  Populations to assign to samples if there is no
+#' \code{population} column in the data
 #'
 #' @param names  A list of names to apply as accepted by \code{\link{genalex}}.
 #' If any names are not provided, they are taken from the names of the
@@ -246,11 +256,17 @@ is.genalex <- function(x, force = FALSE, skip.strings = FALSE,
 #' (\code{x[, 3:ncol(x)]}).  This option is only used if \code{x} does not
 #' have class \code{'genalex'}.
 #'
-#' @param \dots  Additional arguments, currently ignored
+#' @param force  If \code{TRUE}, check for consistency between data and
+#' annotations in \code{x} and recalculate and reset any inconsistent
+#' attributes.  This option is only used if \code{x} has class
+#' \code{'genalex'}, and is \code{FALSE} by default.
+#'
+#' @param \dots  Additional arguments, ignored unless \code{x} is of class
+#' \code{'loci'} and if so passed to \code{\link{genalex}}
 #'
 #' @return \code{x} converted to a class \code{'genalex'} object
 #'
-#' @seealso \code{\link{is.genalex}}, \code{\link{genalex}}
+#' @seealso \code{\link{is.genalex}}, \code{\link{genalex}}, \code{\link{splitGenotypes}}
 #'
 #' @author Douglas G. Scofield
 #'
@@ -346,6 +362,25 @@ as.genalex.data.frame <- function(x, names = NULL, ploidy = 2, ...)
     }
     attr(z, "data.file.name") <- capture.output(print(this.call))
     z
+}
+
+
+
+#' @rdname as.genalex
+#'
+#' @export
+#'
+as.genalex.loci <- function(x, sep = "/", pop, ...)
+{
+    if (! any(names(x), "population") && missing(pop))
+        stop("no 'population' column or 'pop' argument")
+    if (! is.null(x$population)) {
+        pop.names <- x$population
+        x$population <- NULL
+    } else pop.names <- pop
+    sample.names <- rownames(x)
+    dat <- splitGenotypes(x, sep)
+    genalex(samples = sample.names, pops = pop.names, genotypes = dat, ...)
 }
 
 
@@ -1406,6 +1441,8 @@ reducePloidy.genalex <- function(x, new.ploidy = 1, ...)
 #' extra(x) <- value
 #'
 #' @param x      An annotated data frame of class \code{'genalex'}
+#' or of class \code{'loci'} converted from class \code{'genalex'}
+#' with \code{\link{as.loci}}
 #'
 #' @param value  When setting extra columns, a data frame or object
 #' that can be coerced to a data frame.  This is done using
@@ -1456,6 +1493,15 @@ extra.genalex <- function(x, ...)
 
 #' @export
 #'
+extra.data.frame <- function(x, ...)
+{
+    extra.genalex(x, ...)
+}
+
+
+
+#' @export
+#'
 `extra<-.genalex` <- function(x, value)
 {
     if (! is.data.frame(value))
@@ -1463,6 +1509,15 @@ extra.genalex <- function(x, ...)
     rownames(value) <- x[, 1]
     attr(x, "extra.columns") <- value
     x
+}
+
+
+
+#' @export
+#'
+`extra<-.data.frame` <- function(x, value)
+{
+    `extra<-.genalex`(x, value)
 }
 
 

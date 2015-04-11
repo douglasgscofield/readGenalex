@@ -1,12 +1,22 @@
-#' Read, manipulate and write GenAlEx-format genotype data
+#' Read, manipulate, write and convert GenAlEx-format genotype data
 #'
-#' A collection of R functions to read, manipulate and write genotype data in
-#' GenAlEx format.  GenAlEx is a widely-used Excel plugin for manipulating and
-#' analysing genotype data.  This package reads GenAlEx-format data from a text
-#' file or directly from Excel files and creates an annotated data frame of
-#' class \code{'genalex'}.  Several functions are provided for accessing,
-#' manipulating and printing this data.  GenAlEx and its documentation are
-#' available at \url{http://biology-assets.anu.edu.au/GenAlEx}.  Descriptions
+#' A collection of R functions to read, manipulate, write and convert genotype
+#' data in GenAlEx format.  GenAlEx is a widely-used Excel plugin for 
+#' manipulating and analysing genotype data.  This package reads GenAlEx-format
+#' data from a text file or directly from Excel files and creates an annotated 
+#' data frame of class \code{'genalex'}.  Several functions are provided for
+#' accessing, manipulating and printing this data. Additional functions are 
+#' provided for converting class \code{'genalex'} objects to class
+#' \code{\link[pegas]{loci}} from the
+#' \href{http://cran.r-project.org/web/packages/pegas/index.html}{pegas}
+#' package, for converting genotypes to classes 
+#' \code{\link[genetics]{genotype}} and \code{\link[genetics]{haplotype}}
+#' from the
+#' \href{http://cran.r-project.org/web/packages/genetics/index.html}{genetics}
+#' package, and for writing a class \code{'genalex'} object to a file in
+#' \href{http://kimura.univ-montp2.fr/~rousset/}{Genepop} format.
+#' GenAlEx and its documentation are available at
+#' \url{http://biology-assets.anu.edu.au/GenAlEx}.  Descriptions
 #' of the file format and of the annotations added to the class as attributes
 #' are available via \code{help(readGenalex)}.
 #' 

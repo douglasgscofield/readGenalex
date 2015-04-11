@@ -20,6 +20,8 @@ Type 'q()' to quit R.
 > pkgname <- "readGenalex"
 > source(file.path(R.home("share"), "R", "examples-header.R"))
 > options(warn = 1)
+> 
+> ### * </HEADER>
 > library('readGenalex')
 > 
 > base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
@@ -89,7 +91,7 @@ Type 'q()' to quit R.
 > ### Name: as.genalex
 > ### Title: Convert object to class 'genalex'
 > ### Aliases: as.genalex as.genalex.data.frame as.genalex.default
-> ###   as.genalex.genalex
+> ###   as.genalex.genalex as.genalex.loci
 > 
 > ### ** Examples
 > 
@@ -205,6 +207,62 @@ as.genalex.data.frame(as.data.frame(Qagr_adult_genotypes))
 > 
 > 
 > cleanEx()
+> nameEx("as.loci.genalex")
+> ### * as.loci.genalex
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: as.loci.genalex
+> ### Title: Convert class "genalex" object to data frame of class "loci"
+> ###   from package "pegas"
+> ### Aliases: as.loci.genalex
+> 
+> ### ** Examples
+> 
+> suppressPackageStartupMessages(require(pegas))
+> data(Qagr_pericarp_genotypes)
+> dd <- as.genalex(head(Qagr_pericarp_genotypes, 15), force = TRUE)
+> as.loci(dd)
+Allelic data frame: 15 individuals
+                    10 loci
+                    1 additional variable
+> str(as.loci(dd, phased = TRUE))
+Classes ‘loci’ and 'data.frame':	15 obs. of  11 variables:
+ $ population: Factor w/ 2 levels "L0010","L0031": 1 1 1 1 1 1 1 1 1 1 ...
+ $ 0c11      : Factor w/ 3 levels "213|213","213|215",..: 3 3 3 3 3 3 3 3 3 3 ...
+ $ 0c19      : Factor w/ 2 levels "226|240","238|240": 2 2 2 2 2 2 2 2 2 2 ...
+ $ Oe09      : Factor w/ 3 levels "192|192","192|194",..: 1 1 1 1 1 1 1 1 1 1 ...
+ $ 0i01      : Factor w/ 3 levels "192|200","200|226",..: 3 3 3 3 3 3 3 3 3 3 ...
+ $ 0m05      : Factor w/ 3 levels "212|220","220|220",..: 3 3 3 3 3 3 3 3 3 3 ...
+ $ 0m07      : Factor w/ 2 levels "199|201","201|221": 2 2 2 2 2 2 2 2 2 2 ...
+ $ 1c06      : Factor w/ 2 levels "236|236","242|244": 2 2 2 2 2 2 2 2 2 2 ...
+ $ 1c08      : Factor w/ 2 levels "271|271","271|273": 1 1 1 1 1 1 1 1 1 1 ...
+ $ 1f02      : Factor w/ 2 levels "180|190","190|190": 2 2 2 2 2 2 2 2 2 2 ...
+ $ 1g13      : Factor w/ 3 levels "181|191","185|185",..: 1 1 1 1 1 1 1 1 1 1 ...
+ - attr(*, "n.loci")= num 10
+ - attr(*, "ploidy")= num 2
+ - attr(*, "n.samples")= int 15
+ - attr(*, "n.pops")= int 2
+ - attr(*, "dataset.title")= chr "Sedgwick Q.agrifolia 2006 granary pericarps"
+ - attr(*, "sample.title")= chr "PericarpID"
+ - attr(*, "pop.title")= chr "Granary"
+ - attr(*, "pop.labels")= chr  "L0010" "L0031"
+ - attr(*, "pop.sizes")= Named int  12 3
+  ..- attr(*, "names")= chr  "L0010" "L0031"
+ - attr(*, "locus.columns")= Named num  2 3 4 5 6 7 8 9 10 11
+  ..- attr(*, "names")= chr  "0c11" "0c19" "Oe09" "0i01" ...
+ - attr(*, "locus.names")= chr  "0c11" "0c19" "Oe09" "0i01" ...
+ - attr(*, "data.file.name")= chr "as.loci(inst/extdata/Qagr_pericarp_genotypes.txt)"
+ - attr(*, "locicol")= Named num  2 3 4 5 6 7 8 9 10 11
+  ..- attr(*, "names")= chr  "0c11" "0c19" "Oe09" "0i01" ...
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:pegas’, ‘package:adegenet’, ‘package:ade4’,
+  ‘package:ape’
+
 > nameEx("cbind.genalex")
 > ### * cbind.genalex
 > 
@@ -1131,8 +1189,7 @@ L0039_052 , 213215 238238 192194 204244 202214 199201 236240 273273 182190 18918
 > ### * <FOOTER>
 > ###
 > options(digits = 7L)
-> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  2.156 0.08 1.888 0 0 
+Time elapsed:  3.174 0.121 2.913 0 0 
 > grDevices::dev.off()
 null device 
           1 

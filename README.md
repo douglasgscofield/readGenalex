@@ -154,6 +154,8 @@ Function | Description
 `writeGenepop()`| Write class `'genalex'` object in [Genepop](http://kimura.univ-montp2.fr/~rousset) format
 `as.genetics()` | Convert class `'genalex'` object to a data frame with genotypes encoded using class `genotype` (unphased) or class `haplotype` (phased) from package `genetics`
 `splitGenotypes()` | Split genotypes encoded as `101/107` into separate columns of a data frame, suitable for further use with `genalex()`
+`joinGenotypes()` | Join class `'genalex'` (or other class) genotypes into a single column
+`as.loci.genalex` | Extends the `as.loci` generic from the `pegas` package to convert class `'genalex'` to class `'loci'`
 
 
 ## Datasets
