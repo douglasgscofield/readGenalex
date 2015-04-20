@@ -2,7 +2,7 @@ Package: readGenalex
 Type: Package
 Title: Read, Write, Manipulate and Convert GenAlEx-Format Genotype Files
 Version: 0.9.9000
-Date: 2015-04-11
+Date: 2015-04-21
 Authors@R: person(c("Douglas", "G."), "Scofield", email = "douglasgscofield@gmail.com", role = c("aut", "cre"))
 Maintainer: Douglas G. Scofield <douglasgscofield@gmail.com>
 Description: A collection of R functions to read, write, manipulate, and
