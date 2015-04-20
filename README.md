@@ -9,26 +9,22 @@ available at <http://biology-assets.anu.edu.au/GenAlEx>.
 
 
 
-## Development version 0.9.9000
+## Release version 1.0
 
-This is a development version which implements the functionality of this
+This is a new release version which implements the functionality of this
 package by defining an S3 class `'genalex'` that is shared with `data.frame`.
-This functionality will be released to CRAN in the 1.0 version of this package.
-In the meantime, the code in this master branch may have odd little bugs.  I
-will not make a commit to the master branch that does not pass the test suite,
-but please use caution.
 
 
 
 ## Using the package
 
-`readGenalex` 0.4.1 is available on CRAN:
+`readGenalex` is available on CRAN:
 
 ```R
 > install.packages("readGenalex")
 ```
 
-The development version here (**0.9.9000**) is hosted on Github and can always
+The development version is hosted on Github and can always
 be installed via:
 
 ```R
