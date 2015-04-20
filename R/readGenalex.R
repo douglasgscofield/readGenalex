@@ -1522,3 +1522,90 @@ extra.data.frame <- function(x, ...)
 
 
 
+#' Return genotypes for specified populations
+#'
+#' Return genotype data for specified populations from an object of class
+#' \code{'genalex'}, in an object of class \code{'genalex'}.
+#'
+#'
+#' @param x     An annotated data frame of class \code{'genalex'}
+#'
+#' @param pop   The names of one or more populations for which \code{x}
+#' contains genotypes
+#'
+#' @param \dots  Additional arguments, currently ignored
+#'
+#' @return An object of class \code{'genalex'} containing genotype data
+#' from \code{x} for populations specified in \code{code}.  Attributes
+#' are re-calculated so that the return value is a valid object of class
+#' \code{'genalex'}, and the \code{"data.file.name"} attribute is updated
+#' to reflect the action of this function.
+#'
+#' @author Douglas G. Scofield
+#'
+#' @examples
+#'
+#' data(Qagr_pericarp_genotypes)
+#' nm <- getPopulation(Qagr_pericarp_genotypes, "L0031")
+#' nm
+#'
+#' @export
+#'
+#' @name getPopulation
+#'
+NULL
+
+getPopulation <- function(x, ...) UseMethod("getPopulation")
+
+#' @rdname getPopulation
+#'
+#' @export
+#'
+getPopulation.genalex <- function(x, pop, ...)
+{
+    NAME.pop <- deparse(substitute(pop))
+    pop.column <- attr(x, "pop.title")
+    subx <- as.genalex(x[x[[pop.column]] %in% pop, , drop = FALSE], force = TRUE)
+    attr(subx, "data.file.name") <- paste0(attr(subx, "data.file.name"), "[",
+                                           pop.column, "==", NAME.pop, ",]")
+    subx
+}
+
+
+
+#' Return ploidy for object of class \code{'genalex'}
+#'
+#' Return ploidy for object of class \code{'genalex'}
+#'
+#'
+#' @param x     An annotated data frame of class \code{'genalex'}
+#'
+#' @param \dots  Additional arguments, currently ignored
+#'
+#' @return The numeric value of the \code{"ploidy"} attribute of \code{x}
+#'
+#' @author Douglas G. Scofield
+#'
+#' @examples
+#'
+#' data(Qagr_pericarp_genotypes)
+#' ploidy(Qagr_pericarp_genotypes)
+#'
+#' @export
+#'
+#' @name ploidy
+#'
+NULL
+
+ploidy <- function(x, ...) UseMethod("ploidy")
+
+#' @rdname ploidy
+#'
+#' @export
+#'
+ploidy.genalex <- function(x, ...)
+{
+    attr(x, "ploidy")
+}
+
+

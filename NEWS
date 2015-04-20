@@ -12,6 +12,8 @@ readGenalex 0.9.9000 (development version)
     replaced by getLocus, putGenalexLocus is replaced by replaceLocus,
     dropGenalexLoci is replaced by dropLocus, and reduceGenalexPloidy is
     replaced by reducePloidy
+-   Added getPopulation to return genotypes for specific populations in
+    a class 'genalex' object
 -   Extended is.genalex to have shallow (default) or deep (force = TRUE)
     checking of class 'genalex' consistency. With deep checking,
     attributes are inferred from the structure of the data frame and
@@ -52,6 +54,7 @@ readGenalex 0.9.9000 (development version)
     class 'genalex' object. The latter coerces its value object to a
     data frame, if it is not already, does a bit of error checking, and
     sets the row names to be the sample names of the object.
+-   New ploidy method to get the ploidy of an object of class 'genalex'
 -   readGenalex now has ... in its argument list, for additional
     arguments to be passed to scan() while reading data
 -   Added na.strings argument to readGenalex, with defaults that reflect

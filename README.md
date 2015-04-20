@@ -141,6 +141,7 @@ Function | Description
 `as.data.frame()` | Method to convert class `'genalex'` to class `'data.frame'`, optionally all class `'genalex'`-specific attributes are removed
 `reducePloidy()` | Reduce the ploidy to 1 by selecting the first allele of each locus
 `dropLocus()` | Drop named loci
+`getPopulation()` | Return genotypes of specific populations in object of class `'genalex'` 
 `printGenotype()` | Print genotypes of specific rows
 `reorderLoci()` | Reorder loci into a given order
 `computeLocusColumns()` | Return a vector of column numbers for specified loci
@@ -148,6 +149,7 @@ Function | Description
 `getLocus()` | Return genotypes of specified locus, optionally only for specific populations
 `addLocus()` | Add genotypes to an object of class `'genalex'`
 `extra()` | Get or set `extra.columns` attribute
+`ploidy()` | Get `ploidy` attribute
 `cbind()` | Merge loci and extra data columns from two or more class `'genalex'` objects
 `rbind()` | Merge samples from two or more class `'genalex'` objects
 `checkNullAlleles()` | Compare genotypes against a set of reference genotypes to check for potential null (nonamplifying) alleles

@@ -386,6 +386,35 @@ test_that("dropLocus()", {
 
 
 #########################################
+context("Testing getPopulation()")
+
+test_that("getPopulation()", {
+    # return is class genalex
+    l1 <- getPopulation(x1, "snurf")
+    expect_equal(nrow(x1), nrow(l1))
+    expect_is(l1, 'genalex')
+    expect_is(l1, 'data.frame')
+    expect_match(attr(l1, 'data.file.name'), 'pop==', fixed = TRUE)
+
+    xx <- rbind(x1, x2)
+    l1 <- getPopulation(xx, "snirf")
+    l2 <- getPopulation(xx, "snurf")
+    expect_equal(nrow(xx), nrow(l1) + nrow(l2))
+    expect_is(l1, 'genalex')
+    expect_is(l1, 'data.frame')
+})
+
+
+#########################################
+context("Testing ploidy()")
+
+test_that("ploidy()", {
+    # return is a data.frame
+    expect_equal(ploidy(x1), 2)
+})
+
+
+#########################################
 context("Testing reducePloidy()")
 
 test_that("reducePloidy()", {

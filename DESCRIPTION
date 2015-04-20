@@ -1,11 +1,11 @@
 Package: readGenalex
 Type: Package
-Title: Read and Manipulate GenAlEx-format Genotype Files
+Title: Read, Write, Manipulate and Convert GenAlEx-Format Genotype Files
 Version: 0.9.9000
 Date: 2015-04-11
 Authors@R: person(c("Douglas", "G."), "Scofield", email = "douglasgscofield@gmail.com", role = c("aut", "cre"))
 Maintainer: Douglas G. Scofield <douglasgscofield@gmail.com>
-Description: A collection of R functions to read, manipulate, write and
+Description: A collection of R functions to read, write, manipulate, and
     convert genotype data in GenAlEx format.  GenAlEx is a widely-used Excel
     plugin for manipulating and analysing genotype data.  This package reads
     GenAlEx data from text or Excel files and creates an annotated data frame

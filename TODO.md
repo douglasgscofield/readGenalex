@@ -3,15 +3,14 @@
 TODO
 ----
 
-- do I need a function to extract a specific population?
 - what actually happens with `cbind(genalex, data.frame)` and `rbind(genalex, data.frame)`?  I think I saw `cbind.genalex` called in the first case, but I thought from studying the second case that this would not happen.
-- Add used papers to the data description?
-- Initial `dispersalDiversity` package should use readGenalex 1.0
 
 
 Completed
 ---------
 
+* Added `ploidy.genalex` to return the ploidy of an object of class `'genalex'`
+* Added `getPopulation.genalex` to return genotypes for specific populations in an object of class `'genalex'`
 * Added `as.genalex.loci` to convert class `'loci'` to class `'genalex'`
 * Added `joinGenotypes` to join `101` `107` to `101/107`, and a phased version, and added several tests
 * Added `splitGenotypes` to split `101/107` into separate columns of a data frame, and added several tests for it

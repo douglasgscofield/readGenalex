@@ -1,5 +1,5 @@
 
-R version 3.1.3 (2015-03-09) -- "Smooth Sidewalk"
+R version 3.2.0 (2015-04-16) -- "Full of Ingredients"
 Copyright (C) 2015 The R Foundation for Statistical Computing
 Platform: x86_64-apple-darwin13.4.0 (64-bit)
 
@@ -520,6 +520,50 @@ $data.file.name
 > 
 > 
 > cleanEx()
+> nameEx("getPopulation")
+> ### * getPopulation
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: getPopulation
+> ### Title: Return genotypes for specified populations
+> ### Aliases: getPopulation getPopulation.genalex
+> 
+> ### ** Examples
+> 
+> data(Qagr_pericarp_genotypes)
+> nm <- getPopulation(Qagr_pericarp_genotypes, "L0031")
+> nm
+   PericarpID Granary 0c11 0c11.2 0c19 0c19.2 Oe09 Oe09.2 0i01 0i01.2 0m05
+13  L0031_025   L0031  213    213  226    240  192    194  192    200  212
+14  L0031_026   L0031  213    215  226    240  194    198  200    226  220
+15  L0031_027   L0031  213    213  226    240  192    194  192    200  212
+16  L0031_028   L0031  213    213  226    236  194    200  200    204  210
+17  L0031_029   L0031  213    213  226    240  192    194  192    200  212
+18  L0031_030   L0031  213    215  226    240  194    198  200    226  220
+19  L0031_031   L0031  213    213  236    242  194    198  206    222  206
+20  L0031_032   L0031  213    215  226    240  194    198  200    226  220
+21  L0031_033   L0031  213    213  236    242  194    198  206    222  206
+22  L0031_034   L0031  213    213  236    242  194    198  206    222  206
+23  L0031_035   L0031  213    213  236    242  194    198  206    222  206
+24  L0031_036   L0031  213    213  236    242  194    198  206    222  206
+   0m05.2 0m07 0m07.2 1c06 1c06.2 1c08 1c08.2 1f02 1f02.2 1g13 1g13.2
+13    220  199    201  236    236  271    271  190    190  185    185
+14    220  199    201  236    236  271    273  180    190  185    191
+15    220  199    201  236    236  271    271  190    190  185    185
+16    218  199    205  236    242  271    271  180    190  185    191
+17    220  199    201  236    236  271    271  190    190  185    185
+18    220  199    201  236    236  271    273  180    190  185    191
+19    210  199    199  234    236  269    331  180    190  185    189
+20    220  199    201  236    236  271    273  180    190  185    191
+21    210  199    199  234    236  269    331  180    190  185    189
+22    210  199    199  234    236  269    331  180    190  185    189
+23    210  199    199  234    236  269    331  180    190  185    189
+24    210  199    199  234    236  269    331  180    190  185    189
+> 
+> 
+> 
+> cleanEx()
 > nameEx("is.genalex")
 > ### * is.genalex
 > 
@@ -545,6 +589,24 @@ $data.file.name
 > is.genalex(Qagr_adult_genotypes, force = TRUE, verbose = TRUE)
 x and inferred attributes for x attributes do not match : n.loci 
 [1] FALSE
+> 
+> 
+> 
+> cleanEx()
+> nameEx("ploidy")
+> ### * ploidy
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: ploidy
+> ### Title: Return ploidy for object of class "genalex"
+> ### Aliases: ploidy ploidy.genalex
+> 
+> ### ** Examples
+> 
+> data(Qagr_pericarp_genotypes)
+> ploidy(Qagr_pericarp_genotypes)
+[1] 2
 > 
 > 
 > 
@@ -1189,7 +1251,7 @@ L0039_052 , 213215 238238 192194 204244 202214 199201 236240 273273 182190 18918
 > ### * <FOOTER>
 > ###
 > options(digits = 7L)
-Time elapsed:  3.174 0.121 2.913 0 0 
+Time elapsed:  3.049 0.137 2.764 0 0 
 > grDevices::dev.off()
 null device 
           1 
