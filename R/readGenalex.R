@@ -483,12 +483,13 @@ as.data.frame.genalex <- function(x, ..., complete = FALSE,
 #' @note If one of the arguments is class \code{'data.frame'}, then this
 #' function will \emph{not} be called, instead the \code{rbind.data.frame}
 #' method of base R will be called silently and will return an object of
-#' class \code{'data.frame'}.  Objects of class \code{'genalex'} also have
+#' class \code{'data.frame'} with a structure that is probably not what
+#' you intended.  Objects of class \code{'genalex'} also have
 #' class \code{'data.frame'}.  The selection of which method to use, in
 #' this case \code{rbind.data.frame}, occurs during method dispatch for
 #' \code{rbind}, so it is not a condition that can be checked by this
-#' function.  Assure that data frames have been converted to class
-#' \code{'genalex'} prior to calling this function by using
+#' function.  To prevent this, assure that data frames have been converted
+#' to class \code{'genalex'} prior to calling this function by using
 #' \code{as.genalex}, and if there are doubts as to the class of any of
 #' the \code{\dots} arguments, use \code{is.genalex} to check the class
 #' of the returned value.

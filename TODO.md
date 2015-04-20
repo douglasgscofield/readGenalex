@@ -1,14 +1,9 @@
 # For 1.0
 
-TODO
-----
-
-- what actually happens with `cbind(genalex, data.frame)` and `rbind(genalex, data.frame)`?  I think I saw `cbind.genalex` called in the first case, but I thought from studying the second case that this would not happen.
-
-
 Completed
 ---------
 
+* Clarified what happens when `'data.frame'` and `'genalex'` items are mixed to `rbind` or `cbind`
 * Added `ploidy.genalex` to return the ploidy of an object of class `'genalex'`
 * Added `getPopulation.genalex` to return genotypes for specific populations in an object of class `'genalex'`
 * Added `as.genalex.loci` to convert class `'loci'` to class `'genalex'`
