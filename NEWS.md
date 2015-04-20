@@ -1,4 +1,4 @@
-# readGenalex 0.9.9000 (development version)
+# readGenalex 1.0
 
 * Creates and manipulates data frames using the new class `'genalex'`.  The `"genetic.data.format"` attribute present in earlier versions of this package is removed.
 * Extensive documentation updates reflecting use of class `'genalex'`
