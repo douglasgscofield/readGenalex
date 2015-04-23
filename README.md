@@ -7,22 +7,13 @@ and manipulate it in that form.  Several functions are provided for accessing,
 manipulating, and printing this data.  GenAlEx and its documentation are
 available at <http://biology-assets.anu.edu.au/GenAlEx>.
 
-
-
-## Release version 1.0
-
-This is a new release version which implements the functionality of this
-package by defining an S3 class `'genalex'` that is shared with `data.frame`.
+The most recent release 1.0 (now on CRAN) introduces the S3 class `'genalex'`,
+and implements the functionality of this package by defining an S3 class
+`'genalex'` that is shared with `data.frame`.
 
 
 
-## Using the package
-
-`readGenalex` is available on CRAN:
-
-```R
-> install.packages("readGenalex")
-```
+## Release version 1.0.9000
 
 The development version is hosted on Github and can always
 be installed via:
@@ -30,6 +21,15 @@ be installed via:
 ```R
 > install.packages("devtools")
 > devtools::install_github("douglasgscofield/readGenalex")
+```
+
+
+## Using the package
+
+`readGenalex` 1.0 can be installed through CRAN:
+
+```R
+> install.packages("readGenalex")
 ```
 
 Class `genalex` is an annotated data frame with attributes containing

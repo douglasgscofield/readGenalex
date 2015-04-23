@@ -1,3 +1,13 @@
+# For 1.0.9000
+
+TODO
+----
+
+* Docs: improve indexing and perhaps add class description, see qgtools and hypred packages for examples
+* Docs: interconnections between packages.  HWxtest reads Genepop
+* Docs: conversions to 'standard' SNP formats?
+
+
 # For 1.0
 
 Completed
