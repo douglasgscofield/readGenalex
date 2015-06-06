@@ -2,12 +2,12 @@
 % Please edit documentation in R/readGenalex-pegas.R
 \name{as.loci.genalex}
 \alias{as.loci.genalex}
-\title{Convert class \code{'genalex'} object to data frame of class \code{'loci'} from package \code{'pegas'}}
+\title{Convert class \code{genalex} object to data frame of class \code{'loci'} from package \code{'pegas'}}
 \usage{
 as.loci.genalex(x, phased = FALSE, check.annotation = TRUE, ...)
 }
 \arguments{
-\item{x}{Annotated data frame of class \code{'genalex'}}
+\item{x}{Annotated data frame of class \code{genalex}}
 
 \item{phased}{Still some details to work out.  Default \code{FALSE}.  If
 \code{FALSE}, assumes alleles in \code{x} are unphased so that a genotype
@@ -30,18 +30,18 @@ frame with the genotype of each locus encoded as factors.  Additional
 changes apply, see Details.
 }
 \description{
-Converts an object of class \code{'genalex'} to a data frame of class
+Converts an object of class \code{genalex} to a data frame of class
 \code{'loci'} from the
 \href{http://cran.r-project.org/web/packages/pegas/index.html}{pegas}
-package.  This data frame is similar to one of class \code{'genalex'},
+package.  This data frame is similar to one of class \code{genalex},
 in that it mixes genetic and other data in the same data frame, but
 its conversion of multiple allele columns to single genotype columns
 is similar to the result of the \code{\link{as.genetics}} function
 of this package.
 }
 \details{
-Like class \code{'genalex'}, class \code{'loci'} can encode genotypes of
-any ploidy.  Once a class \code{'genalex'} object is converted to class
+Like class \code{genalex}, class \code{'loci'} can encode genotypes of
+any ploidy.  Once a class \code{genalex} object is converted to class
 \code{'loci'}, it may be further converted to other data structures for
 analysis with
 \href{http://cran.r-project.org/web/packages/pegas/index.html}{pegas}
@@ -49,7 +49,7 @@ and
 \href{http://cran.r-project.org/web/packages/adegenet/index.html}{adegenet}.
 
 The specific changes that occur to an object of
-class \code{'genalex'} for it to become an object of class \code{'loci'}:
+class \code{genalex} for it to become an object of class \code{'loci'}:
 \itemize{
    \item Row names are set from sample names
    \item The first column of sample names is removed
@@ -65,7 +65,7 @@ class \code{'genalex'} for it to become an object of class \code{'loci'}:
    \item A new attribute \code{"locicol"} required by class \code{'loci'}
          is added, with a value identical to the \code{"locus.columns"}
          attribute
-   \item The \code{class} is changed from \code{c('genalex', 'data.frame')}
+   \item The \code{class} is changed from \code{c(genalex, 'data.frame')}
          to \code{c('loci', 'data.frame')}
 }
 
@@ -75,7 +75,7 @@ For further details of the structure of class \code{\link[pegas]{loci}}, see
 \url{http://ape-package.ird.fr/pegas/DefinitionDataClassesPegas.pdf}.
 
 Because class \code{'loci'} can readily encode additional columns, the
-extra columns of a class \code{'genalex'} object can be bound with
+extra columns of a class \code{genalex} object can be bound with
 \code{cbind} as additional columns.
 
 This is a specialised wrapper around the function

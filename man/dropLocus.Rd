@@ -3,12 +3,12 @@
 \name{dropLocus}
 \alias{dropLocus}
 \alias{dropLocus.genalex}
-\title{Remove specified loci from data frame of class \code{'genalex'}}
+\title{Remove specified loci from data frame of class \code{genalex}}
 \usage{
 \method{dropLocus}{genalex}(x, drop.locus, quiet = FALSE, ...)
 }
 \arguments{
-\item{x}{An annotated data frame of class \code{'genalex'}}
+\item{x}{An annotated data frame of class \code{genalex}}
 
 \item{drop.locus}{The names of one or more loci found in \code{x}}
 
@@ -25,7 +25,7 @@ loci specified by \code{drop.locus}, with attributes updated as
 required.
 }
 \description{
-Remove specified loci from the data frame of class \code{'genalex'}
+Remove specified loci from the data frame of class \code{genalex}
 and updates attributes
 }
 \examples{

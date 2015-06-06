@@ -18,14 +18,14 @@ the worksheet position in the workbook, e.g., 1, 2, etc.}
 (defaults to 2)}
 }
 \value{
-An annotated data frame of class \code{'genalex'}.  The format is
+An annotated data frame of class \code{genalex}.  The format is
 described in more detail in \code{\link{readGenalex}}.  The
 \code{"data.file.name"} attribute is set to the value
 \code{"file(worksheet)"}.
 }
 \description{
 Reads genotype data file in GenAlEx format from an Excel worksheet
-into an annotated data frame of class \code{'genalex'}.  Both
+into an annotated data frame of class \code{genalex}.  Both
 \code{.xls} and \code{.xlsx} formats may be read.  The same consistency
 checks are performed as for \code{\link{readGenalex}}.  This function
 uses the function \code{\link[XLConnect]{readWorksheetFromFile}} from the

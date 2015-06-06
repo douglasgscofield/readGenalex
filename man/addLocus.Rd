@@ -3,12 +3,12 @@
 \name{addLocus}
 \alias{addLocus}
 \alias{addLocus.genalex}
-\title{Add genotype data to an object of class \code{'genalex'}}
+\title{Add genotype data to an object of class \code{genalex}}
 \usage{
 \method{addLocus}{genalex}(x, newdata, ...)
 }
 \arguments{
-\item{x}{An annotated data frame of class \code{'genalex'}}
+\item{x}{An annotated data frame of class \code{genalex}}
 
 \item{newdata}{The names of one or more loci found in \code{x},
 it is coerced to a data frame if it is not one}
@@ -16,12 +16,12 @@ it is coerced to a data frame if it is not one}
 \item{\dots}{Additional arguments, currently ignored}
 }
 \value{
-The object of class \code{'genalex'} in \code{x} with
+The object of class \code{genalex} in \code{x} with
 genotype data from \code{newdata} as columns added on the right
 }
 \description{
 Add genotype genotype data for new loci to an object of class
-\code{'genalex'}.  \code{newdata} is coerced to a data frame if
+\code{genalex}.  \code{newdata} is coerced to a data frame if
 it is not already and then added as columns on the right.  The
 new genotype data must have the same ploidy and the same number
 of samples as that in \code{x}.  It is an error to duplicate

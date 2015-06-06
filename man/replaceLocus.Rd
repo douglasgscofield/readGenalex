@@ -3,12 +3,12 @@
 \name{replaceLocus}
 \alias{replaceLocus}
 \alias{replaceLocus.genalex}
-\title{Replace genotype data in data frame of class \code{'genalex'}}
+\title{Replace genotype data in data frame of class \code{genalex}}
 \usage{
 \method{replaceLocus}{genalex}(x, locus, newdata, ...)
 }
 \arguments{
-\item{x}{A data frame of class \code{'genalex'}}
+\item{x}{A data frame of class \code{genalex}}
 
 \item{locus}{The names of one or more loci found in \code{x}}
 
@@ -18,13 +18,13 @@
 \item{\dots}{Additional arguments, currently ignored}
 }
 \value{
-A data frame of class \code{'genalex'} containing genotype data
+A data frame of class \code{genalex} containing genotype data
 from \code{x} with data for loci specified in \code{locus} replaced
 with data from \code{newdata}.
 }
 \description{
 Replace genotype data for specified loci in a data frame of class
-\code{'genalex'}.
+\code{genalex}.
 }
 \author{
 Douglas G. Scofield

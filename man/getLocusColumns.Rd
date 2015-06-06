@@ -20,7 +20,7 @@ named in \code{locus}.
 }
 \description{
 Determine the numeric column positions occupied by named loci in an
-object of class \code{'genalex'}.  This is mostly used as
+object of class \code{genalex}.  This is mostly used as
 a utility routine by other functions in the \code{readGenalex} package.
 }
 \examples{

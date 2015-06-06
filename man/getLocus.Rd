@@ -8,7 +8,7 @@
 \method{getLocus}{genalex}(x, locus, pop = NULL, ...)
 }
 \arguments{
-\item{x}{An annotated data frame of class \code{'genalex'}}
+\item{x}{An annotated data frame of class \code{genalex}}
 
 \item{locus}{The names of one or more loci found in \code{x}}
 

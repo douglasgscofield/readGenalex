@@ -1,13 +1,13 @@
-#' Check to see if an object is of class 'genalex'
+#' Check to see if an object is of class \code{genalex}
 #'
-#' Check to see if an object is of class 'genalex' as recognised by
+#' Check to see if an object is of class \code{genalex} as recognised by
 #' the \code{readGenalex} package.  With \code{force = TRUE},
 #' the internal consistency of the data and annotations are checked.
 #'
 #' Two attributes that may commonly be found to differ from inferred
 #' values are \code{"dataset.title"} and \code{"data.file.name"},
 #' if there have been manipulations to the class.  These attributes
-#' cannot be removed from a valid object of class \code{'genalex'},
+#' cannot be removed from a valid object of class \code{genalex},
 #' but they can be set to the empty string (\code{""}) to avoid this
 #' check.  Alternatively, the option \code{skip.strings = TRUE} may
 #' be set to not check these specific attributes for consistency.
@@ -15,11 +15,11 @@
 #' then for matching row names.  The option \code{skip.extra = TRUE}
 #' may be set to not check extra data columns.
 #'
-#' @param x      An object that might be of class \code{'genalex'}
+#' @param x      An object that might be of class \code{genalex}
 #'
-#' @param force  If \code{TRUE} and \code{x} has class \code{'genalex'},
+#' @param force  If \code{TRUE} and \code{x} has class \code{genalex},
 #' force a deeper check to assure that the data and annotations are
-#' consistent with class \code{'genalex'}
+#' consistent with class \code{genalex}
 #'
 #' @param skip.strings  If \code{TRUE} and \code{force = TRUE},
 #' do not check the attributes \code{"dataset.title"} and
@@ -41,10 +41,13 @@
 #'
 #' data(Qagr_adult_genotypes)
 #' is.genalex(Qagr_adult_genotypes)
+#'
 #' ## create an inconsistent attribute
 #' attr(Qagr_adult_genotypes, "n.loci") <- 20
+#'
 #' ## this doesn't detect the inconsistency
 #' is.genalex(Qagr_adult_genotypes)
+#'
 #' ## this detects the inconsistency, returns FALSE
 #' is.genalex(Qagr_adult_genotypes, force = TRUE)
 #' is.genalex(Qagr_adult_genotypes, force = TRUE, verbose = TRUE)
@@ -189,13 +192,13 @@ is.genalex <- function(x, force = FALSE, skip.strings = FALSE,
 
 
 
-#' Convert object to class 'genalex'
+#' Convert object to class \code{genalex}
 #'
-#' Converts object \code{x} to a data frame of class \code{'genalex'}.
+#' Converts object \code{x} to a data frame of class \code{genalex}.
 #' There are seven cases:
 #' \itemize{
-#'   \item If \code{x} is of class \code{'genalex'}, it is simply returned.
-#'   \item If \code{x} is of class \code{'genalex'} and \code{force = TRUE},
+#'   \item If \code{x} is of class \code{genalex}, it is simply returned.
+#'   \item If \code{x} is of class \code{genalex} and \code{force = TRUE},
 #'         \code{x} is examined for consistency between data and annotations,
 #'         and any inconsistencies are recalculated based on the data.  To
 #'         check whether inconsistencies exist, use
@@ -208,22 +211,27 @@ is.genalex <- function(x, force = FALSE, skip.strings = FALSE,
 #'   \item If \code{x} is of class \code{'data.frame'}, it is examined to
 #'         see if it might be a data frame created by an earlier version of
 #'         the \code{readGenalex} package.  If so, it is converted to
-#'         class \code{'genalex'} and returned.  Any other arguments are
+#'         class \code{genalex} and returned.  Any other arguments are
 #'         ignored.
 #'   \item If \code{x} is of class \code{'data.frame'} and all columns from
-#'         the third to the end are of class \code{\link[genetics]{genotype}},
-#'         these columns are converted to class \code{'genalex'} genotypes,
-#'         with one column per allele.  Once the alleles have been split,
-#'         a call to \code{\link{genalex}} establishes the correct attributes.
+#'         the third to the end are of class \code{\link[genetics]{genotype}}
+#'         from the
+#'         \href{http://cran.r-project.org/web/packages/genetics/index.html}{genetics}
+#'         package, these columns are converted to class \code{genalex}
+#'         genotypes, with one column per allele.  Once the alleles have been
+#'         split, a call to \code{\link{genalex}} establishes the correct
+#'         attributes.
 #'   \item If \code{x} is of class \code{'data.frame'} but does not appear to
 #'         be from an earlier version of \code{readGenalex} and does not
 #'         have all genotype columns of class \code{\link[genetics]{genotype}},
-#'         it is converted to class \code{'genalex'} using a call to
+#'         it is converted to class \code{genalex} using a call to
 #'         \code{\link{genalex}} assuming a format identical to class
-#'         \code{'genalex'}, where the first column holds sample names, the
+#'         \code{genalex}, where the first column holds sample names, the
 #'         second column holds population names, and the remaining columns
 #'         hold genotypes.
-#'   \item If \code{x} is of class \code{'loci'}, it is converted using
+#'   \item If \code{x} is of class \code{\link[pegas]{loci}} from the
+#'         \href{http://cran.r-project.org/web/packages/pegas/index.html}{pegas}
+#'         package, it is converted using
 #'         \code{\link{splitGenotypes}} and \code{\link{genalex}}.  Sample
 #'         names are taken from the row names.  If there
 #'         is no column in \code{x} named \code{"population"}, then the
@@ -235,10 +243,10 @@ is.genalex <- function(x, force = FALSE, skip.strings = FALSE,
 #'   \item Any other class is an error.  Further conversions between genetic
 #'         data formats may be added as additional methods.
 #' }
-#' If the object is not originally of class \code{'genalex'}, the
+#' If the object is not originally of class \code{genalex}, the
 #' \code{"data.file.name"} attribute will reflect this function call.
 #'
-#' @param x      An object of class \code{'genalex'} or class
+#' @param x      An object of class \code{genalex} or class
 #' \code{'data.frame'}
 #'
 #' @param sep  Character separating joined alleles, if converting from
@@ -250,21 +258,21 @@ is.genalex <- function(x, force = FALSE, skip.strings = FALSE,
 #' @param names  A list of names to apply as accepted by \code{\link{genalex}}.
 #' If any names are not provided, they are taken from the names of the
 #' corresponding columns of \code{x}.  This option is only used if \code{x}
-#' does not have class \code{'genalex'}.
+#' does not have class \code{genalex}.
 #'
 #' @param ploidy Ploidy of the genotype columns in \code{x}
 #' (\code{x[, 3:ncol(x)]}).  This option is only used if \code{x} does not
-#' have class \code{'genalex'}.
+#' have class \code{genalex}.
 #'
 #' @param force  If \code{TRUE}, check for consistency between data and
 #' annotations in \code{x} and recalculate and reset any inconsistent
 #' attributes.  This option is only used if \code{x} has class
-#' \code{'genalex'}, and is \code{FALSE} by default.
+#' \code{genalex}, and is \code{FALSE} by default.
 #'
 #' @param \dots  Additional arguments, ignored unless \code{x} is of class
 #' \code{'loci'} and if so passed to \code{\link{genalex}}
 #'
-#' @return \code{x} converted to a class \code{'genalex'} object
+#' @return \code{x} converted to a class \code{genalex} object
 #'
 #' @seealso \code{\link{is.genalex}}, \code{\link{genalex}}, \code{\link{splitGenotypes}}
 #'
@@ -397,10 +405,10 @@ as.genalex.default <- function(x, ...)
 
 
 
-#' Convert class \code{'genalex'} to data frame
+#' Convert class \code{genalex} to data frame
 #'
-#' Convert an object of class \code{'genalex'} to a data frame, optionally
-#' removing all \code{'genalex'}-specific attributes.  Note that the
+#' Convert an object of class \code{genalex} to a data frame, optionally
+#' removing all \code{genalex}-specific attributes.  Note that the
 #' behaviour of \code{stringsAsFactors} will be used to determine whether
 #' to convert \code{character} columns in the data frame to factors during
 #' conversion.  Note also that any extra columns are not affected by this
@@ -409,7 +417,7 @@ as.genalex.default <- function(x, ...)
 #' @param x         An object to convert to class \code{'data.frame'}
 #'
 #' @param complete  If \code{TRUE}, also removes class
-#' \code{'genalex'}-specific attributes
+#' \code{genalex}-specific attributes
 #'
 #' @param stringsAsFactors  Should \code{character} vectors be converted
 #' to factors?  This could affect sample and population names.
@@ -419,7 +427,7 @@ as.genalex.default <- function(x, ...)
 #' @return \code{x} as class \code{'data.frame'}.  With the default
 #' \code{complete = FALSE}, no attributes are removed, and the class is
 #' simply changed to \code{data.frame} and \code{as.data.frame} is
-#' called.  With \code{complete = TRUE}, all \code{'genalex'}-specific
+#' called.  With \code{complete = TRUE}, all \code{genalex}-specific
 #' attributes are removed.
 #'
 #' @author Douglas G. Scofield
@@ -453,10 +461,10 @@ as.data.frame.genalex <- function(x, ..., complete = FALSE,
 
 
 
-#' Combine class \code{'genalex'} data sets by adding rows
+#' Combine class \code{genalex} data sets by adding rows
 #'
-#' Combine class \code{'genalex'} data sets onto one larger class
-#' \code{'genalex'}data set.  Population names and sizes are adjusted
+#' Combine class \code{genalex} data sets onto one larger class
+#' \code{genalex} data set.  Population names and sizes are adjusted
 #' accordingly.  The data sets must have the same locus names and ploidy, but
 #' the order of the loci may differ, and the final data set will have the
 #' locus order of the first.  Sample names must be unique across all data
@@ -465,7 +473,7 @@ as.data.frame.genalex <- function(x, ..., complete = FALSE,
 #' one data set contains extra columns, all must contain extra columns, and
 #' these are combined along with the rest of the data.
 #'
-#' @param \dots   Class \code{'genalex'} data sets.  If only one data set
+#' @param \dots   Class \code{genalex} data sets.  If only one data set
 #' is supplied, it is returned unmodified.
 #'
 #' @param names   List containing names: \code{title} for data set title,
@@ -475,7 +483,7 @@ as.data.frame.genalex <- function(x, ..., complete = FALSE,
 #'
 #' @param deparse.level Not used (yet)
 #'
-#' @return Annotated data frame of class \code{'genalex'}.  If \code{names}
+#' @return Annotated data frame of class \code{genalex}.  If \code{names}
 #' or any of its fields are not provided, the names of the first argument
 #' are used.  The \code{data.file.name} attribute is a character
 #' representation of the call to \code{rbind}.
@@ -484,12 +492,12 @@ as.data.frame.genalex <- function(x, ..., complete = FALSE,
 #' function will \emph{not} be called, instead the \code{rbind.data.frame}
 #' method of base R will be called silently and will return an object of
 #' class \code{'data.frame'} with a structure that is probably not what
-#' you intended.  Objects of class \code{'genalex'} also have
+#' you intended.  Objects of class \code{genalex} also have
 #' class \code{'data.frame'}.  The selection of which method to use, in
 #' this case \code{rbind.data.frame}, occurs during method dispatch for
 #' \code{rbind}, so it is not a condition that can be checked by this
 #' function.  To prevent this, assure that data frames have been converted
-#' to class \code{'genalex'} prior to calling this function by using
+#' to class \code{genalex} prior to calling this function by using
 #' \code{as.genalex}, and if there are doubts as to the class of any of
 #' the \code{\dots} arguments, use \code{is.genalex} to check the class
 #' of the returned value.
@@ -566,10 +574,10 @@ rbind.genalex <- function(..., names = NULL, deparse.level = 1)
 
 
 
-#' Combine loci from class \code{'genalex'} data sets
+#' Combine loci from class \code{genalex} data sets
 #'
-#' Combine loci from class \code{'genalex'} data sets into one larger class
-#' \code{'genalex'} data set by adding loci.  Locus counts are adjusted
+#' Combine loci from class \code{genalex} data sets into one larger class
+#' \code{genalex} data set by adding loci.  Locus counts are adjusted
 #' accordingly.  The data sets must have the same ploidy, sample names
 #' and sample membership in populations.  The order of the samples may
 #' differ, and the final data set will have the sample order of the first.
@@ -595,7 +603,7 @@ rbind.genalex <- function(..., names = NULL, deparse.level = 1)
 #' \code{cbind} method, values will not be recycled to create matching
 #' row counts.
 #'
-#' @param \dots   All arguments must be class \code{'genalex'} data sets.
+#' @param \dots   All arguments must be class \code{genalex} data sets.
 #' If only one data set is supplied, it is returned unmodified.
 #'
 #' @param names   List of names: \code{title} for data set title,
@@ -605,23 +613,23 @@ rbind.genalex <- function(..., names = NULL, deparse.level = 1)
 #'
 #' @param deparse.level Not used (yet)
 #'
-#' @return Annotated data frame of class \code{'genalex'}.  If \code{names}
+#' @return Annotated data frame of class \code{genalex}.  If \code{names}
 #' or any of its fields are not provided, the names of the first argument
 #' are used.  The \code{data.file.name} attribute is a character
 #' representation of the call to \code{cbind}.
 #'
-#' @note If one of the arguments is not of class \code{'genalex'}, then
+#' @note If one of the arguments is not of class \code{genalex}, then
 #' this function will \emph{not} be called, instead \code{cbind.data.frame}
 #' or perhaps another \code{cbind} method of base R will be called silently
-#' and will return an object that is not of class \code{'genalex'}.  If
-#' this occurs, none of the special processing for class \code{'genalex'}
+#' and will return an object that is not of class \code{genalex}.  If
+#' this occurs, none of the special processing for class \code{genalex}
 #' objects will be applied and the result is probably not what you
 #' intended.  If there is a chance you have mixed objects of different
 #' classes while calling this function, assure that the return value is
-#' class \code{'genalex'} by using \code{is.genalex}.
+#' class \code{genalex} by using \code{is.genalex}.
 #'
 #' If you in fact want to add genotype data from a data frame or matrix
-#' to an object of class \code{'genalex'}, then use \code{addLocus}.
+#' to an object of class \code{genalex}, then use \code{addLocus}.
 #'
 #' @author Douglas G. Scofield
 #'
@@ -774,9 +782,9 @@ cbind.genalex <- function(..., names = NULL, deparse.level = 1)
 
 
 
-#' Create new object of class \code{'genalex'} from constituent data
+#' Create new object of class \code{genalex} from constituent data
 #'
-#' Create a new object of class \code{'genalex'} given sample and
+#' Create a new object of class \code{genalex} given sample and
 #' population names and genotype data.  Titles for the dataset, sample
 #' and population columns, and loci may be provided via the \code{names}
 #' argument.
@@ -801,7 +809,7 @@ cbind.genalex <- function(..., names = NULL, deparse.level = 1)
 #'
 #' @param extra.columns Extra data columns, see \code{\link{readGenalex}}
 #'
-#' @return Annotated data frame of class \code{'genalex'}.  If \code{names}
+#' @return Annotated data frame of class \code{genalex}.  If \code{names}
 #' or any of its fields are not provided, default names are used.  The
 #' \code{data.file.name} attribute is a character representation of the call
 #' to \code{genalex}.
@@ -868,14 +876,14 @@ genalex <- function(samples, pops, genotypes, names = NULL, ploidy = 2,
 
 
 
-#' Summarise contents of class 'genalex' data frame
+#' Summarise contents of class \code{genalex} data frame
 #'
 #' This prints a few lines summarising the data set title, sample size,
 #' population sizes, ploidy, number of loci, and locus names, followed
 #' by a summary of the data frame and a summary of the extra columns,
 #' if present.
 #'
-#' @param  object An annotated data frame of class \code{'genalex'}
+#' @param  object An annotated data frame of class \code{genalex}
 #'
 #' @param  ...    Additional arguments passed to \code{'summary'}
 #'                for the data frame
@@ -919,7 +927,7 @@ summary.genalex <- function(object, ...)
 #'
 #' Print selected genotypes, optionally calling out a locus
 #'
-#' @param x    An annotated data frame of class \code{'genalex'}
+#' @param x    An annotated data frame of class \code{genalex}
 #'
 #' @param rows The specific rows of \code{x} to print, default is
 #'        all rows
@@ -987,7 +995,7 @@ printGenotype.genalex <- function(x, rows = 1:nrow(x), callout.locus = NULL,
 #' Determine numeric column positions occupied by named loci
 #'
 #' Determine the numeric column positions occupied by named loci in an
-#' object of class \code{'genalex'}.  This is mostly used as
+#' object of class \code{genalex}.  This is mostly used as
 #' a utility routine by other functions in the \code{readGenalex} package.
 #'
 #' @param x      An annotated data frame created by \code{readGenalex}
@@ -1031,11 +1039,11 @@ getLocusColumns.genalex <- function(x, locus, ...)
 
 
 
-#' Reorder class \code{'genalex'} genotype columns
+#' Reorder class \code{genalex} genotype columns
 #'
-#' Reorder the genotype columns of a class \code{'genalex'} object by locus.
+#' Reorder the genotype columns of a class \code{genalex} object by locus.
 #'
-#' @param x    An annotated data frame of class \code{'genalex'}
+#' @param x    An annotated data frame of class \code{genalex}
 #'
 #' @param loci The names of loci found in \code{x}, in the desired new
 #'             order.  All loci in \code{x} must be named, and no loci
@@ -1044,7 +1052,7 @@ getLocusColumns.genalex <- function(x, locus, ...)
 #'
 #' @param \dots  Additional arguments, currently ignored
 #'
-#' @return A data frame of class \code{'genalex'} containing the same
+#' @return A data frame of class \code{genalex} containing the same
 #' genotype data from \code{x} reordered according to \code{loci}.
 #'
 #' @author Douglas G. Scofield
@@ -1117,7 +1125,7 @@ reorderLoci.genalex <- function(x, loci, ...)
 #' populations.
 #'
 #'
-#' @param x     An annotated data frame of class \code{'genalex'}
+#' @param x     An annotated data frame of class \code{genalex}
 #'
 #' @param locus The names of one or more loci found in \code{x}
 #'
@@ -1167,24 +1175,24 @@ getLocus.genalex <- function(x, locus, pop = NULL, ...)
 
 
 
-#' Add genotype data to an object of class \code{'genalex'}
+#' Add genotype data to an object of class \code{genalex}
 #'
 #' Add genotype genotype data for new loci to an object of class
-#' \code{'genalex'}.  \code{newdata} is coerced to a data frame if
+#' \code{genalex}.  \code{newdata} is coerced to a data frame if
 #' it is not already and then added as columns on the right.  The
 #' new genotype data must have the same ploidy and the same number
 #' of samples as that in \code{x}.  It is an error to duplicate
 #' locus names in \code{x}.  If you want safe merging of data sets
 #' with potential overlap in genotypes, use \code{\link{cbind.genalex}}.
 #'
-#' @param x       An annotated data frame of class \code{'genalex'}
+#' @param x       An annotated data frame of class \code{genalex}
 #'
 #' @param newdata The names of one or more loci found in \code{x},
 #' it is coerced to a data frame if it is not one
 #'
 #' @param \dots  Additional arguments, currently ignored
 #'
-#' @return The object of class \code{'genalex'} in \code{x} with
+#' @return The object of class \code{genalex} in \code{x} with
 #' genotype data from \code{newdata} as columns added on the right
 #'
 #' @author Douglas G. Scofield
@@ -1249,12 +1257,12 @@ addLocus.genalex <- function(x, newdata, ...)
 
 
 
-#' Replace genotype data in data frame of class \code{'genalex'}
+#' Replace genotype data in data frame of class \code{genalex}
 #'
 #' Replace genotype data for specified loci in a data frame of class
-#' \code{'genalex'}.
+#' \code{genalex}.
 #'
-#' @param x       A data frame of class \code{'genalex'}
+#' @param x       A data frame of class \code{genalex}
 #'
 #' @param locus   The names of one or more loci found in \code{x}
 #'
@@ -1263,7 +1271,7 @@ addLocus.genalex <- function(x, newdata, ...)
 #'
 #' @param \dots  Additional arguments, currently ignored
 #'
-#' @return A data frame of class \code{'genalex'} containing genotype data
+#' @return A data frame of class \code{genalex} containing genotype data
 #' from \code{x} with data for loci specified in \code{locus} replaced
 #' with data from \code{newdata}.
 #'
@@ -1290,12 +1298,12 @@ replaceLocus.genalex <- function(x, locus, newdata, ...)
 
 
 
-#' Remove specified loci from data frame of class \code{'genalex'}
+#' Remove specified loci from data frame of class \code{genalex}
 #'
-#' Remove specified loci from the data frame of class \code{'genalex'}
+#' Remove specified loci from the data frame of class \code{genalex}
 #' and updates attributes
 #'
-#' @param x          An annotated data frame of class \code{'genalex'}
+#' @param x          An annotated data frame of class \code{genalex}
 #'
 #' @param drop.locus The names of one or more loci found in \code{x}
 #'
@@ -1356,18 +1364,18 @@ dropLocus.genalex <- function(x, drop.locus, quiet = FALSE, ...)
 
 
 
-#' Reduce the ploidy of an object of class \code{'genalex'}
+#' Reduce the ploidy of an object of class \code{genalex}
 #'
-#' Reduce the ploidy of an object of class \code{'genalex'}.
+#' Reduce the ploidy of an object of class \code{genalex}.
 #' Currently restricted to reducing the ploidy of diploid data to haploid by
 #' selecting only the first allele of each locus.
 #'
-#' This function reduced the ploidy of a data frame of class \code{'genalex'}
+#' This function reduced the ploidy of a data frame of class \code{genalex}
 #' data frame by selecting the first allele of each locus.  Occasionally
 #' haploid data is encoded in GenAlEx datasets by using homozygous diploid
 #' loci, and this is a useful function for making these truly haploid.
 #'
-#' @param x          An annotated data frame of class \code{'genalex'}
+#' @param x          An annotated data frame of class \code{genalex}
 #'
 #' @param new.ploidy The desired new ploidy.  Currently, the only usefully
 #'                   accepted value is 1, with ploidy of \code{x} being 2;
@@ -1376,7 +1384,7 @@ dropLocus.genalex <- function(x, drop.locus, quiet = FALSE, ...)
 #'
 #' @param \dots  Additional arguments, currently ignored
 #'
-#' @return A data frame of class \code{'genalex'} containing genotype data
+#' @return A data frame of class \code{genalex} containing genotype data
 #' from \code{x} reduced to the specified \code{new.ploidy}, with
 #' attributes updated as required.
 #'
@@ -1426,10 +1434,10 @@ reducePloidy.genalex <- function(x, new.ploidy = 1, ...)
 
 
 
-#' Return or set the extra data columns of an object of class \code{'genalex'}
+#' Return or set the extra data columns of an object of class \code{genalex}
 #'
 #' Return or set the extra data columns of an object of class
-#' \code{'genalex'}.  When getting extra data columns, if there are
+#' \code{genalex}.  When getting extra data columns, if there are
 #' none, \code{NULL} is returned.  When setting, this is more than a
 #' shortcut for \code{attr(x, "extra.columns") <- value}.  It checks
 #' that both \code{value} and \code{x} have the same number of rows,
@@ -1441,8 +1449,8 @@ reducePloidy.genalex <- function(x, new.ploidy = 1, ...)
 #' extra(x, ...)
 #' extra(x) <- value
 #'
-#' @param x      An annotated data frame of class \code{'genalex'}
-#' or of class \code{'loci'} converted from class \code{'genalex'}
+#' @param x      An annotated data frame of class \code{genalex}
+#' or of class \code{'loci'} converted from class \code{genalex}
 #' with \code{\link{as.loci}}
 #'
 #' @param value  When setting extra columns, a data frame or object
@@ -1454,7 +1462,7 @@ reducePloidy.genalex <- function(x, new.ploidy = 1, ...)
 #'
 #' @return A data frame containing extra columns from \code{x}, or
 #' \code{NULL} if extra columns do not exist.  If setting, an object
-#' of class \code{'genalex'} with its \code{"extra.columns"} attribute
+#' of class \code{genalex} with its \code{"extra.columns"} attribute
 #' set to \code{value}, after its rownames are adjusted as described
 #' above.
 #'
@@ -1526,20 +1534,20 @@ extra.data.frame <- function(x, ...)
 #' Return genotypes for specified populations
 #'
 #' Return genotype data for specified populations from an object of class
-#' \code{'genalex'}, in an object of class \code{'genalex'}.
+#' \code{genalex}, in an object of class \code{genalex}.
 #'
 #'
-#' @param x     An annotated data frame of class \code{'genalex'}
+#' @param x     An annotated data frame of class \code{genalex}
 #'
 #' @param pop   The names of one or more populations for which \code{x}
 #' contains genotypes
 #'
 #' @param \dots  Additional arguments, currently ignored
 #'
-#' @return An object of class \code{'genalex'} containing genotype data
+#' @return An object of class \code{genalex} containing genotype data
 #' from \code{x} for populations specified in \code{code}.  Attributes
 #' are re-calculated so that the return value is a valid object of class
-#' \code{'genalex'}, and the \code{"data.file.name"} attribute is updated
+#' \code{genalex}, and the \code{"data.file.name"} attribute is updated
 #' to reflect the action of this function.
 #'
 #' @author Douglas G. Scofield
@@ -1574,12 +1582,12 @@ getPopulation.genalex <- function(x, pop, ...)
 
 
 
-#' Return ploidy for object of class \code{'genalex'}
+#' Return ploidy for object of class \code{genalex}
 #'
-#' Return ploidy for object of class \code{'genalex'}
+#' Return ploidy for object of class \code{genalex}
 #'
 #'
-#' @param x     An annotated data frame of class \code{'genalex'}
+#' @param x     An annotated data frame of class \code{genalex}
 #'
 #' @param \dots  Additional arguments, currently ignored
 #'

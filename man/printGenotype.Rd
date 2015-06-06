@@ -9,7 +9,7 @@
   sep = " ", allele.sep = "/", callout.char = "*", label = NULL, ...)
 }
 \arguments{
-\item{x}{An annotated data frame of class \code{'genalex'}}
+\item{x}{An annotated data frame of class \code{genalex}}
 
 \item{rows}{The specific rows of \code{x} to print, default is
        all rows}

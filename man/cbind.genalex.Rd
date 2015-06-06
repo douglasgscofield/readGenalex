@@ -2,7 +2,7 @@
 % Please edit documentation in R/readGenalex.R
 \name{cbind.genalex}
 \alias{cbind.genalex}
-\title{Combine loci from class \code{'genalex'} data sets}
+\title{Combine loci from class \code{genalex} data sets}
 \usage{
 cbind.genalex(..., names = NULL, deparse.level = 1)
 }
@@ -14,18 +14,18 @@ the names of the first argument to \code{\dots} are used.}
 
 \item{deparse.level}{Not used (yet)}
 
-\item{\dots}{All arguments must be class \code{'genalex'} data sets.
+\item{\dots}{All arguments must be class \code{genalex} data sets.
 If only one data set is supplied, it is returned unmodified.}
 }
 \value{
-Annotated data frame of class \code{'genalex'}.  If \code{names}
+Annotated data frame of class \code{genalex}.  If \code{names}
 or any of its fields are not provided, the names of the first argument
 are used.  The \code{data.file.name} attribute is a character
 representation of the call to \code{cbind}.
 }
 \description{
-Combine loci from class \code{'genalex'} data sets into one larger class
-\code{'genalex'} data set by adding loci.  Locus counts are adjusted
+Combine loci from class \code{genalex} data sets into one larger class
+\code{genalex} data set by adding loci.  Locus counts are adjusted
 accordingly.  The data sets must have the same ploidy, sample names
 and sample membership in populations.  The order of the samples may
 differ, and the final data set will have the sample order of the first.
@@ -53,18 +53,18 @@ consequence of containing the same samples.  Unlike the default
 row counts.
 }
 \note{
-If one of the arguments is not of class \code{'genalex'}, then
+If one of the arguments is not of class \code{genalex}, then
 this function will \emph{not} be called, instead \code{cbind.data.frame}
 or perhaps another \code{cbind} method of base R will be called silently
-and will return an object that is not of class \code{'genalex'}.  If
-this occurs, none of the special processing for class \code{'genalex'}
+and will return an object that is not of class \code{genalex}.  If
+this occurs, none of the special processing for class \code{genalex}
 objects will be applied and the result is probably not what you
 intended.  If there is a chance you have mixed objects of different
 classes while calling this function, assure that the return value is
-class \code{'genalex'} by using \code{is.genalex}.
+class \code{genalex} by using \code{is.genalex}.
 
 If you in fact want to add genotype data from a data frame or matrix
-to an object of class \code{'genalex'}, then use \code{addLocus}.
+to an object of class \code{genalex}, then use \code{addLocus}.
 }
 \examples{
 gt1 <- data.frame(a = 11:13, a.2 = 14:16, b = 101:103, b.2 = 104:106)

@@ -21,10 +21,10 @@ NULL
 #'
 #' @note  Only genotypes with ploidy of 2 are currently supported.
 #'
-#' @param ref    Object of class \code{'genalex'} containing reference 
+#' @param ref    Object of class \code{genalex} containing reference 
 #'               genotypes
 #'
-#' @param check  Object of class \code{'genalex'} containing genotypes to 
+#' @param check  Object of class \code{genalex} containing genotypes to 
 #'               check against \code{ref} for possible null alleles
 #'
 #' @param mode   \code{"locus"} or \code{"column"}.  Determines 
@@ -32,7 +32,7 @@ NULL
 #'               index of each element of the return value.  If \code{"locus"},
 #'               the value is the locus index, starting from \code{1}.
 #'               If \code{"column"}, then the value is the column index within
-#'               the class \code{'genalex'} data frame.  
+#'               the class \code{genalex} data frame.  
 #'
 #' @param quiet  Logical.  If \code{FALSE}, then messages
 #'               are printed during the check for null alleles in

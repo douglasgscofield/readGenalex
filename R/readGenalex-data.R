@@ -1,6 +1,6 @@
 #' Coast live oak (Quercus agrifolia) adult microsatellite genotypes
 #'
-#' This data set contains one annotated data frame of class \code{'genalex'},
+#' This data set contains one annotated data frame of class \code{genalex},
 #' holding 10-locus diploid microsatellite genotypes of 262 adult coast live
 #' oak (\emph{Quercus agrifolia}) trees from Sedgwick Reserve, Santa Barbara
 #' County, California, USA.
@@ -9,7 +9,7 @@
 #' publicly available at the Dryad Digital Repository.  If using these data,
 #' please cite the original paper as well as the data, as shown below.
 #'
-#' @format Annotated data frames of class \code{'genalex'}.  Columns are:
+#' @format Annotated data frames of class \code{genalex}.  Columns are:
 #' \tabular{ll}{
 #'   \code{AdultMomFamily} \tab Identifier for adult tree \cr
 #'   \code{Site}           \tab Population, always \code{Sedgwick} for this data set \cr
@@ -43,7 +43,7 @@ NULL
 
 #' Coast live oak (Quercus agrifolia) pericarp microsatellite genotypes
 #'
-#' This data set contains one annotated data frame of class \code{'genalex'},
+#' This data set contains one annotated data frame of class \code{genalex},
 #' holding 10-locus diploid microsatellite genotypes of 568 pericarps (outer
 #' seed coats) from coast live oak (\emph{Quercus agrifolia}) acorns collected
 #' from 17 acorn woodpecker (\emph{Melanerpes formicivorus}) granaries at
@@ -53,7 +53,7 @@ NULL
 #' publicly available at the Dryad Digital Repository.  If using these data,
 #' please cite the original paper as well as the data, as shown below.
 #'
-#' @format Annotated data frames of class \code{'genalex'}.  Columns are:
+#' @format Annotated data frames of class \code{genalex}.  Columns are:
 #' \tabular{ll}{
 #'   \code{PericarpID} \tab Identifier for sampled pericarp \cr
 #'   \code{Granary}    \tab Granary from which the pericarp was collected \cr

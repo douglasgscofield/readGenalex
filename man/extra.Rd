@@ -4,14 +4,14 @@
 \alias{extra}
 \alias{extra<-}
 \alias{extra<-.genalex}
-\title{Return or set the extra data columns of an object of class \code{'genalex'}}
+\title{Return or set the extra data columns of an object of class \code{genalex}}
 \usage{
 extra(x, ...)
 extra(x) <- value
 }
 \arguments{
-\item{x}{An annotated data frame of class \code{'genalex'}
-or of class \code{'loci'} converted from class \code{'genalex'}
+\item{x}{An annotated data frame of class \code{genalex}
+or of class \code{'loci'} converted from class \code{genalex}
 with \code{\link{as.loci}}}
 
 \item{value}{When setting extra columns, a data frame or object
@@ -24,13 +24,13 @@ same number of rows as \code{x}.}
 \value{
 A data frame containing extra columns from \code{x}, or
 \code{NULL} if extra columns do not exist.  If setting, an object
-of class \code{'genalex'} with its \code{"extra.columns"} attribute
+of class \code{genalex} with its \code{"extra.columns"} attribute
 set to \code{value}, after its rownames are adjusted as described
 above.
 }
 \description{
 Return or set the extra data columns of an object of class
-\code{'genalex'}.  When getting extra data columns, if there are
+\code{genalex}.  When getting extra data columns, if there are
 none, \code{NULL} is returned.  When setting, this is more than a
 shortcut for \code{attr(x, "extra.columns") <- value}.  It checks
 that both \code{value} and \code{x} have the same number of rows,

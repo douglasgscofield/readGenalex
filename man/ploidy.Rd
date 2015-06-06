@@ -3,12 +3,12 @@
 \name{ploidy}
 \alias{ploidy}
 \alias{ploidy.genalex}
-\title{Return ploidy for object of class \code{'genalex'}}
+\title{Return ploidy for object of class \code{genalex}}
 \usage{
 \method{ploidy}{genalex}(x, ...)
 }
 \arguments{
-\item{x}{An annotated data frame of class \code{'genalex'}}
+\item{x}{An annotated data frame of class \code{genalex}}
 
 \item{\dots}{Additional arguments, currently ignored}
 }
@@ -16,7 +16,7 @@
 The numeric value of the \code{"ploidy"} attribute of \code{x}
 }
 \description{
-Return ploidy for object of class \code{'genalex'}
+Return ploidy for object of class \code{genalex}
 }
 \examples{
 data(Qagr_pericarp_genotypes)

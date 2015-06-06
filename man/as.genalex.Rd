@@ -6,7 +6,7 @@
 \alias{as.genalex.default}
 \alias{as.genalex.genalex}
 \alias{as.genalex.loci}
-\title{Convert object to class 'genalex'}
+\title{Convert object to class \code{genalex}}
 \usage{
 \method{as.genalex}{genalex}(x, force = FALSE, ...)
 
@@ -17,22 +17,22 @@
 \method{as.genalex}{default}(x, ...)
 }
 \arguments{
-\item{x}{An object of class \code{'genalex'} or class
+\item{x}{An object of class \code{genalex} or class
 \code{'data.frame'}}
 
 \item{force}{If \code{TRUE}, check for consistency between data and
 annotations in \code{x} and recalculate and reset any inconsistent
 attributes.  This option is only used if \code{x} has class
-\code{'genalex'}, and is \code{FALSE} by default.}
+\code{genalex}, and is \code{FALSE} by default.}
 
 \item{names}{A list of names to apply as accepted by \code{\link{genalex}}.
 If any names are not provided, they are taken from the names of the
 corresponding columns of \code{x}.  This option is only used if \code{x}
-does not have class \code{'genalex'}.}
+does not have class \code{genalex}.}
 
 \item{ploidy}{Ploidy of the genotype columns in \code{x}
 (\code{x[, 3:ncol(x)]}).  This option is only used if \code{x} does not
-have class \code{'genalex'}.}
+have class \code{genalex}.}
 
 \item{sep}{Character separating joined alleles, if converting from
 object of class \code{'loci'}}
@@ -44,14 +44,14 @@ object of class \code{'loci'}}
 \code{'loci'} and if so passed to \code{\link{genalex}}}
 }
 \value{
-\code{x} converted to a class \code{'genalex'} object
+\code{x} converted to a class \code{genalex} object
 }
 \description{
-Converts object \code{x} to a data frame of class \code{'genalex'}.
+Converts object \code{x} to a data frame of class \code{genalex}.
 There are seven cases:
 \itemize{
-  \item If \code{x} is of class \code{'genalex'}, it is simply returned.
-  \item If \code{x} is of class \code{'genalex'} and \code{force = TRUE},
+  \item If \code{x} is of class \code{genalex}, it is simply returned.
+  \item If \code{x} is of class \code{genalex} and \code{force = TRUE},
         \code{x} is examined for consistency between data and annotations,
         and any inconsistencies are recalculated based on the data.  To
         check whether inconsistencies exist, use
@@ -64,22 +64,27 @@ There are seven cases:
   \item If \code{x} is of class \code{'data.frame'}, it is examined to
         see if it might be a data frame created by an earlier version of
         the \code{readGenalex} package.  If so, it is converted to
-        class \code{'genalex'} and returned.  Any other arguments are
+        class \code{genalex} and returned.  Any other arguments are
         ignored.
   \item If \code{x} is of class \code{'data.frame'} and all columns from
-        the third to the end are of class \code{\link[genetics]{genotype}},
-        these columns are converted to class \code{'genalex'} genotypes,
-        with one column per allele.  Once the alleles have been split,
-        a call to \code{\link{genalex}} establishes the correct attributes.
+        the third to the end are of class \code{\link[genetics]{genotype}}
+        from the
+        \href{http://cran.r-project.org/web/packages/genetics/index.html}{genetics}
+        package, these columns are converted to class \code{genalex}
+        genotypes, with one column per allele.  Once the alleles have been
+        split, a call to \code{\link{genalex}} establishes the correct
+        attributes.
   \item If \code{x} is of class \code{'data.frame'} but does not appear to
         be from an earlier version of \code{readGenalex} and does not
         have all genotype columns of class \code{\link[genetics]{genotype}},
-        it is converted to class \code{'genalex'} using a call to
+        it is converted to class \code{genalex} using a call to
         \code{\link{genalex}} assuming a format identical to class
-        \code{'genalex'}, where the first column holds sample names, the
+        \code{genalex}, where the first column holds sample names, the
         second column holds population names, and the remaining columns
         hold genotypes.
-  \item If \code{x} is of class \code{'loci'}, it is converted using
+  \item If \code{x} is of class \code{\link[pegas]{loci}} from the
+        \href{http://cran.r-project.org/web/packages/pegas/index.html}{pegas}
+        package, it is converted using
         \code{\link{splitGenotypes}} and \code{\link{genalex}}.  Sample
         names are taken from the row names.  If there
         is no column in \code{x} named \code{"population"}, then the
@@ -91,7 +96,7 @@ There are seven cases:
   \item Any other class is an error.  Further conversions between genetic
         data formats may be added as additional methods.
 }
-If the object is not originally of class \code{'genalex'}, the
+If the object is not originally of class \code{genalex}, the
 \code{"data.file.name"} attribute will reflect this function call.
 }
 \examples{

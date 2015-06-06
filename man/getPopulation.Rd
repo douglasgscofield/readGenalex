@@ -8,7 +8,7 @@
 \method{getPopulation}{genalex}(x, pop, ...)
 }
 \arguments{
-\item{x}{An annotated data frame of class \code{'genalex'}}
+\item{x}{An annotated data frame of class \code{genalex}}
 
 \item{pop}{The names of one or more populations for which \code{x}
 contains genotypes}
@@ -16,15 +16,15 @@ contains genotypes}
 \item{\dots}{Additional arguments, currently ignored}
 }
 \value{
-An object of class \code{'genalex'} containing genotype data
+An object of class \code{genalex} containing genotype data
 from \code{x} for populations specified in \code{code}.  Attributes
 are re-calculated so that the return value is a valid object of class
-\code{'genalex'}, and the \code{"data.file.name"} attribute is updated
+\code{genalex}, and the \code{"data.file.name"} attribute is updated
 to reflect the action of this function.
 }
 \description{
 Return genotype data for specified populations from an object of class
-\code{'genalex'}, in an object of class \code{'genalex'}.
+\code{genalex}, in an object of class \code{genalex}.
 }
 \examples{
 data(Qagr_pericarp_genotypes)

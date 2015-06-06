@@ -5,7 +5,7 @@ NULL
 #' Read GenAlEx-format genotypes file
 #'
 #' Reads genotype data file in GenAlEx format into an annotated data frame of
-#' class \code{'genalex'}.  Internal consistency checks that are allowed by
+#' class \code{genalex}.  Internal consistency checks that are allowed by
 #' the GenAlEx format are also performed as data is read.  GenAlEx and its
 #' documentation are available at
 #' \url{http://biology-assets.anu.edu.au/GenAlEx}.
@@ -67,7 +67,7 @@ NULL
 #' @param \dots      Additional arguments passed to \code{\link{scan}} when
 #' reading data
 #'
-#' @return An annotated data frame of class \code{'genalex'} containing sample
+#' @return An annotated data frame of class \code{genalex} containing sample
 #' data, with column names determined by line 3 of the input file.  Special
 #' \code{attributes} of the data frame include:
 #'
@@ -139,7 +139,7 @@ readGenalex <- function(file, sep = "\t", ploidy = 2,
 #' Read GenAlEx-format genotypes from an Excel worksheet
 #'
 #' Reads genotype data file in GenAlEx format from an Excel worksheet
-#' into an annotated data frame of class \code{'genalex'}.  Both
+#' into an annotated data frame of class \code{genalex}.  Both
 #' \code{.xls} and \code{.xlsx} formats may be read.  The same consistency
 #' checks are performed as for \code{\link{readGenalex}}.  This function
 #' uses the function \code{\link[XLConnect]{readWorksheetFromFile}} from the
@@ -162,7 +162,7 @@ readGenalex <- function(file, sep = "\t", ploidy = 2,
 #' @param ploidy     The ploidy of genotypes encoded in \code{worksheet}
 #' (defaults to 2)
 #'
-#' @return An annotated data frame of class \code{'genalex'}.  The format is
+#' @return An annotated data frame of class \code{genalex}.  The format is
 #' described in more detail in \code{\link{readGenalex}}.  The
 #' \code{"data.file.name"} attribute is set to the value
 #' \code{"file(worksheet)"}.
@@ -359,7 +359,7 @@ readGenalexExcel <- function(file, worksheet, ploidy = 2)
 
 
 # Join header and raw data and establish attributes for what will be
-# a class 'genalex' object
+# a class genalex object
 .readGenalexJoinData <- function(header, raw.data)
 {
     dat <- raw.data$dat
@@ -413,13 +413,13 @@ readGenalexExcel <- function(file, worksheet, ploidy = 2)
 #' Write GenAlEx-format genotypes to a text file
 #'
 #' Writes genotype data encoded in an annotated data frame of class
-#' \code{'genalex'} to a GenAlEx-format text file.  Extra data columns are
+#' \code{genalex} to a GenAlEx-format text file.  Extra data columns are
 #' written immediately to the right of genotype columns.  GenAlEx and its
 #' documentation are available at
 #' \url{http://biology-assets.anu.edu.au/GenAlEx}.
 #'
 #' This function writes genotypes and associated information within an
-#' annotated data frame of class \code{'genalex'} to a text file in GenAlEx
+#' annotated data frame of class \code{genalex} to a text file in GenAlEx
 #' format. More information is available in the description for
 #' \code{\link{readGenalex}}, and at the GenAlEx website at
 #' \url{http://biology-assets.anu.edu.au/GenAlEx}.
@@ -432,7 +432,7 @@ readGenalexExcel <- function(file, worksheet, ploidy = 2)
 #'    \item Names on columns for alleles other than the first in a locus,
 #'          which are ignored by \code{readGenalex}, converted to a simple
 #'          concatenation of locus name and allele number in the resulting
-#'          class \code{'genalex'}, and are left out of the output of
+#'          class \code{genalex}, and are left out of the output of
 #'          \code{writeGenalex}.
 #'    \item Locations of additional data columns beyond the genotype columns,
 #'          which \code{readGenalex} should collect wherever there are named
@@ -445,7 +445,7 @@ readGenalexExcel <- function(file, worksheet, ploidy = 2)
 #'          were read.
 #' }
 #'
-#' @param x     Annotated data frame of class \code{'genalex'}
+#' @param x     Annotated data frame of class \code{genalex}
 #'
 #' @param file  File name or connection for writing.  If given as \code{""},
 #' \code{stdout()} is used.
@@ -533,7 +533,7 @@ writeGenalex <- function(x, file, quote = FALSE, sep = "\t", eol = "\n",
 #' Write GenAlEx-format genotypes to an Excel worksheet
 #'
 #' Writes genotype data file in GenAlEx format from an annotated data frame
-#' of class \code{'genalex'} to an Excel worksheet.  Both \code{.xls} and
+#' of class \code{genalex} to an Excel worksheet.  Both \code{.xls} and
 #' \code{.xlsx} formats may be written.  This function uses the function
 #' \code{\link[XLConnect]{writeWorksheet}} and others from the
 #' \href{http://cran.r-project.org/web/packages/XLConnect/index.html}{XLConnect}
@@ -546,12 +546,12 @@ writeGenalex <- function(x, file, quote = FALSE, sep = "\t", eol = "\n",
 #' are left blank.
 #'
 #' Any extra columns of data, if present in the object of class
-#' \code{'genalex'}, are written immediately to the right of the genotype
+#' \code{genalex}, are written immediately to the right of the genotype
 #' columns.
 #'
 #' For further information and cautions, see \code{\link{writeGenalex}}.
 #'
-#' @param x          Annotated data frame of class \code{'genalex'}
+#' @param x          Annotated data frame of class \code{genalex}
 #'
 #' @param file       Excel workbook file to which to write the worksheet
 #'

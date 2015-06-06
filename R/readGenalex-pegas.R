@@ -4,19 +4,19 @@
 # for collation order
 NULL
 
-#' Convert class \code{'genalex'} object to data frame of class \code{'loci'} from package \code{'pegas'}
+#' Convert class \code{genalex} object to data frame of class \code{'loci'} from package \code{'pegas'}
 #'
-#' Converts an object of class \code{'genalex'} to a data frame of class
+#' Converts an object of class \code{genalex} to a data frame of class
 #' \code{'loci'} from the
 #' \href{http://cran.r-project.org/web/packages/pegas/index.html}{pegas}
-#' package.  This data frame is similar to one of class \code{'genalex'},
+#' package.  This data frame is similar to one of class \code{genalex},
 #' in that it mixes genetic and other data in the same data frame, but
 #' its conversion of multiple allele columns to single genotype columns
 #' is similar to the result of the \code{\link{as.genetics}} function
 #' of this package.
 #'
-#' Like class \code{'genalex'}, class \code{'loci'} can encode genotypes of
-#' any ploidy.  Once a class \code{'genalex'} object is converted to class
+#' Like class \code{genalex}, class \code{'loci'} can encode genotypes of
+#' any ploidy.  Once a class \code{genalex} object is converted to class
 #' \code{'loci'}, it may be further converted to other data structures for
 #' analysis with
 #' \href{http://cran.r-project.org/web/packages/pegas/index.html}{pegas}
@@ -24,7 +24,7 @@ NULL
 #' \href{http://cran.r-project.org/web/packages/adegenet/index.html}{adegenet}.
 #'
 #' The specific changes that occur to an object of
-#' class \code{'genalex'} for it to become an object of class \code{'loci'}:
+#' class \code{genalex} for it to become an object of class \code{'loci'}:
 #' \itemize{
 #'    \item Row names are set from sample names
 #'    \item The first column of sample names is removed
@@ -40,7 +40,7 @@ NULL
 #'    \item A new attribute \code{"locicol"} required by class \code{'loci'}
 #'          is added, with a value identical to the \code{"locus.columns"}
 #'          attribute
-#'    \item The \code{class} is changed from \code{c('genalex', 'data.frame')}
+#'    \item The \code{class} is changed from \code{c(genalex, 'data.frame')}
 #'          to \code{c('loci', 'data.frame')}
 #' }
 #'
@@ -50,7 +50,7 @@ NULL
 #' \url{http://ape-package.ird.fr/pegas/DefinitionDataClassesPegas.pdf}.
 #'
 #' Because class \code{'loci'} can readily encode additional columns, the
-#' extra columns of a class \code{'genalex'} object can be bound with
+#' extra columns of a class \code{genalex} object can be bound with
 #' \code{cbind} as additional columns.
 #'
 #' This is a specialised wrapper around the function
@@ -58,7 +58,7 @@ NULL
 #' \href{http://cran.r-project.org/web/packages/pegas/index.html}{pegas}
 #' package.
 #'
-#' @param x       Annotated data frame of class \code{'genalex'}
+#' @param x       Annotated data frame of class \code{genalex}
 #'
 #' @param phased  Still some details to work out.  Default \code{FALSE}.  If
 #' \code{FALSE}, assumes alleles in \code{x} are unphased so that a genotype
@@ -125,7 +125,7 @@ as.loci.genalex <- function(x, phased = FALSE, check.annotation = TRUE, ...)
 
 #' Join genotypes encoded as separate alleles into single genotypes like class \code{'genotype'} or class \code{'loci'}
 #'
-#' @param  x   An object of class \code{'genalex'}, a data frame, or an
+#' @param  x   An object of class \code{genalex}, a data frame, or an
 #' object that can be coerced to a data frame which contains genotypes
 #' with alleles in separate columns, to be joined into character
 #' genotypes of the form \code{"101/107"}, where the \code{"/"} is
@@ -134,10 +134,10 @@ as.loci.genalex <- function(x, phased = FALSE, check.annotation = TRUE, ...)
 #' @param  sep     Separator between alleles
 #'
 #' @param  loci    Columns or column names indicating loci to join.  When
-#' called for an object of class \code{'genalex'}, all loci are joined.
+#' called for an object of class \code{genalex}, all loci are joined.
 #'
 #' @param  ploidy  Ploidy of the indicated loci.  When called for an
-#' object of class \code{'genalex'}, ploidy is determined from attributes.
+#' object of class \code{genalex}, ploidy is determined from attributes.
 #'
 #' @param \dots   Additional arguments, currently ignored
 #'

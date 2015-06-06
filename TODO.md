@@ -3,6 +3,7 @@
 TODO
 ----
 
+* Create R/genalex-class.R file to document class separately
 * Docs: improve indexing and perhaps add class description, see qgtools and hypred packages for examples
 * Docs: interconnections between packages.  HWxtest reads Genepop
 * Docs: conversions to 'standard' SNP formats?

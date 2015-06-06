@@ -3,12 +3,12 @@
 \name{reducePloidy}
 \alias{reducePloidy}
 \alias{reducePloidy.genalex}
-\title{Reduce the ploidy of an object of class \code{'genalex'}}
+\title{Reduce the ploidy of an object of class \code{genalex}}
 \usage{
 \method{reducePloidy}{genalex}(x, new.ploidy = 1, ...)
 }
 \arguments{
-\item{x}{An annotated data frame of class \code{'genalex'}}
+\item{x}{An annotated data frame of class \code{genalex}}
 
 \item{new.ploidy}{The desired new ploidy.  Currently, the only usefully
                   accepted value is 1, with ploidy of \code{x} being 2;
@@ -18,17 +18,17 @@
 \item{\dots}{Additional arguments, currently ignored}
 }
 \value{
-A data frame of class \code{'genalex'} containing genotype data
+A data frame of class \code{genalex} containing genotype data
 from \code{x} reduced to the specified \code{new.ploidy}, with
 attributes updated as required.
 }
 \description{
-Reduce the ploidy of an object of class \code{'genalex'}.
+Reduce the ploidy of an object of class \code{genalex}.
 Currently restricted to reducing the ploidy of diploid data to haploid by
 selecting only the first allele of each locus.
 }
 \details{
-This function reduced the ploidy of a data frame of class \code{'genalex'}
+This function reduced the ploidy of a data frame of class \code{genalex}
 data frame by selecting the first allele of each locus.  Occasionally
 haploid data is encoded in GenAlEx datasets by using homozygous diploid
 loci, and this is a useful function for making these truly haploid.

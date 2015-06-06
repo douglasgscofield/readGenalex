@@ -2,7 +2,7 @@
 % Please edit documentation in R/readGenalex.R
 \name{rbind.genalex}
 \alias{rbind.genalex}
-\title{Combine class \code{'genalex'} data sets by adding rows}
+\title{Combine class \code{genalex} data sets by adding rows}
 \usage{
 rbind.genalex(..., names = NULL, deparse.level = 1)
 }
@@ -14,18 +14,18 @@ the names of the first argument to \code{\dots} are used.}
 
 \item{deparse.level}{Not used (yet)}
 
-\item{\dots}{Class \code{'genalex'} data sets.  If only one data set
+\item{\dots}{Class \code{genalex} data sets.  If only one data set
 is supplied, it is returned unmodified.}
 }
 \value{
-Annotated data frame of class \code{'genalex'}.  If \code{names}
+Annotated data frame of class \code{genalex}.  If \code{names}
 or any of its fields are not provided, the names of the first argument
 are used.  The \code{data.file.name} attribute is a character
 representation of the call to \code{rbind}.
 }
 \description{
-Combine class \code{'genalex'} data sets onto one larger class
-\code{'genalex'}data set.  Population names and sizes are adjusted
+Combine class \code{genalex} data sets onto one larger class
+\code{genalex} data set.  Population names and sizes are adjusted
 accordingly.  The data sets must have the same locus names and ploidy, but
 the order of the loci may differ, and the final data set will have the
 locus order of the first.  Sample names must be unique across all data
@@ -39,12 +39,12 @@ If one of the arguments is class \code{'data.frame'}, then this
 function will \emph{not} be called, instead the \code{rbind.data.frame}
 method of base R will be called silently and will return an object of
 class \code{'data.frame'} with a structure that is probably not what
-you intended.  Objects of class \code{'genalex'} also have
+you intended.  Objects of class \code{genalex} also have
 class \code{'data.frame'}.  The selection of which method to use, in
 this case \code{rbind.data.frame}, occurs during method dispatch for
 \code{rbind}, so it is not a condition that can be checked by this
 function.  To prevent this, assure that data frames have been converted
-to class \code{'genalex'} prior to calling this function by using
+to class \code{genalex} prior to calling this function by using
 \code{as.genalex}, and if there are doubts as to the class of any of
 the \code{\dots} arguments, use \code{is.genalex} to check the class
 of the returned value.

@@ -3,13 +3,13 @@
 \name{as.genetics}
 \alias{as.genetics}
 \alias{as.genetics.genalex}
-\title{Convert class \code{'genalex'} object to data frame encoding loci using classes from package \code{'genetics'}}
+\title{Convert class \code{genalex} object to data frame encoding loci using classes from package \code{genetics}}
 \usage{
 \method{as.genetics}{genalex}(x, phased = FALSE, sep = "/",
   check.annotation = TRUE, ...)
 }
 \arguments{
-\item{x}{Annotated data frame of class \code{'genalex'}}
+\item{x}{Annotated data frame of class \code{genalex}}
 
 \item{phased}{Default \code{FALSE}.  If \code{FALSE}, assumes alleles
 in \code{x} are unphased so that a genotype of \code{101/107} is
@@ -41,7 +41,7 @@ and an error is generated.}
 \value{
 \code{x} as a data frame with the genotype of each locus encoded
 using  class \code{\link[genetics]{genotype}}.  The class
-\code{'genalex'} is removed while many of the attributes are retained:
+\code{genalex} is removed while many of the attributes are retained:
 
 \item{data.file.name }{The original value, wrapped with
   \code{"as.genetics(...)"}}
@@ -60,19 +60,19 @@ using  class \code{\link[genetics]{genotype}}.  The class
 \item{extra.columns }{Retained}
 }
 \description{
-Converts an object of class \code{'genalex'} to a data frame in which the
+Converts an object of class \code{genalex} to a data frame in which the
 genotype columns for each locus have been converted to genotypes
 encoded with class \code{\link[genetics]{genotype}} as provided by the
 \href{http://cran.r-project.org/web/packages/genetics/index.html}{genetics}
-package.  All class {'genalex'} attributes are retained except for
-class \code{'genalex'} itself; see Details.  Only conversion of diploid
+package.  All class {genalex} attributes are retained except for
+class \code{genalex} itself; see Details.  Only conversion of diploid
 data are supported, a inherent limitation of the
 \href{http://cran.r-project.org/web/packages/genetics/index.html}{genetics}
 package.
 }
 \details{
 A class \code{\link[genetics]{genotype}} object is a special type
-of factor, and in contrast to class \code{'genalex'} a diploid genotype
+of factor, and in contrast to class \code{genalex} a diploid genotype
 is encoded as a single level of a factor and thus is in a single column
 of a data frame. For diploid data, the number of columns in the resulting
 data frame will be reduced by the number of loci.  The sample name and

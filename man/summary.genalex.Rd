@@ -2,12 +2,12 @@
 % Please edit documentation in R/readGenalex.R
 \name{summary.genalex}
 \alias{summary.genalex}
-\title{Summarise contents of class 'genalex' data frame}
+\title{Summarise contents of class \code{genalex} data frame}
 \usage{
 \method{summary}{genalex}(object, ...)
 }
 \arguments{
-\item{object}{An annotated data frame of class \code{'genalex'}}
+\item{object}{An annotated data frame of class \code{genalex}}
 
 \item{...}{Additional arguments passed to \code{'summary'}
                for the data frame}

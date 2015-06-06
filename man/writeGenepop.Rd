@@ -7,7 +7,7 @@
 writeGenepop(x, file, eol = "\\n", check.annotation = TRUE)
 }
 \arguments{
-\item{x}{Annotated data frame of class \code{'genalex'}}
+\item{x}{Annotated data frame of class \code{genalex}}
 
 \item{file}{File name or connection for writing.  If given as \code{""},
 \code{stdout()} is used.}
@@ -23,7 +23,7 @@ No value is returned.
 }
 \description{
 Writes genotype data encoded in an annotated data frame of class
-\code{'genalex'} to a Genepop-format text file.
+\code{genalex} to a Genepop-format text file.
 included immediately to the right of genotype columns.  Genepop
 and its documentation are available at
 \url{http://kimura.univ-montp2.fr/~rousset/} and
@@ -44,7 +44,7 @@ An attempt is made to produce output with useful whitespace.  The
 locus names and each set of individual genotypes are aligned at a
 column determined by the longest sample name.
 
-GenAlEx format components that are attributes of class \code{'genalex'}
+GenAlEx format components that are attributes of class \code{genalex}
 are translated to components in the Genepop file as so:
 
 \enumerate{

@@ -2,7 +2,7 @@
 % Please edit documentation in R/readGenalex.R
 \name{genalex}
 \alias{genalex}
-\title{Create new object of class \code{'genalex'} from constituent data}
+\title{Create new object of class \code{genalex} from constituent data}
 \usage{
 genalex(samples, pops, genotypes, names = NULL, ploidy = 2,
   extra.columns = NULL)
@@ -29,13 +29,13 @@ loci, an error is produces}
 \item{extra.columns}{Extra data columns, see \code{\link{readGenalex}}}
 }
 \value{
-Annotated data frame of class \code{'genalex'}.  If \code{names}
+Annotated data frame of class \code{genalex}.  If \code{names}
 or any of its fields are not provided, default names are used.  The
 \code{data.file.name} attribute is a character representation of the call
 to \code{genalex}.
 }
 \description{
-Create a new object of class \code{'genalex'} given sample and
+Create a new object of class \code{genalex} given sample and
 population names and genotype data.  Titles for the dataset, sample
 and population columns, and loci may be provided via the \code{names}
 argument.

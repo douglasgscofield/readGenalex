@@ -8,7 +8,7 @@ writeGenalexExcel(x, file, worksheet, na = c("0", "-1"), na.character = "",
   check.annotation = TRUE, overwrite = FALSE)
 }
 \arguments{
-\item{x}{Annotated data frame of class \code{'genalex'}}
+\item{x}{Annotated data frame of class \code{genalex}}
 
 \item{file}{Excel workbook file to which to write the worksheet}
 
@@ -34,7 +34,7 @@ No value is returned.
 }
 \description{
 Writes genotype data file in GenAlEx format from an annotated data frame
-of class \code{'genalex'} to an Excel worksheet.  Both \code{.xls} and
+of class \code{genalex} to an Excel worksheet.  Both \code{.xls} and
 \code{.xlsx} formats may be written.  This function uses the function
 \code{\link[XLConnect]{writeWorksheet}} and others from the
 \href{http://cran.r-project.org/web/packages/XLConnect/index.html}{XLConnect}
@@ -48,7 +48,7 @@ locus name.  The other columns representing further alleles for the locus
 are left blank.
 
 Any extra columns of data, if present in the object of class
-\code{'genalex'}, are written immediately to the right of the genotype
+\code{genalex}, are written immediately to the right of the genotype
 columns.
 
 For further information and cautions, see \code{\link{writeGenalex}}.

@@ -8,10 +8,10 @@ checkNullAlleles(ref, check, mode = c("locus", "column"), quiet = FALSE,
   sep = "\\t", ...)
 }
 \arguments{
-\item{ref}{Object of class \code{'genalex'} containing reference
+\item{ref}{Object of class \code{genalex} containing reference
               genotypes}
 
-\item{check}{Object of class \code{'genalex'} containing genotypes to
+\item{check}{Object of class \code{genalex} containing genotypes to
               check against \code{ref} for possible null alleles}
 
 \item{mode}{\code{"locus"} or \code{"column"}.  Determines
@@ -19,7 +19,7 @@ checkNullAlleles(ref, check, mode = c("locus", "column"), quiet = FALSE,
               index of each element of the return value.  If \code{"locus"},
               the value is the locus index, starting from \code{1}.
               If \code{"column"}, then the value is the column index within
-              the class \code{'genalex'} data frame.}
+              the class \code{genalex} data frame.}
 
 \item{quiet}{Logical.  If \code{FALSE}, then messages
               are printed during the check for null alleles in

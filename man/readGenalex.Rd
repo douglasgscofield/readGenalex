@@ -24,7 +24,7 @@ GenAlEx missing values ("0" and "-1") as well as ".", "NA" and "" (empty).}
 reading data}
 }
 \value{
-An annotated data frame of class \code{'genalex'} containing sample
+An annotated data frame of class \code{genalex} containing sample
 data, with column names determined by line 3 of the input file.  Special
 \code{attributes} of the data frame include:
 
@@ -52,7 +52,7 @@ data, with column names determined by line 3 of the input file.  Special
 }
 \description{
 Reads genotype data file in GenAlEx format into an annotated data frame of
-class \code{'genalex'}.  Internal consistency checks that are allowed by
+class \code{genalex}.  Internal consistency checks that are allowed by
 the GenAlEx format are also performed as data is read.  GenAlEx and its
 documentation are available at
 \url{http://biology-assets.anu.edu.au/GenAlEx}.

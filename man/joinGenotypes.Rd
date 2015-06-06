@@ -11,7 +11,7 @@
 \method{joinGenotypes}{default}(x, loci, ploidy, sep = "/", ...)
 }
 \arguments{
-\item{x}{An object of class \code{'genalex'}, a data frame, or an
+\item{x}{An object of class \code{genalex}, a data frame, or an
 object that can be coerced to a data frame which contains genotypes
 with alleles in separate columns, to be joined into character
 genotypes of the form \code{"101/107"}, where the \code{"/"} is
@@ -20,10 +20,10 @@ determined by \code{sep}.}
 \item{sep}{Separator between alleles}
 
 \item{loci}{Columns or column names indicating loci to join.  When
-called for an object of class \code{'genalex'}, all loci are joined.}
+called for an object of class \code{genalex}, all loci are joined.}
 
 \item{ploidy}{Ploidy of the indicated loci.  When called for an
-object of class \code{'genalex'}, ploidy is determined from attributes.}
+object of class \code{genalex}, ploidy is determined from attributes.}
 
 \item{\dots}{Additional arguments, currently ignored}
 }

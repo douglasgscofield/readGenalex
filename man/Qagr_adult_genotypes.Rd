@@ -4,7 +4,7 @@
 \name{Qagr_adult_genotypes}
 \alias{Qagr_adult_genotypes}
 \title{Coast live oak (Quercus agrifolia) adult microsatellite genotypes}
-\format{Annotated data frames of class \code{'genalex'}.  Columns are:
+\format{Annotated data frames of class \code{genalex}.  Columns are:
 \tabular{ll}{
   \code{AdultMomFamily} \tab Identifier for adult tree \cr
   \code{Site}           \tab Population, always \code{Sedgwick} for this data set \cr
@@ -16,7 +16,7 @@
 \url{http://datadryad.org/resource/doi:10.5061/dryad.40kq7}
 }
 \description{
-This data set contains one annotated data frame of class \code{'genalex'},
+This data set contains one annotated data frame of class \code{genalex},
 holding 10-locus diploid microsatellite genotypes of 262 adult coast live
 oak (\emph{Quercus agrifolia}) trees from Sedgwick Reserve, Santa Barbara
 County, California, USA.

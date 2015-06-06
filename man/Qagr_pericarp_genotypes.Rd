@@ -4,7 +4,7 @@
 \name{Qagr_pericarp_genotypes}
 \alias{Qagr_pericarp_genotypes}
 \title{Coast live oak (Quercus agrifolia) pericarp microsatellite genotypes}
-\format{Annotated data frames of class \code{'genalex'}.  Columns are:
+\format{Annotated data frames of class \code{genalex}.  Columns are:
 \tabular{ll}{
   \code{PericarpID} \tab Identifier for sampled pericarp \cr
   \code{Granary}    \tab Granary from which the pericarp was collected \cr
@@ -16,7 +16,7 @@
 \url{http://datadryad.org/resource/doi:10.5061/dryad.40kq7}
 }
 \description{
-This data set contains one annotated data frame of class \code{'genalex'},
+This data set contains one annotated data frame of class \code{genalex},
 holding 10-locus diploid microsatellite genotypes of 568 pericarps (outer
 seed coats) from coast live oak (\emph{Quercus agrifolia}) acorns collected
 from 17 acorn woodpecker (\emph{Melanerpes formicivorus}) granaries at

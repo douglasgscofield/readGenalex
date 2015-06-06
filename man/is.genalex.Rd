@@ -2,17 +2,17 @@
 % Please edit documentation in R/readGenalex.R
 \name{is.genalex}
 \alias{is.genalex}
-\title{Check to see if an object is of class 'genalex'}
+\title{Check to see if an object is of class \code{genalex}}
 \usage{
 is.genalex(x, force = FALSE, skip.strings = FALSE, skip.extra = FALSE,
   verbose = FALSE)
 }
 \arguments{
-\item{x}{An object that might be of class \code{'genalex'}}
+\item{x}{An object that might be of class \code{genalex}}
 
-\item{force}{If \code{TRUE} and \code{x} has class \code{'genalex'},
+\item{force}{If \code{TRUE} and \code{x} has class \code{genalex},
 force a deeper check to assure that the data and annotations are
-consistent with class \code{'genalex'}}
+consistent with class \code{genalex}}
 
 \item{skip.strings}{If \code{TRUE} and \code{force = TRUE},
 do not check the attributes \code{"dataset.title"} and
@@ -30,7 +30,7 @@ there are no inconsistencies, nothing is printed.}
 \code{TRUE} or \code{FALSE}
 }
 \description{
-Check to see if an object is of class 'genalex' as recognised by
+Check to see if an object is of class \code{genalex} as recognised by
 the \code{readGenalex} package.  With \code{force = TRUE},
 the internal consistency of the data and annotations are checked.
 }
@@ -38,7 +38,7 @@ the internal consistency of the data and annotations are checked.
 Two attributes that may commonly be found to differ from inferred
 values are \code{"dataset.title"} and \code{"data.file.name"},
 if there have been manipulations to the class.  These attributes
-cannot be removed from a valid object of class \code{'genalex'},
+cannot be removed from a valid object of class \code{genalex},
 but they can be set to the empty string (\code{""}) to avoid this
 check.  Alternatively, the option \code{skip.strings = TRUE} may
 be set to not check these specific attributes for consistency.
@@ -49,10 +49,13 @@ may be set to not check extra data columns.
 \examples{
 data(Qagr_adult_genotypes)
 is.genalex(Qagr_adult_genotypes)
+
 ## create an inconsistent attribute
 attr(Qagr_adult_genotypes, "n.loci") <- 20
+
 ## this doesn't detect the inconsistency
 is.genalex(Qagr_adult_genotypes)
+
 ## this detects the inconsistency, returns FALSE
 is.genalex(Qagr_adult_genotypes, force = TRUE)
 is.genalex(Qagr_adult_genotypes, force = TRUE, verbose = TRUE)
