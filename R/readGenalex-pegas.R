@@ -4,7 +4,7 @@
 # for collation order
 NULL
 
-#' Convert class \code{genalex} object to data frame of class \code{'loci'} from package \code{'pegas'}
+#' Convert class genalex object to data frame of class loci from package pegas
 #'
 #' Converts an object of class \code{genalex} to a data frame of class
 #' \code{'loci'} from the
@@ -123,7 +123,7 @@ as.loci.genalex <- function(x, phased = FALSE, check.annotation = TRUE, ...)
 
 
 
-#' Join genotypes encoded as separate alleles into single genotypes like class \code{'genotype'} or class \code{'loci'}
+#' Join genotypes encoded as separate alleles into single genotypes like class genotype or class loci
 #'
 #' @param  x   An object of class \code{genalex}, a data frame, or an
 #' object that can be coerced to a data frame which contains genotypes

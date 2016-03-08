@@ -39,3 +39,4 @@ Collate:
     'readGenalex-genetics.R'
     'readGenalex-package.R'
     'readGenalex-pegas.R'
+RoxygenNote: 5.0.1

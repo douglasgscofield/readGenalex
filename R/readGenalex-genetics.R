@@ -3,7 +3,7 @@
 # for collation order
 NULL
 
-#' Convert class \code{genalex} object to data frame encoding loci using classes from package \code{genetics}
+#' Convert class genalex object to data frame encoding loci using classes from package genetics
 #'
 #' Converts an object of class \code{genalex} to a data frame in which the
 #' genotype columns for each locus have been converted to genotypes
@@ -140,7 +140,7 @@ as.genetics.genalex <- function(x, phased = FALSE, sep = "/",
 
 
 
-#' Split genotypes encoded like class 'genotype' into separate alleles
+#' Split genotypes encoded like class genotype into separate alleles
 #'
 #' @param  x   A data frame or object that can be coerced to a data frame
 #' which contains genotypes of the form \code{101/107}, where the

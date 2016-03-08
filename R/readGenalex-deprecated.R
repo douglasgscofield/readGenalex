@@ -1,4 +1,4 @@
-#' Deprecated functions in the \code{readGenalex} package
+#' Deprecated functions in the readGenalex package
 #' 
 #' These functions are provided for compatibility with older version of
 #' the \code{readGenalex} package.  They may eventually be completely removed.

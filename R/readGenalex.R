@@ -1,4 +1,4 @@
-#' Check to see if an object is of class \code{genalex}
+#' Check to see if an object is of class genalex
 #'
 #' Check to see if an object is of class \code{genalex} as recognised by
 #' the \code{readGenalex} package.  With \code{force = TRUE},
@@ -192,7 +192,7 @@ is.genalex <- function(x, force = FALSE, skip.strings = FALSE,
 
 
 
-#' Convert object to class \code{genalex}
+#' Convert object to class genalex
 #'
 #' Converts object \code{x} to a data frame of class \code{genalex}.
 #' There are seven cases:
@@ -405,7 +405,7 @@ as.genalex.default <- function(x, ...)
 
 
 
-#' Convert class \code{genalex} to data frame
+#' Convert class genalex to data frame
 #'
 #' Convert an object of class \code{genalex} to a data frame, optionally
 #' removing all \code{genalex}-specific attributes.  Note that the
@@ -461,7 +461,7 @@ as.data.frame.genalex <- function(x, ..., complete = FALSE,
 
 
 
-#' Combine class \code{genalex} data sets by adding rows
+#' Combine class genalex data sets by adding rows
 #'
 #' Combine class \code{genalex} data sets onto one larger class
 #' \code{genalex} data set.  Population names and sizes are adjusted
@@ -574,7 +574,7 @@ rbind.genalex <- function(..., names = NULL, deparse.level = 1)
 
 
 
-#' Combine loci from class \code{genalex} data sets
+#' Combine loci from class genalex data sets
 #'
 #' Combine loci from class \code{genalex} data sets into one larger class
 #' \code{genalex} data set by adding loci.  Locus counts are adjusted
@@ -782,7 +782,7 @@ cbind.genalex <- function(..., names = NULL, deparse.level = 1)
 
 
 
-#' Create new object of class \code{genalex} from constituent data
+#' Create new object of class genalex from constituent data
 #'
 #' Create a new object of class \code{genalex} given sample and
 #' population names and genotype data.  Titles for the dataset, sample
@@ -803,7 +803,7 @@ cbind.genalex <- function(..., names = NULL, deparse.level = 1)
 #' column header, and \code{loci} for names of loci.  If \code{loci}
 #' is missing, the corresponding \code{genotype} column names are used.
 #' If \code{loci} is present but not the same length as the number of
-#' loci, an error is produces
+#' loci, an error is produced
 #'
 #' @param ploidy     Ploidy of \code{genotypes}
 #'
@@ -876,7 +876,7 @@ genalex <- function(samples, pops, genotypes, names = NULL, ploidy = 2,
 
 
 
-#' Summarise contents of class \code{genalex} data frame
+#' Summarise contents of class genalex data frame
 #'
 #' This prints a few lines summarising the data set title, sample size,
 #' population sizes, ploidy, number of loci, and locus names, followed
@@ -1039,7 +1039,7 @@ getLocusColumns.genalex <- function(x, locus, ...)
 
 
 
-#' Reorder class \code{genalex} genotype columns
+#' Reorder class genalex genotype columns
 #'
 #' Reorder the genotype columns of a class \code{genalex} object by locus.
 #'
@@ -1175,7 +1175,7 @@ getLocus.genalex <- function(x, locus, pop = NULL, ...)
 
 
 
-#' Add genotype data to an object of class \code{genalex}
+#' Add genotype data to an object of class genalex
 #'
 #' Add genotype genotype data for new loci to an object of class
 #' \code{genalex}.  \code{newdata} is coerced to a data frame if
@@ -1257,7 +1257,7 @@ addLocus.genalex <- function(x, newdata, ...)
 
 
 
-#' Replace genotype data in data frame of class \code{genalex}
+#' Replace genotype data in data frame of class genalex
 #'
 #' Replace genotype data for specified loci in a data frame of class
 #' \code{genalex}.
@@ -1298,7 +1298,7 @@ replaceLocus.genalex <- function(x, locus, newdata, ...)
 
 
 
-#' Remove specified loci from data frame of class \code{genalex}
+#' Remove specified loci from data frame of class genalex
 #'
 #' Remove specified loci from the data frame of class \code{genalex}
 #' and updates attributes
@@ -1364,7 +1364,7 @@ dropLocus.genalex <- function(x, drop.locus, quiet = FALSE, ...)
 
 
 
-#' Reduce the ploidy of an object of class \code{genalex}
+#' Reduce the ploidy of an object of class genalex
 #'
 #' Reduce the ploidy of an object of class \code{genalex}.
 #' Currently restricted to reducing the ploidy of diploid data to haploid by
@@ -1434,7 +1434,7 @@ reducePloidy.genalex <- function(x, new.ploidy = 1, ...)
 
 
 
-#' Return or set the extra data columns of an object of class \code{genalex}
+#' Return or set the extra data columns of an object of class genalex
 #'
 #' Return or set the extra data columns of an object of class
 #' \code{genalex}.  When getting extra data columns, if there are
@@ -1582,7 +1582,7 @@ getPopulation.genalex <- function(x, pop, ...)
 
 
 
-#' Return ploidy for object of class \code{genalex}
+#' Return ploidy for object of class genalex
 #'
 #' Return ploidy for object of class \code{genalex}
 #'
